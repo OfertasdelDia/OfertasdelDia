@@ -1,0 +1,3128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#131921">
+<title>Mercado • Catálogo WhatsApp</title>
+
+<style>
+:root{
+ --nav:#131921; --nav2:#232f3e; --accent:#ff9900; --bg:#eaeded; --card:#fff;
+ --text:#17202a; --muted:#667085; --line:#d5d9d9; --success:#25d366; --max:1440px
+}
+[data-theme="dim"]{
+ --bg:#1e2732; --card:#2b3640; --text:#e7ebee; --muted:#8b98a5; --line:#3a4650;
+}
+[data-theme="dark"]{
+ --bg:#0f1216; --card:#1b1f24; --text:#eef1f4; --muted:#9aa5b1; --line:#2a2f36;
+}
+[data-theme="dim"] .search,[data-theme="dim"] .search-suggest,[data-theme="dim"] .chip,
+[data-theme="dim"] .chips.sub-row2 .chip,[data-theme="dim"] .product,[data-theme="dim"] .fab-bubble,
+[data-theme="dim"] .drawer-panel,[data-theme="dim"] .close,[data-theme="dim"] .admin-login-box,
+[data-theme="dim"] .panel,[data-theme="dim"] .field input,[data-theme="dim"] .field textarea,
+[data-theme="dim"] .field select,[data-theme="dim"] .btn,[data-theme="dim"] .filepick,
+[data-theme="dim"] .edit-box,[data-theme="dim"] .empty,[data-theme="dim"] .splash,
+[data-theme="dark"] .search,[data-theme="dark"] .search-suggest,[data-theme="dark"] .chip,
+[data-theme="dark"] .chips.sub-row2 .chip,[data-theme="dark"] .product,[data-theme="dark"] .fab-bubble,
+[data-theme="dark"] .drawer-panel,[data-theme="dark"] .close,[data-theme="dark"] .admin-login-box,
+[data-theme="dark"] .panel,[data-theme="dark"] .field input,[data-theme="dark"] .field textarea,
+[data-theme="dark"] .field select,[data-theme="dark"] .btn,[data-theme="dark"] .filepick,
+[data-theme="dark"] .edit-box,[data-theme="dark"] .empty,[data-theme="dark"] .splash{
+ background:var(--card);color:var(--text);border-color:var(--line)
+}
+[data-theme="dim"] .admin{background:#232d37}
+[data-theme="dark"] .admin{background:#14171b}
+[data-theme="dim"] .pimg,[data-theme="dim"] .logo-preview,[data-theme="dim"] .banner-preview,
+[data-theme="dim"] .suggest-icon,
+[data-theme="dark"] .pimg,[data-theme="dark"] .logo-preview,[data-theme="dark"] .banner-preview,
+[data-theme="dark"] .suggest-icon{background:#22262b}
+[data-theme="dim"] .small,[data-theme="dim"] .desc,[data-theme="dim"] .password-rules,
+[data-theme="dark"] .small,[data-theme="dark"] .desc,[data-theme="dark"] .password-rules{color:var(--muted)}
+[data-theme="dim"] .site-footer{background:#161e26}
+[data-theme="dark"] .site-footer{background:#0b0d10}
+[data-theme="dim"] .toast,[data-theme="dark"] .toast{background:#eef1f4;color:#111}
+[data-theme="dim"] .admin-item,[data-theme="dim"] .banner-admin-item,
+[data-theme="dark"] .admin-item,[data-theme="dark"] .banner-admin-item{border-color:var(--line)}
+[data-theme="dark"] .admin-item,[data-theme="dark"] .banner-admin-item{border-color:var(--line)}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.app{min-height:100dvh}
+
+/* ================= SPLASH ================= */
+.splash{position:fixed;inset:0;background:#fff;z-index:9999;display:grid;place-items:center;transition:opacity .55s ease,visibility .55s}
+.splash.out{opacity:0;visibility:hidden}
+.logo-wrap{text-align:center}
+.logo-mark{width:118px;height:118px;border-radius:50%;margin:auto;display:grid;place-items:center;background:linear-gradient(145deg,#fff,#eef2f7);box-shadow:0 18px 55px #0001;animation:logoApproach 1.6s cubic-bezier(.22,.61,.36,1) both}
+.logo-inner{display:grid;place-items:center;width:100%;height:100%;animation:logoIdleFloat 2.4s ease-in-out 1.6s infinite alternate}
+.logo-inner span{font-size:58px;display:block}
+.logo-inner img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.logo-name{font-weight:900;font-size:26px;margin-top:18px;letter-spacing:-1px}
+.loader{height:4px;width:150px;background:#eee;border-radius:99px;overflow:hidden;margin:18px auto}
+.loader i{display:block;width:45%;height:100%;background:var(--accent);animation:load 1.1s infinite}
+@keyframes logoApproach{
+ 0%{transform:scale(.15);opacity:0}
+ 100%{transform:scale(1);opacity:1}
+}
+@keyframes logoIdleFloat{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+@keyframes load{from{transform:translateX(-100%)}to{transform:translateX(340%)}}
+
+/* ================= HEADER ================= */
+.top{position:sticky;top:0;z-index:100;background:var(--nav);color:#fff;box-shadow:0 2px 12px #0002}
+.toprow{max-width:var(--max);margin:auto;display:grid;grid-template-columns:auto minmax(180px,1fr) auto auto;gap:12px;align-items:center;padding:10px 14px}
+.hamb{width:44px;height:44px;border:1px solid #ffffff33;background:transparent;color:#fff;border-radius:8px;font-size:24px}
+.brand{font-weight:950;font-size:22px;white-space:nowrap;display:flex;align-items:center;gap:9px}
+.brand b{color:var(--accent)}
+.header-logo{height:34px;width:34px;border-radius:9px;object-fit:cover;display:block;flex:0 0 auto}
+.logo-mark img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.search{height:44px;display:flex;align-items:center;background:#fff;border-radius:8px;overflow:hidden}
+.search-wrap{position:relative;min-width:0}
+.search-suggest{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border-radius:10px;box-shadow:0 12px 30px #0004;max-height:360px;overflow:auto;z-index:200;color:#17202a}
+.suggest-row{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;border-bottom:1px solid #f1f1f1}
+.suggest-row:last-child{border-bottom:0}
+.suggest-row:hover{background:#f7f8f9}
+.suggest-icon{width:34px;height:34px;border-radius:8px;background:#f0f2f4;display:grid;place-items:center;flex:0 0 auto;overflow:hidden;font-size:16px}
+.suggest-icon img{width:100%;height:100%;object-fit:cover}
+.suggest-text{flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.suggest-remove{border:0;background:transparent;color:#98a2ae;font-size:15px;flex:0 0 auto;padding:4px}
+.search-clear{border:0;background:transparent;color:#98a2ae;font-size:16px;width:34px;height:100%;flex:0 0 auto}
+.search-clear:hover{color:#17202a}
+.search input{border:0;outline:0;flex:1;padding:0 14px;min-width:0}
+.search button{border:0;background:var(--accent);width:50px}
+.currency{height:44px;border-radius:8px;border:1px solid #ffffff33;background:var(--nav2);color:#fff;padding:0 10px;font-weight:800}
+.currency option{color:#111}
+
+/* ================= MAIN ================= */
+main{max-width:var(--max);margin:auto;padding:14px}
+
+/* ================= HERO ================= */
+.hero{position:relative;min-height:220px;border-radius:16px;overflow:hidden;background:linear-gradient(110deg,#18202a,#3d5268);color:#fff;display:flex;align-items:center;padding:clamp(24px,5vw,62px);isolation:isolate}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 40%,#ff990055,transparent 28%),linear-gradient(90deg,#0007,transparent);z-index:-1}
+.hero h1{font-size:clamp(30px,5vw,58px);line-height:.98;margin:0 0 12px;max-width:720px}
+.hero p{margin:0;max-width:620px;color:#e7edf3;font-size:clamp(14px,2vw,18px)}
+.hero .hero-btn{display:inline-flex;margin-top:22px;padding:11px 17px;border-radius:9px;background:var(--accent);color:#111;font-weight:900;border:0}
+.hero.dynamic{min-height:280px}
+.hero-bg{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;transition:opacity .55s ease;opacity:0;display:flex;align-items:center;justify-content:center}
+.hero-bg.show{opacity:1}
+.hero-overlay{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#000b 0%,#0007 45%,#0002 100%)}
+.banner-dots{position:absolute;right:18px;bottom:15px;display:flex;gap:6px;z-index:2}
+.banner-dot{width:8px;height:8px;border:0;border-radius:50%;padding:0;background:#fff8}
+.banner-dot.active{background:#fff;transform:scale(1.25)}
+
+/* ================= SECTIONS ================= */
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:22px 2px 10px}
+.section-head h2{margin:0;font-size:22px}
+.small{color:var(--muted);font-size:13px}
+.chips{display:flex;gap:10px;overflow:auto;padding:2px 1px 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 15px;font-weight:800}
+.chip.active{background:var(--nav2);color:#fff;border-color:var(--nav2)}
+.chips.sub-row{margin-top:-4px}
+.chips.sub-row .chip{background:#f3f4f6;border-color:#e2e5e8;font-size:13px;padding:8px 13px;font-weight:700}
+.chips.sub-row .chip.active{background:var(--accent);border-color:var(--accent);color:#111}
+.chips.sub-row2{margin-top:-4px}
+.chips.sub-row2 .chip{background:#fff;border:1px dashed var(--line);font-size:12px;padding:6px 11px;font-weight:700;color:var(--muted)}
+.chips.sub-row2 .chip.active{background:var(--nav2);border-color:var(--nav2);border-style:solid;color:#fff}
+
+/* ================= CAROUSEL ================= */
+.carousel{display:flex;gap:14px;overflow:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 2px 12px}
+.carousel::-webkit-scrollbar{display:none}
+.slide{position:relative;min-width:min(78vw,360px);height:210px;border-radius:14px;overflow:hidden;scroll-snap-align:start;background:#ddd;cursor:pointer}
+.slide img,.slide video{width:100%;height:100%;object-fit:cover}
+.slide .caption{position:absolute;inset:auto 0 0;padding:35px 18px 15px;color:#fff;background:linear-gradient(transparent,#000a);font-weight:900;font-size:18px}
+
+/* ================= PRODUCTS ================= */
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.product{background:#fff;border:1px solid #ddd;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0;box-shadow:0 2px 8px #0000000b;transition:transform .2s,box-shadow .2s}
+.product:hover{transform:translateY(-2px);box-shadow:0 8px 24px #00000012}
+.pimg{height:230px;background:#f3f4f6;position:relative;overflow:hidden;cursor:zoom-in;touch-action:manipulation}
+.pimg img,.pimg video{width:100%;height:100%;object-fit:cover;display:block}
+.zoom-hint{position:absolute;right:9px;bottom:9px;background:#0009;color:#fff;border-radius:999px;padding:7px 9px;font-size:13px;pointer-events:none}
+.pbody{padding:14px;display:flex;flex-direction:column;flex:1}
+.pname{font-size:17px;font-weight:900;margin-bottom:5px}
+.desc{color:#667085;font-size:13px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.price{margin-top:auto;padding-top:13px;font-size:21px;font-weight:950}
+.price small{font-size:11px;color:#667085;font-weight:700}
+
+/* ================= WHATSAPP ================= */
+.wa{margin-top:10px;width:100%;border:0;background:var(--success);color:#fff;border-radius:9px;padding:11px 12px;font-weight:900;min-height:44px;touch-action:manipulation}
+.wa span{font-size:18px;margin-right:4px}
+.fab-group{position:fixed;right:18px;bottom:18px;z-index:120;width:58px;height:58px}
+.fab{position:absolute;inset:0;width:58px;height:58px;border:0;border-radius:50%;color:#fff;display:grid;place-items:center;padding:0;
+ opacity:0;transform:scale(.55) translateY(16px);pointer-events:none;
+ transition:opacity .35s ease,transform .35s ease;
+ --pulse:rgba(0,0,0,.35);
+ animation:fabPulse 1.7s ease-in-out infinite}
+.fab.show{opacity:1;transform:scale(1) translateY(0);pointer-events:auto}
+.fab svg{width:28px;height:28px;display:block}
+.fab.wa-fab{background:var(--success);--pulse:rgba(37,211,102,.55)}
+.fab.fb-fab{background:#1877F2;--pulse:rgba(24,119,242,.55)}
+.fab.ig-fab{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);--pulse:rgba(214,36,159,.55)}
+.fab.yt-fab{background:#FF0000;--pulse:rgba(255,0,0,.5)}
+@keyframes fabPulse{
+ 0%{box-shadow:0 10px 25px #0003, 0 0 0 0 var(--pulse)}
+ 70%{box-shadow:0 10px 25px #0003, 0 0 0 14px rgba(0,0,0,0)}
+ 100%{box-shadow:0 10px 25px #0003, 0 0 0 0 rgba(0,0,0,0)}
+}
+.fab-bubble{position:absolute;right:70px;bottom:12px;background:#fff;color:#17202a;padding:9px 14px;border-radius:14px;font-size:13px;font-weight:800;box-shadow:0 8px 22px #0004;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis;
+ opacity:0;transform:translateX(8px) scale(.92);transition:opacity .25s ease,transform .25s ease;pointer-events:none}
+.fab-bubble.show{opacity:1;transform:translateX(0) scale(1)}
+.fab-bubble:after{content:"";position:absolute;right:-7px;bottom:16px;width:0;height:0;border-style:solid;border-width:7px 0 7px 8px;border-color:transparent transparent transparent #fff}
+#fabBubbleText.typing:after{content:"";display:inline-block;width:2px;height:1em;background:currentColor;margin-left:2px;vertical-align:-2px;animation:fabCaretBlink .85s steps(1) infinite}
+@keyframes fabCaretBlink{50%{opacity:0}}
+
+
+/* ================= DRAWER ================= */
+.drawer{position:fixed;inset:0;z-index:300;background:#0007;opacity:0;visibility:hidden;transition:.25s}
+.drawer.open{opacity:1;visibility:visible}
+.drawer-panel{width:min(330px,86vw);height:100%;background:#fff;transform:translateX(-100%);transition:.3s;padding:20px}
+.drawer.open .drawer-panel{transform:none}
+.drawer button{display:block;width:100%;text-align:left;background:none;border:0;padding:13px 6px;font-weight:800;border-bottom:1px solid #eee}
+.drawer-theme{padding:13px 6px;border-bottom:1px solid #eee}
+.drawer-theme .small{display:block;margin-bottom:8px}
+.theme-options{display:flex;gap:8px}
+.theme-opt{flex:1;border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 4px;font-weight:800;font-size:12px;text-align:center}
+.theme-opt.active{background:var(--nav2);color:#fff;border-color:var(--nav2)}
+
+/* ================= ZOOM ================= */
+.modal{position:fixed;inset:0;z-index:500;background:#000d;display:none;place-items:center;padding:20px}
+.modal.open{display:grid}
+.zoom-box{position:relative;width:min(96vw,1100px);height:min(92vh,900px);display:flex;align-items:center;justify-content:center}
+#zoomMedia{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.zoom-box img,.zoom-box video{max-width:95vw;max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:12px;display:block;box-shadow:0 15px 50px #0007}
+.zoom-loading{color:#fff;font-weight:900;font-size:16px;padding:30px;text-align:center}
+.zoom-gallery{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.zoom-gallery::-webkit-scrollbar{display:none}
+.zoom-slide{flex:0 0 100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center}
+.zoom-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5}
+.zoom-dots .dot{width:7px;height:7px;border-radius:50%;background:#fff6;padding:0;border:0}
+.zoom-dots .dot.active{background:#fff}
+.zoom-counter{position:absolute;top:14px;left:14px;background:#0009;color:#fff;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;z-index:5}
+.pimg-badge{position:absolute;left:9px;bottom:9px;background:#0009;color:#fff;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;display:flex;gap:6px;pointer-events:none}
+.close{position:absolute;right:10px;top:10px;width:38px;height:38px;border-radius:50%;border:0;background:#fff;font-size:23px;z-index:20}
+
+/* ================= ADMIN LOGIN ================= */
+.admin-login{position:fixed;inset:0;z-index:1000;background:#0009;display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,visibility .22s ease}
+.admin-login.open{opacity:1;visibility:visible;pointer-events:auto}
+.admin-login-box{width:min(390px,92vw);background:#fff;border-radius:18px;padding:24px;box-shadow:0 24px 70px #0005;text-align:center;transform:translateY(10px) scale(.98);transition:transform .22s ease}
+.admin-login.open .admin-login-box{transform:none}
+.admin-login-icon{font-size:44px}
+.admin-login-box h2{margin:8px 0 5px}
+.admin-login-box p{margin:0 0 16px;color:var(--muted);font-size:14px}
+.admin-login-box input{width:100%;height:48px;border:1px solid #c9ced3;border-radius:10px;padding:0 14px;text-align:center;font-size:22px;letter-spacing:5px;outline:0}
+.admin-login-box input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #ff990022}
+.admin-login-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.admin-login-actions button{height:44px;border:0;border-radius:9px;font-weight:900}
+.admin-login-actions button:first-child{background:#eef1f4;color:#17202a}
+.admin-login-actions button:last-child{background:var(--nav2);color:#fff}
+
+/* ================= ADMIN ================= */
+.admin{position:fixed;inset:0;z-index:450;background:#f5f6f7;display:none;overflow:auto}
+.admin.open{display:block}
+.adminbar{position:sticky;top:0;background:var(--nav);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.adminwrap{max-width:1000px;margin:auto;padding:16px}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel{background:#fff;border:1px solid #ddd;border-radius:14px;padding:16px}
+.panel h3{margin-top:0}
+.field{display:grid;gap:6px;margin:10px 0}
+.field label{font-weight:800;font-size:13px}
+.field input,.field textarea,.field select{width:100%;border:1px solid #c9ced3;border-radius:8px;padding:10px;background:#fff}
+.field textarea{min-height:100px;resize:vertical}
+.primary{background:var(--nav2);color:#fff;border:0;border-radius:8px;padding:11px 15px;font-weight:900}
+.danger{background:#c62828;color:#fff;border:0;border-radius:8px;padding:8px 10px;font-weight:800}
+.admin-list{display:grid;gap:8px}
+.admin-item{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid #ddd;border-radius:10px;padding:10px}
+.admin-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.admin-item-main{min-width:0;flex:1}
+.admin-item-main strong{display:block}
+.admin-item-actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn{border:1px solid #ccd2d8;background:#fff;color:#17202a;border-radius:8px;padding:9px 11px;font-weight:800}
+.btn:hover{background:#f2f4f6}
+.btn.primary{background:var(--nav2);color:#fff;border-color:var(--nav2)}
+
+/* ================= MEDIA UPLOAD ================= */
+.media-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.filebox{position:relative;border:1px dashed #b8c0c8;border-radius:10px;padding:12px;background:#fafbfc}
+.filebox input{margin-top:7px}
+.filepick{display:flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #c9ced3;border-radius:9px;background:#fff;padding:10px 12px;font-weight:900;text-align:center;cursor:pointer;touch-action:manipulation;user-select:none}
+input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;opacity:0}
+.filepick:active{transform:scale(.99);background:#f1f3f5}
+.media-info{display:block;margin-top:7px;overflow-wrap:anywhere}
+.image-thumb-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+.image-thumb{position:relative;width:64px;height:64px;border-radius:8px;overflow:hidden;background:#eef1f4;flex:0 0 auto}
+.image-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.image-thumb-remove{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:0;background:#0009;color:#fff;font-size:12px;line-height:1;padding:0}
+.filepick[disabled]{opacity:.5;pointer-events:none}
+
+/* ================= EDITOR ================= */
+.edit-modal{position:fixed;inset:0;z-index:1100;background:#0009;display:none;place-items:center;padding:14px}
+.edit-modal.open{display:grid}
+.edit-box{width:min(720px,96vw);max-height:94vh;overflow:auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 25px 80px #0006}
+.edit-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.edit-head h2{margin:0}
+.edit-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px;flex-wrap:wrap}
+
+/* ================= BANNER ADMIN ================= */
+.banner-admin{display:grid;gap:8px}
+.banner-admin-item{border:1px solid #ddd;border-radius:10px;padding:10px;display:grid;gap:8px}
+.banner-preview{height:130px;border-radius:9px;overflow:hidden;background:#eef1f4;display:grid;place-items:center}
+.banner-preview img,.banner-preview video{width:100%;height:100%;object-fit:cover}
+
+/* ================= PASSWORD ================= */
+.password-meter{height:7px;background:#e9ecef;border-radius:99px;overflow:hidden}
+.password-meter i{display:block;height:100%;width:0;background:var(--accent);transition:.2s}
+.password-rules{font-size:12px;color:var(--muted);line-height:1.5}
+.password-rules b{color:#c62828}
+.password-rules b.ok{color:#198754}
+
+/* ================= TOAST ================= */
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:#111;color:#fff;padding:11px 15px;border-radius:10px;z-index:9998;opacity:0;pointer-events:none;transition:.25s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.empty{background:#fff;border:1px dashed #bbb;border-radius:14px;padding:40px;text-align:center;color:#667085;grid-column:1/-1}
+
+/* ================= CHECKBOX PERSONALIZADO ================= */
+.checkbox-wrap{display:flex;align-items:center;gap:8px;margin-top:5px;cursor:pointer}
+.checkbox-wrap input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* ================= LOGO ADMIN ================= */
+.logo-preview{height:90px;width:90px;border-radius:14px;overflow:hidden;background:#eef1f4;display:grid;place-items:center;margin-bottom:8px;font-size:12px;color:var(--muted);text-align:center}
+.logo-preview img{width:100%;height:100%;object-fit:cover}
+
+/* ================= FAQ ================= */
+.faq-list{display:grid;gap:2px}
+.faq-item{border-bottom:1px solid #eee;padding:12px 2px}
+.faq-item summary{font-weight:900;cursor:pointer;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary:before{content:"▸ ";color:var(--accent)}
+.faq-item[open] summary:before{content:"▾ "}
+.faq-item p{margin:10px 0 0;color:var(--muted);line-height:1.5;font-size:14px}
+
+/* ================= FOOTER ================= */
+.site-footer{background:var(--nav);color:#cfd6dd;margin-top:26px;padding:26px 14px 100px;text-align:center}
+.site-footer .footer-inner{max-width:var(--max);margin:auto;display:grid;gap:8px}
+.site-footer .footer-loc{font-weight:700;color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px}
+.footer-pin{width:17px;height:17px;flex:0 0 auto}
+.footer-contact{margin-top:14px;padding-top:14px;border-top:1px solid #ffffff22;display:grid;gap:6px}
+.footer-contact h4{margin:0 0 4px;color:#fff;font-size:14px;letter-spacing:.5px}
+.footer-contact div{font-size:13px;color:#cfd6dd}
+.site-footer .footer-copy{font-size:12px;color:#9aa5b1;margin-top:14px}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:1050px){
+ .products{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .toprow{grid-template-columns:auto 1fr auto}
+ .brand{display:none}
+ .search-wrap{grid-column:2/4}
+ .currency{grid-column:3}
+ .admin-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+ main{padding:10px}
+ .toprow{grid-template-columns:auto 1fr auto}
+ .search-wrap{grid-column:1/-1;grid-row:2}
+ .currency{grid-column:3;grid-row:1}
+ .hero{min-height:235px;padding:25px 20px}
+ .hero.dynamic{min-height:300px}
+ .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .pimg{height:190px}
+ .admin-item{align-items:flex-start;flex-direction:column}
+ .admin-item-actions{width:100%}
+ .admin-item-actions button{flex:1}
+ .edit-actions>*{flex:1}
+ .media-actions{grid-template-columns:1fr}
+ .zoom-box{width:100%;height:90vh}
+ .zoom-box img,.zoom-box video{max-width:94vw;max-height:82vh}
+ .close{right:8px;top:8px}
+}
+@media(max-width:430px){
+ .products{grid-template-columns:1fr 1fr}
+ .pimg{height:165px}
+ .pname{font-size:15px}
+ .price{font-size:18px}
+ .wa{font-size:13px}
+}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+
+<!-- ================= SPLASH ================= -->
+<div id="splash" class="splash">
+ <div class="logo-wrap">
+  <div class="logo-mark" id="splashLogoMark"><div class="logo-inner" id="splashLogoInner"><span id="splashLogoEmoji">🛍️</span></div></div>
+  <div class="logo-name" id="splashLogoName">MERCADO</div>
+  <div class="loader"><i></i></div>
+ </div>
+</div>
+
+<div id="app" class="app">
+<!-- ================= HEADER ================= -->
+<header class="top">
+ <div class="toprow">
+  <button class="hamb" id="hamb" type="button">☰</button>
+  <div class="brand" id="brandWrap"><img id="headerLogoImg" class="header-logo hidden" alt="Logo"><span id="brandText">MERCADO <b>+</b></span></div>
+  <div class="search-wrap">
+   <div class="search">
+    <input id="search" placeholder="Buscar productos..." autocomplete="off">
+    <button id="searchClear" class="search-clear hidden" type="button" aria-label="Borrar búsqueda">✕</button>
+    <button id="searchBtn" type="button">⌕</button>
+   </div>
+   <div class="search-suggest hidden" id="searchSuggest"></div>
+  </div>
+  <select id="currency" class="currency">
+   <option value="USD">USD $</option>
+   <option value="EUR">EUR €</option>
+   <option value="CUP">CUP ₱</option>
+  </select>
+ </div>
+</header>
+
+<!-- ================= MAIN ================= -->
+<main>
+<section class="hero dynamic" id="hero">
+ <div class="hero-bg" id="heroBg"></div>
+ <div class="hero-overlay"></div>
+ <div>
+  <h1 id="heroTitle">Compra directo y fácil</h1>
+  <p id="heroText">Descubre productos, consulta el precio en tu moneda y contacta directamente por WhatsApp.</p>
+  <button class="hero-btn" id="heroBtn" type="button">Ver productos</button>
+ </div>
+ <div class="banner-dots" id="bannerDots"></div>
+</section>
+
+<section>
+ <div class="section-head">
+  <h2>Categorías</h2>
+  <span class="small" id="rateStatus">Tasas cargando…</span>
+ </div>
+ <div class="chips" id="categories"></div>
+ <div class="chips sub-row hidden" id="subcategories"></div>
+ <div class="chips sub-row2 hidden" id="subtypes"></div>
+</section>
+
+<section>
+ <div class="section-head">
+  <h2>Destacados</h2>
+  <span class="small">Desliza →</span>
+ </div>
+ <div class="carousel" id="carousel"></div>
+</section>
+
+<section id="catalog">
+ <div class="section-head">
+  <h2 id="catalogTitle">Productos</h2>
+  <span class="small" id="count"></span>
+ </div>
+ <div class="products" id="products"></div>
+</section>
+</main>
+
+<footer class="site-footer">
+ <div class="footer-inner">
+  <div class="footer-loc">
+   <svg class="footer-pin" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path fill="#e63946" d="M12 2C7.582 2 4 5.582 4 10c0 5.25 6.5 11.34 7.19 11.98a1.15 1.15 0 0 0 1.62 0C13.5 21.34 20 15.25 20 10c0-4.418-3.582-8-8-8z"/>
+    <circle cx="12" cy="10" r="3.3" fill="#fff"/>
+   </svg>
+   <span id="footerLoc">Ubicación: Calle. Cualquiera #489 / la ruta y más</span>
+  </div>
+  <div class="footer-contact">
+   <h4>Contacto</h4>
+   <div id="footerPhone">📞 Teléfono: +1 (708) 89-1280</div>
+   <div id="footerEmail">✉️ Email: ventas@gmail.com</div>
+   <div id="footerAddress">📍 Dirección: Cualquier lugar #123</div>
+   <div id="footerHours">🕒 Horarios: Lunes a Viernes / 9:00am - 5:30pm</div>
+  </div>
+  <div class="footer-copy">Todos los derechos ©️ reservados 2026</div>
+ </div>
+</footer>
+
+<div class="fab-group">
+ <div class="fab-bubble" id="fabBubble"><span id="fabBubbleText"></span></div>
+ <button class="fab wa-fab" id="fab" type="button" aria-label="WhatsApp">
+  <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.001 3C9.107 3 3.5 8.606 3.5 15.5c0 2.297.615 4.45 1.688 6.307L3 29l7.4-2.142A12.44 12.44 0 0 0 16 28c6.894 0 12.5-5.606 12.5-12.5S22.895 3 16.001 3zm0 22.688c-2.02 0-3.916-.55-5.548-1.51l-.397-.235-4.393 1.272 1.294-4.28-.259-.415a10.15 10.15 0 0 1-1.573-5.02C4.925 9.79 9.79 4.925 16 4.925c6.21 0 11.075 4.865 11.075 10.575 0 5.71-4.865 10.188-10.074 10.188zm5.746-7.596c-.313-.157-1.85-.913-2.136-1.017-.286-.104-.494-.157-.702.157-.208.313-.807 1.017-.99 1.226-.182.208-.364.234-.677.078-.313-.157-1.322-.487-2.518-1.552-.931-.83-1.56-1.856-1.743-2.169-.182-.313-.02-.482.137-.638.14-.14.313-.365.47-.547.156-.183.208-.313.313-.522.104-.208.052-.39-.026-.548-.078-.157-.702-1.692-.963-2.317-.253-.61-.51-.527-.702-.536l-.598-.011c-.208 0-.548.078-.834.39-.286.313-1.093 1.068-1.093 2.604 0 1.537 1.119 3.023 1.275 3.232.156.208 2.203 3.366 5.34 4.72.746.322 1.328.514 1.782.658.749.238 1.43.204 1.968.124.6-.09 1.85-.756 2.11-1.487.26-.73.26-1.356.182-1.487-.078-.13-.286-.208-.6-.365z"/></svg>
+ </button>
+ <button class="fab fb-fab" id="fabFacebook" type="button" aria-label="Facebook">
+  <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M28 16c0-6.627-5.373-12-12-12S4 9.373 4 16c0 5.99 4.388 10.954 10.125 11.854V19.46h-3.047V16h3.047v-2.64c0-3.008 1.792-4.669 4.533-4.669 1.312 0 2.686.234 2.686.234v2.953H19.83c-1.491 0-1.956.925-1.956 1.874V16h3.328l-.532 3.46h-2.796v8.394C23.612 26.954 28 21.99 28 16z"/></svg>
+ </button>
+ <button class="fab ig-fab" id="fabInstagram" type="button" aria-label="Instagram">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg>
+ </button>
+ <button class="fab yt-fab" id="fabYoutube" type="button" aria-label="YouTube">
+  <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M29.4 9.7s-.29-2.05-1.18-2.95c-1.13-1.19-2.4-1.19-2.98-1.26C21.1 5.1 16 5.1 16 5.1h-.01s-5.1 0-9.24.39c-.58.07-1.85.07-2.98 1.26C2.89 7.65 2.6 9.7 2.6 9.7S2.3 12.1 2.3 14.5v2.25c0 2.4.3 4.8.3 4.8s.29 2.05 1.17 2.95c1.13 1.19 2.61 1.15 3.27 1.28C9.4 25.9 16 25.96 16 25.96s5.11-.01 9.25-.4c.58-.07 1.85-.07 2.98-1.26.89-.9 1.18-2.95 1.18-2.95s.3-2.4.3-4.8v-2.25c0-2.4-.3-4.8-.3-4.8zM13 19.45v-8.9l7.6 4.46-7.6 4.44z"/></svg>
+ </button>
+</div>
+</div>
+
+<!-- ================= DRAWER ================= -->
+<div class="drawer" id="drawer">
+ <div class="drawer-panel">
+  <h2>Menú</h2>
+  <button type="button" data-action="home">⌂ Inicio</button>
+  <button type="button" data-action="all"> Todos los productos</button>
+  <button type="button" data-action="admin">⚙ Panel administrador</button>
+  <button type="button" data-action="faq">❓ Preguntas frecuentes</button>
+  <button type="button" data-action="notify">🔔 Activar notificaciones</button>
+  <div class="drawer-theme">
+   <span class="small">Apariencia</span>
+   <div class="theme-options" id="themeOptions">
+    <button type="button" class="theme-opt" data-theme-choice="light">☀️ Claro</button>
+    <button type="button" class="theme-opt" data-theme-choice="dim">🌓 Medio</button>
+    <button type="button" class="theme-opt" data-theme-choice="dark">🌙 Oscuro</button>
+   </div>
+  </div>
+  <button type="button" data-action="close">× Cerrar</button>
+ </div>
+</div>
+
+<!-- ================= ZOOM ================= -->
+<div class="modal" id="zoomModal">
+ <div class="zoom-box">
+  <button class="close" id="zoomClose" type="button" aria-label="Cerrar">×</button>
+  <div id="zoomMedia"></div>
+ </div>
+</div>
+
+<!-- ================= LOGIN ADMIN ================= -->
+<div class="admin-login" id="adminLogin" role="dialog" aria-modal="true" aria-labelledby="adminLoginTitle">
+ <div class="admin-login-box">
+  <div class="admin-login-icon"></div>
+  <h2 id="adminLoginTitle">Administrador</h2>
+  <p id="adminLoginHint">Introduce el PIN para continuar.</p>
+  <input id="adminEmailInput" type="email" class="hidden" placeholder="Correo del administrador" autocomplete="username" aria-label="Correo de administrador" style="margin-bottom:10px">
+  <input id="adminPinInput" type="password" maxlength="60" placeholder="Contraseña" autocomplete="current-password" aria-label="Contraseña de administrador">
+  <p class="small" id="adminLoginError" style="color:#c62828;text-align:left;min-height:16px;margin:6px 0 0"></p>
+  <div class="admin-login-actions">
+   <button type="button" id="adminLoginCancel">Cancelar</button>
+   <button type="button" id="adminLoginEnter">Entrar</button>
+  </div>
+  <button type="button" id="adminForgotPass" class="hidden" style="background:none;border:0;color:var(--nav2);font-weight:800;margin-top:12px;padding:6px;text-decoration:underline">¿Olvidaste tu contraseña?</button>
+ </div>
+</div>
+
+<!-- ================= ADMIN ================= -->
+<div class="admin" id="admin">
+ <div class="adminbar">
+  <strong>Panel de administración</strong>
+  <button class="primary" id="adminClose" type="button">Volver</button>
+ </div>
+ <div class="adminwrap">
+  <div class="admin-grid">
+   <!-- CONFIG -->
+   <div class="panel">
+    <h3>Configuración general</h3>
+    <div class="field">
+     <label>Nombre de la tienda</label>
+     <input id="cfgName">
+    </div>
+    <div class="field">
+     <label>Título predeterminado</label>
+     <input id="cfgHeroTitle">
+    </div>
+    <div class="field">
+     <label>Texto predeterminado</label>
+     <textarea id="cfgHeroText"></textarea>
+    </div>
+    <div class="field">
+     <label>📍 Ubicación (pie de página)</label>
+     <input id="cfgLocation" placeholder="Calle. Cualquiera #489 / la ruta y más">
+    </div>
+    <div class="field">
+     <label>📞 Teléfono de contacto</label>
+     <input id="cfgPhone" placeholder="+1 (708) 89-1280">
+    </div>
+    <div class="field">
+     <label>✉️ Email de contacto</label>
+     <input id="cfgEmail" placeholder="ventas@gmail.com">
+    </div>
+    <div class="field">
+     <label>📍 Dirección de contacto</label>
+     <input id="cfgAddress" placeholder="Cualquier lugar #123">
+    </div>
+    <div class="field">
+     <label>🕒 Horarios de atención</label>
+     <input id="cfgHours" placeholder="Lunes a Viernes / 9:00am - 5:30pm">
+    </div>
+    <div class="field">
+     <label>🖼️ Logo de la tienda</label>
+     <div class="filebox">
+      <div class="logo-preview" id="logoPreview">Sin logo</div>
+      <button type="button" class="filepick" id="logoBtn">📷 Seleccionar logo de la galería</button>
+      <input id="logoInput" class="visually-hidden" type="file" accept="image/*">
+      <div id="logoInfo" class="small media-info">Se usará en la pantalla de bienvenida y el encabezado. Recomendado: imagen cuadrada.</div>
+      <button class="btn danger" id="removeLogo" type="button" style="margin-top:8px;width:100%">Quitar logo y usar el predeterminado</button>
+     </div>
+    </div>
+    <div class="field">
+     <label>URL del proxy/backend de elTOQUE</label>
+     <input id="cfgFxProxy" placeholder="https://tu-servidor.com/api/rates">
+    </div>
+    <div class="field">
+     <label>📘 URL de la página de Facebook</label>
+     <input id="cfgFacebook" placeholder="https://facebook.com/tu-pagina">
+    </div>
+    <div class="field">
+     <label>📸 URL del perfil de Instagram</label>
+     <input id="cfgInstagram" placeholder="https://instagram.com/tu-perfil">
+    </div>
+    <div class="field">
+     <label>▶️ URL del canal de YouTube</label>
+     <input id="cfgYoutube" placeholder="https://youtube.com/@tu-canal">
+    </div>
+    <div class="field">
+     <label>Moneda base</label>
+     <select id="cfgBase">
+      <option>USD</option>
+      <option>EUR</option>
+      <option>CUP</option>
+     </select>
+    </div>
+    <button class="primary" id="saveCfg" type="button">Guardar configuración</button>
+    <p class="small">La clave de elTOQUE debe permanecer en el servidor, nunca en este HTML.</p>
+   </div>
+
+   <!-- SECURITY -->
+   <div class="panel">
+    <h3>Seguridad 🔐</h3>
+    <div id="firebasePassBlock" class="hidden">
+     <p class="small">Tu contraseña se gestiona de forma segura en Firebase Authentication — se valida en el servidor de Firebase y nunca viaja al navegador de un visitante ni queda expuesta en el código.</p>
+     <p class="small">Sesión activa: <strong id="firebasePassEmail">—</strong></p>
+     <button class="primary" id="sendPassResetBtn" type="button">📧 Enviar correo para restablecer contraseña</button>
+     <button class="btn" id="signOutBtn" type="button" style="margin-top:8px;width:100%">Cerrar sesión</button>
+    </div>
+    <div id="localPassBlock">
+     <p class="small">⚠️ Modo local (sin Firebase configurado todavía) — esta contraseña solo se guarda en este dispositivo y es visible en el código fuente. Configura Firebase Authentication para seguridad real (ver guía).</p>
+     <div class="field">
+      <label>Contraseña actual</label>
+      <input id="oldPass" type="password" autocomplete="current-password">
+     </div>
+     <div class="field">
+      <label>Nueva contraseña</label>
+      <input id="newPass" type="password" maxlength="12" autocomplete="new-password" placeholder="12 caracteres">
+     </div>
+     <div class="password-meter"><i id="passMeter"></i></div>
+     <div id="passRules" class="password-rules">Debe tener exactamente 12 caracteres y mezclar mayúsculas, minúsculas, números y símbolos.</div>
+     <div class="field">
+      <label>Repetir nueva contraseña</label>
+      <input id="newPass2" type="password" maxlength="12" autocomplete="new-password">
+     </div>
+     <button class="primary" id="changePass" type="button">Cambiar contraseña</button>
+    </div>
+   </div>
+  </div>
+
+  <!-- WHATSAPP Y TEXTOS -->
+  <div class="panel" style="margin-top:14px">
+   <h3>💬 WhatsApp y textos de la App</h3>
+   <p class="small">Edita el número de contacto y todos los mensajes/textos automáticos, sin tocar código.</p>
+   <div class="field">
+    <label>📱 Número de WhatsApp (con código de país, solo números)</label>
+    <input id="cfgWhatsapp" placeholder="Ej: 15551234567">
+   </div>
+   <div class="field">
+    <label>Mensaje al comprar un producto (usa {producto} donde quieras el nombre)</label>
+    <textarea id="cfgMsgProduct" placeholder="Hola! le escribo, porque quiero comprar 🛒 {producto}."></textarea>
+   </div>
+   <div class="field">
+    <label>Mensaje para categoría "Servicios" (usa {producto})</label>
+    <textarea id="cfgMsgService" placeholder="Hola!, necesito los servicios de: {producto}."></textarea>
+   </div>
+   <div class="field">
+    <label>Mensaje del botón flotante de soporte</label>
+    <textarea id="cfgMsgSupport" placeholder="Hola!, soporte, quisiera, más información acerca de sus productos y servicios."></textarea>
+   </div>
+   <div class="field">
+    <label>Texto de la burbuja de WhatsApp</label>
+    <input id="cfgFabWa" placeholder="¿Cómo le podemos ayudar?">
+   </div>
+   <div class="field">
+    <label>Texto de la burbuja de Facebook</label>
+    <input id="cfgFabFb" placeholder="¡Síguenos!">
+   </div>
+   <div class="field">
+    <label>Texto de la burbuja de Instagram</label>
+    <input id="cfgFabIg" placeholder="¡Síguenos!">
+   </div>
+   <div class="field">
+    <label>Texto de la burbuja de YouTube</label>
+    <input id="cfgFabYt" placeholder="¡Suscríbete!">
+   </div>
+   <button class="primary" id="saveWaCfg" type="button">Guardar textos y WhatsApp</button>
+  </div>
+
+  <!-- NUEVO PRODUCTO -->
+  <div class="panel" style="margin-top:14px">
+   <h3>Nuevo producto</h3>
+   <div class="field">
+    <label>Nombre</label>
+    <input id="pName">
+   </div>
+   <div class="field">
+    <label>Categoría</label>
+    <select id="pCat">
+     <option value="Mercado 🛒">Mercado 🛒</option>
+     <option value="Bebidas">Bebidas</option>
+     <option value="Ropa">Ropa</option>
+     <option value="Calzados">Calzados</option>
+     <option value="Artículos del Hogar">Artículos del Hogar</option>
+     <option value="Herramientas de Trabajo">Herramientas de Trabajo</option>
+     <option value="Salud & Belleza">Salud & Belleza</option>
+     <option value="Electrodomésticos">Electrodomésticos</option>
+     <option value="Servicios">Servicios</option>
+     <option value="Artesanías">Artesanías</option>
+     <option value="Vehículos a motor">Vehículos a motor</option>
+     <option value="Tecnología">Tecnología</option>
+     <option value="Laptops & accesorios">Laptops & accesorios</option>
+     <option value="Teléfonos📱 y accesorios">Teléfonos📱 y accesorios</option>
+     <option value="Artículos de Limpieza">Artículos de Limpieza</option>
+     <option value="__custom__">Otra (especificar)…</option>
+    </select>
+    <input id="pCatCustom" class="hidden" placeholder="Escribe la categoría personalizada" style="margin-top:8px">
+    <select id="pSubcat" class="hidden" style="margin-top:8px"></select>
+    <select id="pType" class="hidden" style="margin-top:8px"></select>
+   </div>
+   <div class="field">
+    <label>Precio base</label>
+    <input id="pPrice" type="text" placeholder="Ej: 39.99 o 39,99">
+   </div>
+   <div class="field">
+    <label>Descripción (máx. 1000 caracteres)</label>
+    <textarea id="pDesc" maxlength="1000"></textarea>
+   </div>
+   
+   <label class="checkbox-wrap">
+    <input type="checkbox" id="pFeatured">
+    <span>🌟 Mostrar este producto en Destacados (carrusel)</span>
+   </label>
+
+   <label class="checkbox-wrap">
+    <input type="checkbox" id="pBanner">
+    <span>⭐ Mostrar este producto en el Banner dinámico (rotación cada 5s)</span>
+   </label>
+
+   <div class="media-actions">
+    <div class="filebox">
+     <button type="button" class="filepick" id="pImagesBtn">📷 Añadir fotos (<span id="pImagesCount">0</span>/10)</button>
+     <input id="pImages" class="visually-hidden" type="file" accept="image/*" multiple>
+     <div id="pImagesPreview" class="image-thumb-row"></div>
+     <div class="small media-info">Hasta 10 fotos por producto. Se optimizan a máx. 1080x1080px.</div>
+    </div>
+    <div class="filebox">
+     <button type="button" class="filepick" id="pVideoBtn"> Seleccionar video promocional</button>
+     <input id="pVideo" class="visually-hidden" type="file" accept="video/*">
+     <div id="pVideoInfo" class="small media-info">Ningún video seleccionado. (De 7 a 60 seg, hasta 4K)</div>
+    </div>
+   </div>
+   <button class="primary" id="addProduct" type="button" style="margin-top:10px">＋ Añadir producto</button>
+  </div>
+
+  <!-- PRODUCTOS ADMIN -->
+  <div class="panel" style="margin-top:14px">
+   <h3>Productos actuales</h3>
+   <div class="admin-toolbar">
+    <button class="btn" id="refreshAdmin" type="button">↻ Actualizar lista</button>
+    <span class="small">Edita cualquier campo y reemplaza foto/video cuando quieras.</span>
+   </div>
+   <div class="admin-list" id="adminList"></div>
+  </div>
+
+  <!-- BANNER -->
+  <div class="panel" style="margin-top:14px">
+   <h3>🎞️ Banner dinámico (Promociones)</h3>
+   <p class="small">El banner cambia automáticamente cada 5 segundos. Puedes añadir anuncios personalizados aquí, o marcar productos arriba para que aparezcan.</p>
+   <div class="banner-admin" id="bannerAdmin"></div>
+   <button class="btn primary" id="addBanner" type="button" style="margin-top:10px">＋ Añadir promoción al banner</button>
+  </div>
+
+  <!-- NOTIFICACIONES PUSH -->
+  <div class="panel" style="margin-top:14px">
+   <h3>📣 Notificaciones push</h3>
+   <p class="small">Envía un aviso a todos los clientes que activaron notificaciones: nuevo producto, servicio, video promocional o actualización de la App. Requiere haber completado la configuración de Firebase (ver guía adjunta).</p>
+   <div class="field">
+    <label>Título</label>
+    <input id="notifTitle" placeholder="Ej: Nuevo producto disponible">
+   </div>
+   <div class="field">
+    <label>Mensaje</label>
+    <textarea id="notifBody" placeholder="Ej: Ya puedes ver los nuevos tenis en la tienda 👟"></textarea>
+   </div>
+   <button class="primary" id="sendNotif" type="button">📨 Enviar notificación</button>
+   <p class="small" id="notifStatus"></p>
+  </div>
+
+  <!-- GESTIÓN DE CATEGORÍAS -->
+  <div class="panel" style="margin-top:14px">
+   <h3>🗂️ Categorías</h3>
+   <p class="small">Crea, renombra o elimina categorías, subcategorías y tipos. Los cambios se aplican de inmediato en toda la App.</p>
+   <div class="admin-toolbar">
+    <button class="btn primary" id="addCategory" type="button">＋ Añadir categoría</button>
+   </div>
+   <div class="admin-list" id="categoryAdminList"></div>
+  </div>
+ </div>
+</div>
+
+<!-- ================= EDITOR ================= -->
+<div class="edit-modal" id="editModal">
+ <div class="edit-box">
+  <div class="edit-head">
+   <h2>Editar producto</h2>
+   <button class="close" id="editClose" type="button" style="position:static">×</button>
+  </div>
+  <div id="editForm"></div>
+ </div>
+</div>
+
+<!-- ================= FAQ ================= -->
+<div class="edit-modal" id="faqModal">
+ <div class="edit-box">
+  <div class="edit-head">
+   <h2>Preguntas frecuentes</h2>
+   <button class="close" id="faqClose" type="button" style="position:static">×</button>
+  </div>
+  <div class="faq-list">
+   <details class="faq-item">
+    <summary>¿Qué es ¡Ofertas del Día!?</summary>
+    <p>Una tienda en línea, especializada en la venta de productos & servicios.</p>
+   </details>
+   <details class="faq-item">
+    <summary>¿Horarios de trabajo?</summary>
+    <p>Lunes a Viernes<br>De 9:00am a 5:30pm</p>
+   </details>
+   <details class="faq-item">
+    <summary>¿Dónde radican?</summary>
+    <p>Cualquier lugar…</p>
+   </details>
+   <details class="faq-item">
+    <summary>¿Cuentan con mensajería?</summary>
+    <p>Sí, entregamos su compra 🛍️ en la dirección que usted indique 🚴‍♂️</p>
+   </details>
+   <details class="faq-item">
+    <summary>¿Métodos de pago aceptados en la plataforma?</summary>
+    <p>USD (Dólar)<br>Euros<br>CUP<br>Transferencias bancarias<br>Criptomonedas y tokens (Bitcoin & USDT)</p>
+   </details>
+  </div>
+ </div>
+</div>
+
+<!-- ================= PROMPT/CONFIRM PERSONALIZADO ================= -->
+<div class="edit-modal" id="promptModal">
+ <div class="edit-box" style="max-width:420px">
+  <div class="edit-head"><h2 id="promptTitle">Título</h2></div>
+  <p id="promptMessage" class="small hidden"></p>
+  <div class="field" id="promptFieldWrap">
+   <input id="promptInput" placeholder="">
+  </div>
+  <div class="edit-actions">
+   <button class="btn" id="promptCancel" type="button">Cancelar</button>
+   <button class="btn primary" id="promptOk" type="button">Aceptar</button>
+  </div>
+ </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* =========================================================
+   CONFIGURACIÓN PRINCIPAL
+========================================================= */
+const WA="1506452277745";
+const DEFAULT_PASSWORD="M3rcado+2026";
+const DB_NAME="mercado_catalog_v2";
+const DB_VER=2;
+const STORE="media";
+let CATEGORY_TREE=[
+ {name:"Mercado 🛒"},
+ {name:"Bebidas"},
+ {name:"Ropa", subcats:[
+   {name:"Ropa de Hombre", types:["Pulóver","Camisas","Pantalones de vestir","Pantalones de sport","Shorts"]},
+   {name:"Ropa de Mujer", types:["Vestidos","Blusas","Pantalones","Jeans"]},
+   {name:"Ropa de Niños"},
+   {name:"Ropa de Niñas"},
+   {name:"Ropa de Bebés"}
+ ]},
+ {name:"Calzados", subcats:[
+   {name:"Calzado Clásico"},
+   {name:"Calzado Sport"},
+   {name:"Chancletas de Baño"}
+ ]},
+ {name:"Artículos del Hogar"},
+ {name:"Herramientas de Trabajo"},
+ {name:"Salud & Belleza"},
+ {name:"Electrodomésticos"},
+ {name:"Servicios"},
+ {name:"Artesanías"},
+ {name:"Vehículos a motor", subcats:[
+   {name:"Triciclos electrónicos"},
+   {name:"Motos"},
+   {name:"Partes y piezas"}
+ ]},
+ {name:"Tecnología"},
+ {name:"Laptops & accesorios", subcats:[{name:"Accesorios"}]},
+ {name:"Teléfonos📱 y accesorios", subcats:[
+   {name:"Teléfono Celular"},
+   {name:"Teléfonos Fijos"},
+   {name:"Accesorios"}
+ ]},
+ {name:"Artículos de Limpieza"}
+];
+
+/* =========================================================
+   NOTIFICACIONES PUSH (Firebase) — ver GUIA-NOTIFICACIONES.md
+   Reemplaza estos 4 valores tras completar la configuración
+   en Firebase Console y desplegar la función en la nube.
+========================================================= */
+const FIREBASE_CONFIG = {
+ apiKey: "AIzaSyAGM_P6_DdEHIySUi52eSBw7Rq6b9_jM1U",
+ authDomain: "ofertasdeldia-ed5e6.firebaseapp.com",
+ projectId: "ofertasdeldia-ed5e6",
+ storageBucket: "ofertasdeldia-ed5e6.firebasestorage.app",
+ messagingSenderId: "403573553564",
+ appId: "1:403573553564:web:5a2e6283dfc1439174b059",
+ measurementId: "G-HWT2RMSXCN"
+};
+const VAPID_KEY = "PEGA_TU_VAPID_KEY_AQUI";
+const CLOUD_FUNCTION_URL = "PEGA_LA_URL_DE_TU_FUNCION_AQUI";
+const ADMIN_NOTIFY_PASSWORD = "CAMBIA-ESTA-CLAVE-2026";
+
+let db=null;
+let dbReady=false;
+let dbInitPromise=null;
+let products=[];
+let selectedCat="Todos";
+let selectedSubcat="Todas";
+let selectedType="Todas";
+let bannerTimer=null;
+let bannerIndex=0;
+let adminEditingId=null;
+
+let rates={USD:680, EUR:780, CUP:1};
+let recentSearches=[];
+try{recentSearches=JSON.parse(localStorage.getItem("mercado_recent_searches")||"[]");}catch(e){recentSearches=[];}
+if(!Array.isArray(recentSearches))recentSearches=[];
+
+let config={
+ name:"MERCADO",
+ heroTitle:"Compra directo y fácil",
+ heroText:"Descubre productos, consulta el precio en tu moneda y contacta directamente por WhatsApp.",
+ base:"USD",
+ fxProxy:"",
+ password:DEFAULT_PASSWORD,
+ location:"Calle. Cualquiera #489 / la ruta y más",
+ logo:"",
+ facebookUrl:"",
+ instagramUrl:"",
+ youtubeUrl:"",
+ contactPhone:"+1 (708) 89-1280",
+ contactEmail:"ventas@gmail.com",
+ contactAddress:"Cualquier lugar #123",
+ contactHours:"Lunes a Viernes / 9:00am - 5:30pm",
+ whatsappNumber:"",
+ waMsgProduct:"Hola! le escribo, porque quiero comprar 🛒 {producto}.",
+ waMsgService:"Hola!, necesito los servicios de: {producto}.",
+ waMsgSupport:"Hola!, soporte, quisiera, más información acerca de sus productos y servicios.",
+ fabTextWa:"¿Cómo le podemos ayudar?",
+ fabTextFb:"¡Síguenos!",
+ fabTextIg:"¡Síguenos!",
+ fabTextYt:"¡Suscríbete!",
+ banners:[]
+};
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+const $=s=>document.querySelector(s);
+const money=(n,c)=>new Intl.NumberFormat("es-ES",{style:"currency",currency:c,maximumFractionDigits:c==="CUP"?0:2}).format(Number(n)||0);
+
+function toast(t, duration=2600){
+ let x=$("#toast");
+ if(!x)return;
+ x.textContent=t;
+ x.classList.add("show");
+ clearTimeout(toast.timer);
+ toast.timer=setTimeout(()=>x.classList.remove("show"),duration);
+}
+
+function createId(prefix="id"){
+ if(window.crypto && typeof window.crypto.randomUUID==="function"){
+  try{return window.crypto.randomUUID();}catch(e){}
+ }
+ return prefix+"_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,10);
+}
+
+/* =========================================================
+   INDEXED DB - CORREGIDO CON REINTENTOS
+========================================================= */
+function openDB(){
+ // Si ya está abierta, retornar inmediatamente
+ if(db && dbReady) return Promise.resolve(db);
+ 
+ // Si ya hay una inicialización en progreso, esperar a que termine
+ if(dbInitPromise) return dbInitPromise;
+ 
+ dbInitPromise = new Promise((res,rej)=>{
+  if(!window.indexedDB){
+   rej(new Error("IndexedDB no disponible en este navegador"));
+   dbInitPromise=null;
+   return;
+  }
+  
+  let attempts=0;
+  const maxAttempts=3;
+  
+  const tryOpen=()=>{
+   let r;
+   try{
+    r=indexedDB.open(DB_NAME,DB_VER);
+   }catch(e){
+    attempts++;
+    if(attempts<maxAttempts){
+     setTimeout(tryOpen,500*attempts);
+    }else{
+     rej(e);
+     dbInitPromise=null;
+    }
+    return;
+   }
+   
+   r.onupgradeneeded=e=>{
+    let d=e.target.result;
+    if(!d.objectStoreNames.contains(STORE)){
+     d.createObjectStore(STORE);
+    }
+   };
+   
+   r.onsuccess=e=>{
+    db=e.target.result;
+    dbReady=true;
+    
+    db.onversionchange=()=>{
+     try{db.close();}catch(err){}
+     db=null;
+     dbReady=false;
+    };
+    
+    db.onclose=()=>{
+     db=null;
+     dbReady=false;
+    };
+    
+    dbInitPromise=null;
+    res(db);
+   };
+   
+   r.onerror=()=>{
+    attempts++;
+    if(attempts<maxAttempts){
+     console.warn(`Intento ${attempts}/${maxAttempts} fallido, reintentando...`);
+     setTimeout(tryOpen,1000*attempts);
+    }else{
+     rej(r.error||new Error("No se pudo abrir almacenamiento después de varios intentos"));
+     dbInitPromise=null;
+    }
+   };
+   
+   r.onblocked=()=>{
+    toast("Cierre otras pestañas de esta app para actualizar");
+   };
+  };
+  
+  tryOpen();
+ });
+ 
+ return dbInitPromise;
+}
+
+// Función auxiliar para asegurar que DB esté lista
+async function ensureDB(){
+ if(!dbReady){
+  try{
+   await openDB();
+  }catch(e){
+   throw new Error("El almacenamiento multimedia no está disponible. Recarga la página e intenta de nuevo.");
+  }
+ }
+ return db;
+}
+
+/* =========================================================
+   PROCESAMIENTO DE IMAGEN (REDIMENSIONAR A 1080x1080 MAX)
+========================================================= */
+function resizeImage(file, maxDim=1080){
+ return new Promise((resolve, reject) => {
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
+  img.onload = () => {
+   URL.revokeObjectURL(img.src);
+   let width = img.width;
+   let height = img.height;
+   const MAX_DIMENSION = maxDim;
+
+   if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+    if (width > height) {
+     height = Math.round(height * (MAX_DIMENSION / width));
+     width = MAX_DIMENSION;
+    } else {
+     width = Math.round(width * (MAX_DIMENSION / height));
+     height = MAX_DIMENSION;
+    }
+   }
+
+   const canvas = document.createElement('canvas');
+   canvas.width = width;
+   canvas.height = height;
+   const ctx = canvas.getContext('2d');
+   ctx.fillStyle = "#FFFFFF";
+   ctx.fillRect(0, 0, width, height);
+   ctx.drawImage(img, 0, 0, width, height);
+
+   canvas.toBlob((blob) => {
+    if(blob) resolve(blob);
+    else reject(new Error("Error al comprimir la imagen"));
+   }, 'image/jpeg', 0.85);
+  };
+  img.onerror = () => reject(new Error("Error al cargar la imagen para redimensionar"));
+ });
+}
+
+/* =========================================================
+   VALIDACIÓN DE ARCHIVOS
+========================================================= */
+function fileInfo(file){
+ return file ? `${file.name} · ${(file.size/1048576).toFixed(1)} MB` : "Ningún archivo seleccionado.";
+}
+
+function validateMediaFile(file,kind){
+ if(!file)return null;
+ let isImage=file.type.startsWith("image/");
+ let isVideo=file.type.startsWith("video/");
+ if(kind==="image" && !isImage) throw new Error("Selecciona una imagen válida.");
+ if(kind==="video" && !isVideo) throw new Error("Selecciona un video válido.");
+ if(kind==="image" && file.size>15*1024*1024) throw new Error("La imagen supera el límite de 15 MB.");
+ if(kind==="video" && file.size>150*1024*1024) throw new Error("El video supera el límite de 150 MB (permite hasta 4K).");
+ return file;
+}
+
+function getVideoDuration(file){
+ return new Promise((res,rej)=>{
+  let u;
+  try{u=URL.createObjectURL(file);}catch(e){res(null);return;}
+  let v=document.createElement("video");
+  let done=false;
+  const finish=fn=>{
+   if(done)return;done=true;
+   try{URL.revokeObjectURL(u);}catch(e){}
+   try{v.removeAttribute("src");v.load();}catch(e){}
+   fn();
+  };
+  v.preload="metadata";
+  v.onloadedmetadata=()=>{finish(()=>res(Number.isFinite(v.duration)?v.duration:null));};
+  v.onerror=()=>{finish(()=>res(null));};
+  try{v.src=u;}catch(e){finish(()=>res(null));}
+ });
+}
+
+async function validatePromoVideo(file){
+ validateMediaFile(file, "video");
+ let dur=await getVideoDuration(file);
+ if(dur!==null){
+  if(dur<7) throw new Error("El video promocional debe durar al menos 7 segundos.");
+  if(dur>60) throw new Error("El video promocional debe durar 60 segundos o menos.");
+ }
+ return file;
+}
+
+async function validateBannerVideo(file){
+ validateMediaFile(file, "video");
+ let dur=await getVideoDuration(file);
+ if(dur!==null && dur>5){
+  throw new Error("El video para el banner debe durar 5 segundos o menos ⏱️ para coincidir con la rotación.");
+ }
+ return file;
+}
+
+/* =========================================================
+   GUARDAR MULTIMEDIA - CORREGIDO
+========================================================= */
+async function putMedia(blob){
+ // Asegurar que la DB esté lista antes de continuar
+ await ensureDB();
+ 
+ return new Promise((res,rej)=>{
+  if(!blob){res("");return;}
+  
+  let id=createId("media");
+  try{
+   let tx=db.transaction(STORE,"readwrite");
+   let store=tx.objectStore(STORE);
+   store.put(blob,id);
+   tx.oncomplete=()=>{res(id);};
+   tx.onabort=tx.onerror=()=>{rej(tx.error||new Error("No se pudo guardar el archivo."));};
+  }catch(e){rej(e);}
+ });
+}
+
+async function prepareMedia(file,kind){
+ if(!file)return "";
+ if(kind==="video"){
+  await validatePromoVideo(file);
+ }else{
+  validateMediaFile(file, kind);
+  const optimizedBlob = await resizeImage(file);
+  return putMedia(optimizedBlob);
+ }
+ return putMedia(file);
+}
+
+/* =========================================================
+   LEER MULTIMEDIA
+========================================================= */
+function getMedia(id){
+ return new Promise(res=>{
+  if(!id || !db){res(null);return;}
+  try{
+   let tx=db.transaction(STORE,"readonly");
+   let r=tx.objectStore(STORE).get(id);
+   r.onsuccess=()=>{res(r.result||null);};
+   r.onerror=()=>{res(null);};
+  }catch(e){res(null);}
+ });
+}
+
+function delMedia(id){
+ if(!id || !db)return;
+ try{db.transaction(STORE,"readwrite").objectStore(STORE).delete(id);}catch(e){}
+}
+
+async function mediaUrl(id){
+ let b=await getMedia(id);
+ if(!b)return "";
+ try{return URL.createObjectURL(b);}catch(e){return "";}
+}
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+function save(){
+ try{
+  localStorage.setItem("mercado_products",JSON.stringify(products));
+  localStorage.setItem("mercado_config",JSON.stringify(config));
+  return true;
+ }catch(e){
+  console.error(e);
+  if(location.protocol==="file:"){
+   toast("No se pudo guardar: tu navegador bloquea el almacenamiento al abrir el archivo con doble clic. Sube el archivo a un hosting (o ábrelo vía http/https) para poder guardar.", 6000);
+  }else{
+   toast("No se pudo guardar localmente. Libera espacio e inténtalo de nuevo.");
+  }
+  return false;
+ }
+}
+
+function seed(){
+ return [
+  {id:createId("p"),name:"Zapatos clásicos",cat:"Calzados",subcat:"Calzado Clásico",type:"",price:39.99,desc:"Calzado cómodo y elegante para uso diario.",image:"",video:"",banner:false},
+  {id:createId("p"),name:"Electrodomésticos",cat:"Electrodomésticos",subcat:"",type:"",price:79.99,desc:"Artículos para cocina y hogar. Consulta disponibilidad.",image:"",video:"",banner:false},
+  {id:createId("p"),name:"Pasta italiana",cat:"Mercado 🛒",subcat:"",type:"",price:4.5,desc:"Producto alimenticio de calidad.",image:"",video:"",banner:false},
+  {id:createId("p"),name:"Kit de herramientas",cat:"Herramientas de Trabajo",subcat:"",type:"",price:120,desc:"Set de herramientas para proyectos y reparaciones.",image:"",video:"",banner:false}
+ ];
+}
+
+function load(){
+ try{
+  let r=localStorage.getItem("mercado_products");
+  products=r?JSON.parse(r):seed();
+  if(!Array.isArray(products))products=seed();
+ }catch(e){products=seed();}
+ try{
+  let r=localStorage.getItem("mercado_config");
+  let st=r?JSON.parse(r):{};
+  config={...config,...(st && typeof st==="object"?st:{})};
+  if(config.password==="M3rcado+2026!")config.password=DEFAULT_PASSWORD;
+  if(!config.password)config.password=DEFAULT_PASSWORD;
+  if(!config.location)config.location="Calle. Cualquiera #489 / la ruta y más";
+  if(!config.contactPhone)config.contactPhone="+1 (708) 89-1280";
+  if(!config.contactEmail)config.contactEmail="ventas@gmail.com";
+  if(!config.contactAddress)config.contactAddress="Cualquier lugar #123";
+  if(!config.contactHours)config.contactHours="Lunes a Viernes / 9:00am - 5:30pm";
+  if(!Array.isArray(config.banners))config.banners=[];
+  if(Array.isArray(config.categoryTree) && config.categoryTree.length){
+   CATEGORY_TREE=config.categoryTree;
+  }else{
+   config.categoryTree=CATEGORY_TREE;
+  }
+  products.forEach(p => { if(p.banner === undefined) p.banner = false; });
+  try{localStorage.setItem("mercado_config",JSON.stringify(config));}catch(e){}
+ }catch(e){}
+}
+
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+function convert(v,from,to){
+ let n=Number(v)||0;
+ if(from===to)return n;
+ let rf=Number(rates[from]);
+ let rt=Number(rates[to]);
+ return rf && rt ? n*rf/rt : n;
+}
+
+function whatsappUrl(msg){
+ let num=(config.whatsappNumber||WA).replace(/[^0-9]/g,"");
+ return "https://api.whatsapp.com/send?phone="+encodeURIComponent(num)+"&text="+encodeURIComponent(msg);
+}
+
+function productWaMessage(p){
+ if(p.cat==="Servicios"){
+  return (config.waMsgService||"Hola!, necesito los servicios de: {producto}.").replace("{producto}",p.name);
+ }
+ return (config.waMsgProduct||"Hola! le escribo, porque quiero comprar 🛒 {producto}.").replace("{producto}",p.name);
+}
+
+function wa(msg){
+ let url=whatsappUrl(msg);
+ try{
+  let a=document.createElement("a");
+  a.href=url;a.target="_blank";a.rel="noopener noreferrer";
+  a.style.position="fixed";a.style.left="-9999px";
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{try{a.remove();}catch(e){}},1200);
+ }catch(e){
+  try{location.href=url;}catch(err){window.location.assign(url);}
+ }
+}
+
+function findCategoryNode(name){
+ return CATEGORY_TREE.find(c=>c.name===name) || null;
+}
+
+function findSubcatNode(catName,subcatName){
+ let c=findCategoryNode(catName);
+ if(!c || !c.subcats) return null;
+ return c.subcats.find(s=>s.name===subcatName) || null;
+}
+
+function topCategoryNames(){
+ let names=CATEGORY_TREE.map(c=>c.name);
+ products.map(p=>p.cat).filter(Boolean).forEach(c=>{ if(!names.includes(c)) names.push(c); });
+ return ["Todos",...names];
+}
+
+function categoryOptionsHTML(selected){
+ let inList=CATEGORY_TREE.some(c=>c.name===selected);
+ return CATEGORY_TREE.map(c=>`<option value="${esc(c.name)}" ${c.name===selected?"selected":""}>${esc(c.name)}</option>`).join("")
+  + `<option value="__custom__" ${(!inList && selected)?"selected":""}>Otra (especificar)…</option>`;
+}
+
+// Reconstruye los selects de subcategoría/tipo según la categoría elegida en un formulario (prefix: "p" o "e")
+function refreshSubcatSelect(prefix,presetSubcat,presetType){
+ let catSel=$("#"+prefix+"Cat"), subSel=$("#"+prefix+"Subcat");
+ if(!catSel || !subSel)return;
+ let node=findCategoryNode(catSel.value);
+ if(node && node.subcats && node.subcats.length){
+  subSel.classList.remove("hidden");
+  subSel.innerHTML=`<option value="">— Subcategoría (opcional) —</option>`+node.subcats.map(s=>`<option value="${esc(s.name)}" ${s.name===presetSubcat?"selected":""}>${esc(s.name)}</option>`).join("");
+ }else{
+  subSel.classList.add("hidden");subSel.innerHTML="";
+ }
+ refreshTypeSelect(prefix,presetType);
+}
+
+function refreshTypeSelect(prefix,presetType){
+ let catSel=$("#"+prefix+"Cat"), subSel=$("#"+prefix+"Subcat"), typeSel=$("#"+prefix+"Type");
+ if(!catSel || !typeSel)return;
+ let subVal = subSel && !subSel.classList.contains("hidden") ? subSel.value : "";
+ let subNode=findSubcatNode(catSel.value,subVal);
+ if(subNode && subNode.types && subNode.types.length){
+  typeSel.classList.remove("hidden");
+  typeSel.innerHTML=`<option value="">— Tipo (opcional) —</option>`+subNode.types.map(t=>`<option value="${esc(t)}" ${t===presetType?"selected":""}>${esc(t)}</option>`).join("");
+ }else{
+  typeSel.classList.add("hidden");typeSel.innerHTML="";
+ }
+}
+
+function bindCategorySelects(prefix,presetSubcat,presetType){
+ let catSel=$("#"+prefix+"Cat"), customInput=$("#"+prefix+"CatCustom"), subSel=$("#"+prefix+"Subcat");
+ if(!catSel)return;
+ catSel.onchange=()=>{
+  if(customInput) customInput.classList.toggle("hidden", catSel.value!=="__custom__");
+  refreshSubcatSelect(prefix,"","");
+ };
+ if(subSel) subSel.onchange=()=>{ refreshTypeSelect(prefix,""); };
+ refreshSubcatSelect(prefix,presetSubcat,presetType);
+}
+
+function readCategorySelection(prefix){
+ let catSel=$("#"+prefix+"Cat").value;
+ let cat = catSel==="__custom__" ? ($("#"+prefix+"CatCustom").value.trim() || "General") : catSel;
+ let subSel=$("#"+prefix+"Subcat"), typeSel=$("#"+prefix+"Type");
+ let subcat = subSel && !subSel.classList.contains("hidden") ? subSel.value : "";
+ let type = typeSel && !typeSel.classList.contains("hidden") ? typeSel.value : "";
+ return {cat,subcat,type};
+}
+
+function renderHero(){
+ let h=$("#heroTitle"), t=$("#heroText");
+ if(h) h.textContent = config.heroTitle || "Compra directo y fácil";
+ if(t) t.textContent = config.heroText || "";
+ document.title = config.name || "MERCADO";
+}
+
+function renderFooter(){
+ let loc=$("#footerLoc");
+ if(loc) loc.textContent = "Ubicación: "+(config.location || "Calle. Cualquiera #489 / la ruta y más");
+ let ph=$("#footerPhone"); if(ph) ph.textContent = "📞 Teléfono: "+(config.contactPhone||"");
+ let em=$("#footerEmail"); if(em) em.textContent = "✉️ Email: "+(config.contactEmail||"");
+ let ad=$("#footerAddress"); if(ad) ad.textContent = "📍 Dirección: "+(config.contactAddress||"");
+ let hr=$("#footerHours"); if(hr) hr.textContent = "🕒 Horarios: "+(config.contactHours||"");
+}
+
+/* =========================================================
+   LOGO DE LA TIENDA
+========================================================= */
+async function renderLogo(){
+ let headerImg=$("#headerLogoImg");
+ let splashInner=$("#splashLogoInner");
+ let u = config.logo ? await mediaUrl(config.logo) : "";
+
+ if(u){
+  if(headerImg){headerImg.src=u;headerImg.classList.remove("hidden");}
+  if(splashInner){
+   splashInner.innerHTML=`<img src="${u}" alt="Logo">`;
+  }
+ }else{
+  if(headerImg){headerImg.src="";headerImg.classList.add("hidden");}
+  if(splashInner){splashInner.innerHTML=`<span id="splashLogoEmoji">🛍️</span>`;}
+ }
+}
+
+async function renderLogoAdmin(){
+ let box=$("#logoPreview");
+ if(!box)return;
+ if(config.logo){
+  let u=await mediaUrl(config.logo);
+  box.innerHTML = u ? `<img src="${u}" alt="Logo actual">` : "Sin logo";
+ }else{
+  box.innerHTML="Sin logo";
+ }
+}
+
+async function uploadLogo(file){
+ try{
+  validateMediaFile(file,"image");
+  const blob = await resizeImage(file, 512);
+  const id = await putMedia(blob);
+  if(config.logo) delMedia(config.logo);
+  config.logo=id;
+  save();
+  await renderLogo();
+  await renderLogoAdmin();
+  toast("Logo actualizado correctamente");
+ }catch(e){
+  console.error(e);
+  toast(e.message || "No se pudo guardar el logo.");
+ }
+}
+
+async function removeLogo(){
+ if(!config.logo){toast("No hay logo personalizado que quitar");return;}
+ if(!(await customConfirm("¿Quitar el logo y volver al predeterminado?")))return;
+ delMedia(config.logo);
+ config.logo="";
+ save();
+ renderLogo();renderLogoAdmin();
+ toast("Logo eliminado, se usará el predeterminado");
+}
+
+/* =========================================================
+   NOTIFICACIONES PUSH
+========================================================= */
+let fbMessaging=null, fbDb=null, fbAuth=null;
+let isAdminAuthed=false, usingFirebaseAuth=false;
+
+function ensureFirebaseApp(){
+ try{
+  if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.apiKey) return false;
+  if(typeof firebase==="undefined") return false;
+  if(!firebase.apps || !firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+  return true;
+ }catch(e){
+  console.warn("Firebase no se pudo inicializar:",e);
+  return false;
+ }
+}
+
+function initFirebaseIfConfigured(){
+ if(fbMessaging && fbDb) return true;
+ if(!ensureFirebaseApp()) return false;
+ try{
+  fbMessaging=firebase.messaging();
+  fbDb=firebase.firestore();
+  return true;
+ }catch(e){
+  console.warn("Firebase (mensajería) no se pudo inicializar:",e);
+  return false;
+ }
+}
+
+let authWatching=false;
+
+function watchAuthState(){
+ if(authWatching || !fbAuth)return;
+ authWatching=true;
+ fbAuth.onAuthStateChanged(user=>{
+  isAdminAuthed=!!user;
+  if(user){
+   closeAdminLogin();
+   openAdminPanel();
+  }
+ });
+}
+
+function initFirebaseAuth(){
+ if(fbAuth){watchAuthState();return true;}
+ if(!ensureFirebaseApp()) return false;
+ try{
+  fbAuth=firebase.auth();
+  watchAuthState();
+  return true;
+ }catch(e){
+  console.warn("Firebase Auth no se pudo inicializar:",e);
+  return false;
+ }
+}
+
+async function registerPushServiceWorker(){
+ if(!("serviceWorker" in navigator)) return null;
+ try{
+  return await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+ }catch(e){
+  console.warn("No se pudo registrar el service worker de notificaciones:",e);
+  return null;
+ }
+}
+
+async function enableNotifications(){
+ if(!initFirebaseIfConfigured()){
+  toast("Las notificaciones aún no están configuradas por el administrador.");
+  return;
+ }
+ if(!("Notification" in window)){
+  toast("Tu navegador no soporta notificaciones push.");
+  return;
+ }
+ try{
+  let perm=await Notification.requestPermission();
+  if(perm!=="granted"){
+   toast("No activaste el permiso de notificaciones.");
+   return;
+  }
+  let reg=await registerPushServiceWorker();
+  let token=await fbMessaging.getToken({vapidKey:VAPID_KEY, serviceWorkerRegistration:reg||undefined});
+  if(!token){
+   toast("No se pudo obtener el token de notificaciones. Intenta de nuevo.");
+   return;
+  }
+  await fbDb.collection("subscribers").doc(token).set({subscribedAt:new Date().toISOString()});
+  toast("🔔 ¡Notificaciones activadas! Te avisaremos de novedades.");
+ }catch(e){
+  console.error(e);
+  toast("No se pudieron activar las notificaciones: "+(e.message||"error desconocido"));
+ }
+}
+
+async function sendPushNotification(){
+ let titleEl=$("#notifTitle"), bodyEl=$("#notifBody"), statusEl=$("#notifStatus");
+ let title=titleEl.value.trim();
+ let body=bodyEl.value.trim();
+ if(!title || !body){toast("Escribe un título y un mensaje");return;}
+ if(!CLOUD_FUNCTION_URL || CLOUD_FUNCTION_URL.includes("PEGA_")){
+  toast("Aún no configuraste la URL de la función en la nube (ver GUIA-NOTIFICACIONES.md)");
+  return;
+ }
+ statusEl.textContent="Enviando…";
+ try{
+  let r=await fetch(CLOUD_FUNCTION_URL,{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({password:ADMIN_NOTIFY_PASSWORD, title, body})
+  });
+  let j=await r.json();
+  if(!r.ok) throw new Error(j.error || "Error del servidor");
+  statusEl.textContent=`Enviado a ${j.sent||0} dispositivo(s)${j.failed?`, ${j.failed} fallidos`:""}.`;
+  toast("Notificación enviada");
+  titleEl.value="";bodyEl.value="";
+ }catch(e){
+  console.error(e);
+  statusEl.textContent="Error: "+e.message;
+  toast("No se pudo enviar la notificación");
+ }
+}
+
+function renderCategoryBar(){
+ let b=$("#categories");
+ if(!b)return;
+ b.innerHTML="";
+ topCategoryNames().forEach(c=>{
+  let x=document.createElement("button");
+  x.className="chip "+(c===selectedCat?"active":"");
+  x.textContent=c;x.type="button";
+  x.onclick=()=>{
+   selectedCat=c;selectedSubcat="Todas";selectedType="Todas";
+   renderCategoryBar();renderProducts();
+   let catalog=$("#catalog");
+   if(catalog) catalog.scrollIntoView({behavior:"smooth",block:"start"});
+  };
+  b.appendChild(x);
+ });
+
+ let subRow=$("#subcategories");
+ let node=findCategoryNode(selectedCat);
+ if(subRow){
+  if(node && node.subcats && node.subcats.length){
+   subRow.classList.remove("hidden");
+   subRow.innerHTML="";
+   ["Todas",...node.subcats.map(s=>s.name)].forEach(s=>{
+    let x=document.createElement("button");
+    x.className="chip "+(s===selectedSubcat?"active":"");
+    x.textContent=s;x.type="button";
+    x.onclick=()=>{
+     selectedSubcat=s;selectedType="Todas";
+     renderCategoryBar();renderProducts();
+    };
+    subRow.appendChild(x);
+   });
+  }else{
+   subRow.classList.add("hidden");subRow.innerHTML="";
+  }
+ }
+
+ let typeRow=$("#subtypes");
+ let subNode = node ? findSubcatNode(selectedCat,selectedSubcat) : null;
+ if(typeRow){
+  if(subNode && subNode.types && subNode.types.length){
+   typeRow.classList.remove("hidden");
+   typeRow.innerHTML="";
+   ["Todas",...subNode.types].forEach(t=>{
+    let x=document.createElement("button");
+    x.className="chip "+(t===selectedType?"active":"");
+    x.textContent=t;x.type="button";
+    x.onclick=()=>{ selectedType=t;renderCategoryBar();renderProducts(); };
+    typeRow.appendChild(x);
+   });
+  }else{
+   typeRow.classList.add("hidden");typeRow.innerHTML="";
+  }
+ }
+}
+
+async function renderCarousel(){
+ let b=$("#carousel");
+ if(!b)return;
+ b.innerHTML="";
+ let featured=products.filter(p=>p.featured).slice(0,8);
+ if(!featured.length){
+  b.innerHTML=`<div class="empty">Aún no hay productos destacados. Márcalos con "🌟 Mostrar en Destacados" al añadirlos o editarlos.</div>`;
+  return;
+ }
+ for(let p of featured){
+  let s=document.createElement("div");
+  s.className="slide";
+  let u=await mediaUrl(p.image);
+  if(u){
+   s.innerHTML=`<img src="${u}" alt="${esc(p.name)}" draggable="false">`;
+  }else{
+   s.innerHTML=`<div style="height:100%;display:grid;place-items:center;font-size:60px">🛍️</div>`;
+  }
+  let c=document.createElement("div");
+  c.className="caption";c.textContent=p.name;
+  s.appendChild(c);
+  s.onclick=e=>{
+   e.preventDefault();
+   selectedCat=p.cat||"Todos";
+   selectedSubcat=p.subcat||"Todas";
+   selectedType=p.type||"Todas";
+   renderCategoryBar();renderProducts();
+   let catalog=$("#catalog");
+   if(catalog) catalog.scrollIntoView({behavior:"smooth",block:"start"});
+  };
+  b.appendChild(s);
+ }
+}
+
+async function renderProducts(){
+ let searchEl=$("#search"), currencyEl=$("#currency");
+ if(!searchEl || !currencyEl)return;
+ let q=searchEl.value.trim().toLowerCase();
+ let cur=currencyEl.value;
+ let base=config.base;
+ let list=products.filter(p=>
+  (selectedCat==="Todos" || p.cat===selectedCat) &&
+  (selectedSubcat==="Todas" || p.subcat===selectedSubcat) &&
+  (selectedType==="Todas" || p.type===selectedType) &&
+  (!q || (p.name+" "+p.desc+" "+p.cat).toLowerCase().includes(q))
+ );
+ let clearBtn=$("#searchClear");
+ if(clearBtn) clearBtn.classList.toggle("hidden", !searchEl.value);
+ let title=$("#catalogTitle");
+ if(title) title.textContent = selectedType!=="Todas" ? selectedType : selectedSubcat!=="Todas" ? selectedSubcat : selectedCat==="Todos" ? "Productos" : selectedCat;
+ let count=$("#count");
+ if(count) count.textContent = list.length+" artículo"+(list.length===1?"":"s");
+ let b=$("#products");
+ if(!b)return;
+ b.innerHTML="";
+ if(!list.length){
+  b.innerHTML=`<div class="empty">No encontramos productos con esos filtros.</div>`;
+  return;
+ }
+ for(let p of list){
+  let card=document.createElement("article");
+  card.className="product";
+  let u=await mediaUrl(p.image);
+  let pr=convert(p.price,base,cur);
+  card.innerHTML=`
+   <div class="pimg" role="button" tabindex="0" aria-label="Ampliar imagen de ${esc(p.name)}">
+    ${u ? `<img src="${u}" alt="${esc(p.name)}" loading="lazy" draggable="false">` : `<div style="height:100%;display:grid;place-items:center;font-size:55px">🛍️</div>`}
+    <span class="zoom-hint">⌕ ampliar</span>
+    ${(()=>{let n=(p.images&&p.images.length)?p.images.length:(p.image?1:0);return (n>1||p.video)?`<span class="pimg-badge">${n>1?`📷 ${n}`:""}${p.video?"🎬":""}</span>`:"";})()}
+   </div>
+   <div class="pbody">
+    <div class="pname">${esc(p.name)}</div>
+    <div class="desc">${esc(p.desc)}</div>
+    <div class="price">${money(pr,cur)} <small>${cur}</small></div>
+    <button type="button" class="wa"><span>◉</span> ${p.cat==="Servicios"?"Solicitar por WhatsApp":"Comprar por WhatsApp"}</button>
+   </div>`;
+  
+  let pic=card.querySelector(".pimg");
+  if(pic){
+   pic.onclick=e=>{e.preventDefault();e.stopPropagation();openZoom(p);};
+   pic.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openZoom(p);}};
+  }
+  let waBtn=card.querySelector(".wa");
+  if(waBtn){
+   waBtn.onclick=e=>{
+    e.preventDefault();e.stopPropagation();
+    wa(productWaMessage(p));
+   };
+  }
+  b.appendChild(card);
+ }
+}
+
+/* =========================================================
+   SUGERENCIAS DE BÚSQUEDA
+========================================================= */
+function saveRecentSearch(term){
+ term=(term||"").trim();
+ if(!term)return;
+ recentSearches=[term,...recentSearches.filter(t=>t.toLowerCase()!==term.toLowerCase())].slice(0,5);
+ try{localStorage.setItem("mercado_recent_searches",JSON.stringify(recentSearches));}catch(e){}
+}
+
+function removeRecentSearch(term){
+ recentSearches=recentSearches.filter(t=>t!==term);
+ try{localStorage.setItem("mercado_recent_searches",JSON.stringify(recentSearches));}catch(e){}
+ renderSearchSuggestions();
+}
+
+function closeSuggestions(){
+ let box=$("#searchSuggest");
+ if(box){box.classList.add("hidden");box.innerHTML="";}
+}
+
+async function renderSearchSuggestions(){
+ let box=$("#searchSuggest");
+ let input=$("#search");
+ if(!box || !input)return;
+ let q=input.value.trim().toLowerCase();
+ let rows=[];
+
+ if(!q){
+  recentSearches.forEach(term=>rows.push({kind:"recent",text:term}));
+ }else{
+  recentSearches.filter(t=>t.toLowerCase().includes(q)).slice(0,2).forEach(term=>rows.push({kind:"recent",text:term}));
+  let seen=new Set();
+  for(let p of products){
+   let hay=(p.name+" "+p.cat+" "+(p.subcat||"")+" "+(p.type||"")).toLowerCase();
+   if(hay.includes(q) && !seen.has(p.id) && rows.filter(r=>r.kind==="product").length<7){
+    seen.add(p.id);
+    rows.push({kind:"product",product:p});
+   }
+  }
+ }
+
+ if(!rows.length){closeSuggestions();return;}
+
+ box.innerHTML="";
+ for(let r of rows){
+  let row=document.createElement("div");
+  row.className="suggest-row";
+  if(r.kind==="recent"){
+   row.innerHTML=`<div class="suggest-icon">🕘</div><div class="suggest-text">${esc(r.text)}</div><button type="button" class="suggest-remove" aria-label="Quitar">✕</button>`;
+   row.querySelector(".suggest-remove").onclick=(e)=>{e.stopPropagation();removeRecentSearch(r.text);};
+   row.onclick=()=>{
+    input.value=r.text;
+    saveRecentSearch(r.text);
+    closeSuggestions();
+    renderProducts();
+   };
+  }else{
+   let p=r.product;
+   let thumb=await mediaUrl(p.image);
+   row.innerHTML=`<div class="suggest-icon">${thumb?`<img src="${thumb}" alt="">`:"🛍️"}</div><div class="suggest-text">${esc(p.name)}</div>`;
+   row.onclick=()=>{
+    input.value=p.name;
+    saveRecentSearch(p.name);
+    selectedCat=p.cat||"Todos";selectedSubcat=p.subcat||"Todas";selectedType=p.type||"Todas";
+    renderCategoryBar();
+    closeSuggestions();
+    renderProducts();
+    let catalog=$("#catalog");
+    if(catalog) catalog.scrollIntoView({behavior:"smooth",block:"start"});
+   };
+  }
+  box.appendChild(row);
+ }
+ box.classList.remove("hidden");
+}
+
+async function openZoom(p){
+ let modal=$("#zoomModal"), m=$("#zoomMedia");
+ if(!modal || !m)return;
+ modal.classList.add("open");
+ document.body.style.overflow="hidden";
+ m.innerHTML=`<div class="zoom-loading">Cargando multimedia…</div>`;
+ try{
+  let ids=(p.images && p.images.length) ? p.images : (p.image ? [p.image] : []);
+  let items=[];
+  for(let id of ids){
+   let u=await mediaUrl(id);
+   if(u) items.push({type:"image",url:u});
+  }
+  if(p.video){
+   let vu=await mediaUrl(p.video);
+   if(vu) items.push({type:"video",url:vu});
+  }
+
+  if(!items.length){
+   m.innerHTML=`<div style="color:#fff;text-align:center;font-size:90px">🛍️</div>`;
+   return;
+  }
+
+  if(items.length===1){
+   let it=items[0];
+   m.innerHTML = it.type==="video"
+    ? `<video src="${it.url}" controls autoplay playsinline preload="metadata"></video>`
+    : `<img src="${it.url}" alt="${esc(p.name)}" draggable="false">`;
+   return;
+  }
+
+  m.innerHTML=`
+   <div class="zoom-counter" id="zoomCounter">1/${items.length}</div>
+   <div class="zoom-gallery" id="zoomGallery">
+    ${items.map(it=>`<div class="zoom-slide">${it.type==="video"
+      ? `<video src="${it.url}" controls playsinline preload="metadata"></video>`
+      : `<img src="${it.url}" alt="${esc(p.name)}" draggable="false">`}</div>`).join("")}
+   </div>
+   <div class="zoom-dots" id="zoomDots">
+    ${items.map((_,i)=>`<span class="dot ${i===0?"active":""}"></span>`).join("")}
+   </div>`;
+
+  let gallery=$("#zoomGallery");
+  gallery.addEventListener("scroll",()=>{
+   let idx=Math.round(gallery.scrollLeft/gallery.clientWidth);
+   let counter=$("#zoomCounter");
+   if(counter) counter.textContent=`${idx+1}/${items.length}`;
+   document.querySelectorAll("#zoomDots .dot").forEach((d,i)=>d.classList.toggle("active",i===idx));
+   // pausa cualquier video que quede fuera de vista
+   gallery.querySelectorAll("video").forEach(v=>{
+    let slide=v.closest(".zoom-slide");
+    let visible=Math.abs(slide.offsetLeft-gallery.scrollLeft)<gallery.clientWidth/2;
+    if(!visible) v.pause();
+   });
+  },{passive:true});
+ }catch(e){
+  console.error("Zoom multimedia:",e);
+  m.innerHTML=`<div style="color:#fff;text-align:center;padding:30px">No se pudo cargar la imagen.</div>`;
+ }
+}
+
+function closeZoom(){
+ let modal=$("#zoomModal");
+ if(modal) modal.classList.remove("open");
+ document.body.style.overflow="";
+ let m=$("#zoomMedia");
+ if(m){
+  m.querySelectorAll("img, video").forEach(media=>{
+   try{media.pause&&media.pause();}catch(e){}
+   if(media.src && media.src.startsWith("blob:")) URL.revokeObjectURL(media.src);
+  });
+  m.innerHTML="";
+ }
+}
+
+function renderAll(){
+ renderHero();renderCategoryBar();renderCarousel();renderProducts();renderFooter();renderLogo();
+}
+
+/* =========================================================
+   ADMIN
+========================================================= */
+function openAdmin(){
+ let l=$("#adminLogin");
+ if(!l)return;
+ usingFirebaseAuth=initFirebaseAuth();
+ let errEl=$("#adminLoginError");
+ if(errEl) errEl.textContent="";
+ let emailInput=$("#adminEmailInput"), pinInput=$("#adminPinInput"), hint=$("#adminLoginHint"), forgot=$("#adminForgotPass");
+ if(usingFirebaseAuth){
+  if(emailInput){emailInput.classList.remove("hidden");emailInput.value="";}
+  if(hint) hint.textContent="Inicia sesión con tu correo de administrador.";
+  if(forgot) forgot.classList.remove("hidden");
+ }else{
+  if(emailInput) emailInput.classList.add("hidden");
+  if(hint) hint.textContent="Introduce el PIN para continuar. (Configura Firebase Authentication para seguridad real — ver guía)";
+  if(forgot) forgot.classList.add("hidden");
+ }
+ if(pinInput) pinInput.value="";
+ l.classList.add("open");
+ setTimeout(()=>{try{(usingFirebaseAuth?emailInput:pinInput).focus();}catch(e){}},120);
+}
+
+/* =========================================================
+   APARIENCIA: Claro / Medio / Oscuro (predeterminado: Claro)
+========================================================= */
+function applyTheme(theme){
+ if(theme==="light"){
+  document.documentElement.removeAttribute("data-theme");
+ }else{
+  document.documentElement.setAttribute("data-theme", theme);
+ }
+ document.querySelectorAll(".theme-opt").forEach(b=>{
+  b.classList.toggle("active", b.dataset.themeChoice===theme);
+ });
+ try{localStorage.setItem("mercado_theme", theme);}catch(e){}
+}
+
+function initTheme(){
+ let stored=null;
+ try{stored=localStorage.getItem("mercado_theme");}catch(e){}
+ applyTheme((stored==="dark"||stored==="dim"||stored==="light") ? stored : "light");
+}
+
+function openFaq(){
+ let m=$("#faqModal");
+ if(m) m.classList.add("open");
+}
+
+function closeFaq(){
+ let m=$("#faqModal");
+ if(m) m.classList.remove("open");
+}
+
+/* =========================================================
+   MODAL PROPIO DE TEXTO/CONFIRMACIÓN (reemplaza prompt()/confirm() nativos,
+   que quedan bloqueados en algunos navegadores y vistas previas embebidas)
+========================================================= */
+let promptResolve=null;
+
+function openPromptModal({title,message,defaultValue,showInput,okText,danger}){
+ return new Promise(resolve=>{
+  promptResolve=resolve;
+  $("#promptTitle").textContent=title||"";
+  let msgEl=$("#promptMessage");
+  if(message){msgEl.textContent=message;msgEl.classList.remove("hidden");}
+  else{msgEl.textContent="";msgEl.classList.add("hidden");}
+  let fieldWrap=$("#promptFieldWrap"), input=$("#promptInput");
+  if(showInput){
+   fieldWrap.classList.remove("hidden");
+   input.value=defaultValue||"";
+  }else{
+   fieldWrap.classList.add("hidden");
+  }
+  let okBtn=$("#promptOk");
+  okBtn.textContent=okText||"Aceptar";
+  okBtn.className="btn primary"+(danger?" danger":"");
+  $("#promptModal").classList.add("open");
+  if(showInput) setTimeout(()=>{try{input.focus();input.select();}catch(e){}},60);
+ });
+}
+
+function closePromptModal(result){
+ $("#promptModal").classList.remove("open");
+ if(promptResolve){let r=promptResolve;promptResolve=null;r(result);}
+}
+
+async function customPrompt(title,defaultValue){
+ return await openPromptModal({title,defaultValue,showInput:true,okText:"Guardar"});
+}
+
+async function customConfirm(message,danger){
+ let r=await openPromptModal({title:"Confirmar",message,showInput:false,okText:danger?"Eliminar":"Aceptar",danger:danger!==false});
+ return r===true;
+}
+
+function closeAdminLogin(){
+ let l=$("#adminLogin");
+ if(l) l.classList.remove("open");
+}
+
+async function enterAdmin(){
+ let errEl=$("#adminLoginError");
+ let okBtn=$("#adminLoginEnter");
+ if(errEl) errEl.textContent="";
+ try{
+  if(usingFirebaseAuth){
+   let email=$("#adminEmailInput").value.trim();
+   let pass=$("#adminPinInput").value;
+   if(!email || !pass){if(errEl)errEl.textContent="Escribe tu correo y contraseña.";return;}
+   if(!fbAuth){if(errEl)errEl.textContent="Firebase Authentication no se inicializó correctamente. Revisa la consola (F12).";return;}
+   let originalText=okBtn?okBtn.textContent:"";
+   if(okBtn){okBtn.textContent="Conectando…";okBtn.disabled=true;}
+   let timedOut=false;
+   let timeoutId=setTimeout(()=>{
+    timedOut=true;
+    if(errEl) errEl.textContent="Está tardando demasiado (posible bloqueo de red/dominio). Revisa la consola del navegador (F12) para el error exacto.";
+    if(okBtn){okBtn.textContent=originalText;okBtn.disabled=false;}
+   },10000);
+   try{
+    console.log("Intentando iniciar sesión con Firebase Auth:",email);
+    await fbAuth.signInWithEmailAndPassword(email,pass);
+    console.log("signInWithEmailAndPassword resuelto correctamente");
+    // onAuthStateChanged abre el panel automáticamente al confirmar la sesión
+   }catch(e){
+    console.error("Error de Firebase Auth:",e);
+    let msg = (e.code==="auth/invalid-credential"||e.code==="auth/wrong-password"||e.code==="auth/user-not-found")
+     ? "Correo o contraseña incorrectos."
+     : `No se pudo iniciar sesión (${e.code||"error"}): ${e.message||"error desconocido"}`;
+    if(!timedOut && errEl) errEl.textContent=msg;
+   }finally{
+    clearTimeout(timeoutId);
+    if(!timedOut && okBtn){okBtn.textContent=originalText;okBtn.disabled=false;}
+   }
+   return;
+  }
+  let i=$("#adminPinInput");
+  if(!i)return;
+  let pin=i.value;
+  if(pin!==config.password){
+   if(errEl) errEl.textContent="Contraseña incorrecta";
+   i.value="";try{i.focus();}catch(e){}return;
+  }
+  closeAdminLogin();
+  openAdminPanel();
+ }catch(fatal){
+  console.error("Error inesperado en enterAdmin:",fatal);
+  if(errEl) errEl.textContent="Ocurrió un error inesperado. Revisa la consola del navegador (F12) para más detalles.";
+  if(okBtn){okBtn.disabled=false;}
+ }
+}
+
+function openAdminPanel(){
+ $("#admin").classList.add("open");
+ loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();
+}
+
+function loadAdminFields(){
+ $("#cfgName").value=config.name || "MERCADO";
+ $("#cfgHeroTitle").value=config.heroTitle || "";
+ $("#cfgHeroText").value=config.heroText || "";
+ $("#cfgLocation").value=config.location || "";
+ $("#cfgPhone").value=config.contactPhone || "";
+ $("#cfgEmail").value=config.contactEmail || "";
+ $("#cfgAddress").value=config.contactAddress || "";
+ $("#cfgHours").value=config.contactHours || "";
+ $("#cfgFxProxy").value=config.fxProxy || "";
+ $("#cfgFacebook").value=config.facebookUrl || "";
+ $("#cfgInstagram").value=config.instagramUrl || "";
+ $("#cfgYoutube").value=config.youtubeUrl || "";
+ $("#cfgWhatsapp").value=config.whatsappNumber || "";
+ $("#cfgMsgProduct").value=config.waMsgProduct || "";
+ $("#cfgMsgService").value=config.waMsgService || "";
+ $("#cfgMsgSupport").value=config.waMsgSupport || "";
+ $("#cfgFabWa").value=config.fabTextWa || "";
+ $("#cfgFabFb").value=config.fabTextFb || "";
+ $("#cfgFabIg").value=config.fabTextIg || "";
+ $("#cfgFabYt").value=config.fabTextYt || "";
+ $("#cfgBase").value=config.base || "USD";
+
+ let localBlock=$("#localPassBlock"), fbBlock=$("#firebasePassBlock");
+ if(localBlock) localBlock.classList.toggle("hidden", usingFirebaseAuth);
+ if(fbBlock) fbBlock.classList.toggle("hidden", !usingFirebaseAuth);
+ if(usingFirebaseAuth && fbAuth && fbAuth.currentUser){
+  let emailEl=$("#firebasePassEmail");
+  if(emailEl) emailEl.textContent=fbAuth.currentUser.email;
+ }
+}
+
+function renderAdminList(){
+ let b=$("#adminList");
+ if(!b)return;
+ b.innerHTML="";
+ if(!products.length){
+  b.innerHTML=`<div class="empty">No hay productos.</div>`;
+  return;
+ }
+ products.forEach(p=>{
+  let d=document.createElement("div");
+  d.className="admin-item";
+  d.innerHTML=`
+   <div class="admin-item-main">
+    <strong>${esc(p.name)} ${p.featured?'🌟':''}${p.banner?'⭐':''}</strong>
+    <span class="small">${esc(p.cat)}${p.subcat?" › "+esc(p.subcat):""}${p.type?" › "+esc(p.type):""} · ${money(p.price,config.base)} ${(()=>{let n=(p.images&&p.images.length)?p.images.length:(p.image?1:0);return n?` · 📷${n>1?" ×"+n:""}`:"";})()} ${p.video?" · 🎬":""}</span>
+   </div>
+   <div class="admin-item-actions">
+    <button class="btn primary edit-product" type="button">✎ Editar</button>
+    <button class="btn danger delete-product" type="button">Eliminar</button>
+   </div>`;
+  d.querySelector(".edit-product").onclick=()=>{openEditor(p.id);};
+  d.querySelector(".delete-product").onclick=()=>{deleteProduct(p.id);};
+  b.appendChild(d);
+ });
+}
+
+async function deleteProduct(id){
+ let p=products.find(x=>x.id===id);
+ if(!p)return;
+ if(!(await customConfirm(`¿Eliminar "${p.name}"?`)))return;
+ (p.images && p.images.length ? p.images : [p.image]).forEach(delMedia);
+ delMedia(p.video);
+ products=products.filter(x=>x.id!==id);
+ save();renderAll();renderAdminList();renderBannerAdmin();
+ toast("Producto eliminado");
+}
+
+function parsePrice(val) {
+ return Number(String(val).replace(',', '.'));
+}
+
+async function addProduct(){
+ let name=$("#pName").value.trim();
+ let {cat,subcat,type}=readCategorySelection("p");
+ let price=parsePrice($("#pPrice").value);
+ let desc=$("#pDesc").value.trim();
+ let banner=$("#pBanner").checked;
+ let featured=$("#pFeatured").checked;
+
+ if(!name || !Number.isFinite(price) || price<0){
+  toast("Completa nombre y precio válido (usa punto o coma para decimales)");return;
+ }
+
+ let videoFile=$("#pVideo").files[0];
+ let images=[], video="";
+
+ try{
+  for(let entry of pImagesFiles){
+   images.push(await prepareMedia(entry.file,"image"));
+  }
+  if(videoFile) video=await prepareMedia(videoFile,"video");
+ }catch(e){
+  console.error(e);toast(e.message || "No se pudo guardar el multimedia.");return;
+ }
+
+ products.unshift({
+  id:createId("p"),name,cat,subcat,type,price,desc:desc.slice(0,1000),images,image:images[0]||"",video,banner,featured
+ });
+
+ save();
+ ["pName","pPrice","pDesc"].forEach(id=>{let el=$("#"+id);if(el)el.value="";});
+ $("#pCat").selectedIndex=0;
+ $("#pCatCustom").value="";
+ $("#pCatCustom").classList.add("hidden");
+ refreshSubcatSelect("p","","");
+ $("#pBanner").checked = false;
+ $("#pFeatured").checked = false;
+ resetPImages();
+ resetFileInput("pVideo","pVideoInfo","Ningún video seleccionado. (De 7 a 60 seg, hasta 4K)");
+ 
+ renderAll();renderAdminList();renderBannerAdmin();
+ toast("Producto añadido correctamente");
+}
+
+/* =========================================================
+   SEGURIDAD
+========================================================= */
+function validPassword(v){
+ return (v.length===12 && /[A-Z]/.test(v) && /[a-z]/.test(v) && /[0-9]/.test(v) && /[^A-Za-z0-9]/.test(v));
+}
+
+function updatePasswordMeter(){
+ let v=$("#newPass").value;
+ let parts=[v.length===12,/[A-Z]/.test(v),/[a-z]/.test(v),/[0-9]/.test(v),/[^A-Za-z0-9]/.test(v)];
+ let score=parts.filter(Boolean).length;
+ $("#passMeter").style.width=(score/5*100)+"%";
+ $("#passRules").innerHTML=`Longitud: <b class="${parts[0]?"ok":""}">${v.length}/12</b> · Mayúscula <b class="${parts[1]?"ok":""}">●</b> · Minúscula <b class="${parts[2]?"ok":""}">●</b> · Número <b class="${parts[3]?"ok":""}">●</b> · Símbolo <b class="${parts[4]?"ok":""}">●</b>`;
+}
+
+function changePassword(){
+ let old=$("#oldPass").value, n=$("#newPass").value, n2=$("#newPass2").value;
+ if(old!==config.password){toast("La contraseña actual no coincide");return;}
+ if(!validPassword(n)){toast("La nueva contraseña debe tener exactamente 12 caracteres y 4 tipos de caracteres");return;}
+ if(n!==n2){toast("Las contraseñas nuevas no coinciden");return;}
+ config.password=n;save();
+ ["oldPass","newPass","newPass2"].forEach(id=>{$("#"+id).value="";});
+ updatePasswordMeter();toast("Contraseña actualizada");
+}
+
+/* =========================================================
+   EDITAR PRODUCTO
+========================================================= */
+async function openEditor(id){
+ let p=products.find(x=>x.id===id);
+ if(!p)return;
+ adminEditingId=id;
+ let box=$("#editForm");
+ box.innerHTML=`
+  <div class="field"><label>Nombre</label><input id="eName" value="${esc(p.name)}"></div>
+  <div class="field"><label>Categoría</label>
+   <select id="eCat">${categoryOptionsHTML(p.cat)}</select>
+   <input id="eCatCustom" class="${CATEGORY_TREE.some(c=>c.name===p.cat)||!p.cat?"hidden":""}" placeholder="Escribe la categoría personalizada" value="${CATEGORY_TREE.some(c=>c.name===p.cat)?"":esc(p.cat||"")}" style="margin-top:8px">
+   <select id="eSubcat" class="hidden" style="margin-top:8px"></select>
+   <select id="eType" class="hidden" style="margin-top:8px"></select>
+  </div>
+  <div class="field"><label>Precio base</label><input id="ePrice" type="text" value="${Number(p.price)||0}"></div>
+  <div class="field"><label>Descripción</label><textarea id="eDesc" maxlength="1000">${esc(p.desc)}</textarea></div>
+  
+  <label class="checkbox-wrap">
+   <input type="checkbox" id="eFeatured" ${p.featured ? 'checked' : ''}>
+   <span>🌟 Mostrar este producto en Destacados (carrusel)</span>
+  </label>
+
+  <label class="checkbox-wrap">
+   <input type="checkbox" id="eBanner" ${p.banner ? 'checked' : ''}>
+   <span>⭐ Mostrar este producto en el Banner dinámico</span>
+  </label>
+
+  <div class="media-actions">
+   <div class="filebox">
+    <button type="button" class="filepick" id="eImagesBtn">📷 Añadir fotos (<span id="eImagesCount">0</span>/10)</button>
+    <input id="eImagesInput" class="visually-hidden" type="file" accept="image/*" multiple>
+    <div id="eImagesPreview" class="image-thumb-row"></div>
+    <div class="small media-info">Toca ✕ en una foto para quitarla. Hasta 10 en total.</div>
+   </div>
+   <div class="filebox">
+    <button type="button" class="filepick" id="eVideoBtn">🎬 Reemplazar video promocional</button>
+    <input id="eVideo" class="visually-hidden" type="file" accept="video/*">
+    <span id="eVideoInfo" class="small media-info">Deja vacío para conservar el actual. (De 7 a 60 seg)</span>
+   </div>
+  </div>
+  <div class="edit-actions">
+   <button class="btn" id="eRemoveVideo" type="button">Quitar video</button>
+   <button class="btn" id="eCancel" type="button">Cancelar</button>
+   <button class="btn primary" id="eSave" type="button">Guardar cambios</button>
+  </div>`;
+ 
+ $("#editModal").classList.add("open");
+ $("#eCancel").onclick=closeEditor;
+
+ bindCategorySelects("e", p.subcat, p.type);
+
+ eImagesState={
+  existing:(p.images && p.images.length) ? [...p.images] : (p.image ? [p.image] : []),
+  removed:[],
+  newFiles:[]
+ };
+ renderEImagesPreview();
+
+ $("#eImagesBtn").onclick=()=>{$("#eImagesInput").click();};
+ $("#eImagesInput").onchange=()=>{
+  let files=Array.from($("#eImagesInput").files||[]);
+  let total=eImagesState.existing.filter(x=>!eImagesState.removed.includes(x)).length + eImagesState.newFiles.length;
+  for(let f of files){
+   if(total>=10){toast("Máximo 10 fotos por producto");break;}
+   try{
+    validateMediaFile(f,"image");
+    eImagesState.newFiles.push({file:f, url:URL.createObjectURL(f)});
+    total++;
+   }catch(e){
+    toast(e.message || "Archivo no válido");
+   }
+  }
+  $("#eImagesInput").value="";
+  renderEImagesPreview();
+ };
+
+ $("#eVideoBtn").onclick=()=>{$("#eVideo").click();};
+ $("#eVideo").onchange=async()=>{
+  let f=$("#eVideo").files[0];
+  if(!f)return;
+  try{
+   await validatePromoVideo(f);
+   updateFileInfo("eVideo","eVideoInfo","Video seleccionado");
+  }catch(e){
+   toast(e.message);
+   resetFileInput("eVideo","eVideoInfo","Deja vacío para conservar el actual. (De 7 a 60 seg)");
+  }
+ };
+ 
+ $("#eRemoveVideo").onclick=()=>{p._removeVideo=true;toast("El video se quitará al guardar");};
+ $("#eSave").onclick=saveEditor;
+}
+
+async function renderEImagesPreview(){
+ let box=$("#eImagesPreview");
+ let countEl=$("#eImagesCount");
+ let btn=$("#eImagesBtn");
+ let total=eImagesState.existing.filter(x=>!eImagesState.removed.includes(x)).length + eImagesState.newFiles.length;
+ if(countEl) countEl.textContent=total;
+ if(btn) btn.disabled = total>=10;
+ if(!box)return;
+ box.innerHTML="";
+ for(let id of eImagesState.existing){
+  if(eImagesState.removed.includes(id))continue;
+  let u=await mediaUrl(id);
+  let thumb=document.createElement("div");
+  thumb.className="image-thumb";
+  thumb.innerHTML=`<img src="${u}" alt=""><button type="button" class="image-thumb-remove" aria-label="Quitar">✕</button>`;
+  thumb.querySelector(".image-thumb-remove").onclick=()=>{
+   eImagesState.removed.push(id);
+   renderEImagesPreview();
+  };
+  box.appendChild(thumb);
+ }
+ eImagesState.newFiles.forEach((entry,idx)=>{
+  let thumb=document.createElement("div");
+  thumb.className="image-thumb";
+  thumb.innerHTML=`<img src="${entry.url}" alt=""><button type="button" class="image-thumb-remove" aria-label="Quitar">✕</button>`;
+  thumb.querySelector(".image-thumb-remove").onclick=()=>{
+   try{URL.revokeObjectURL(entry.url);}catch(e){}
+   eImagesState.newFiles.splice(idx,1);
+   renderEImagesPreview();
+  };
+  box.appendChild(thumb);
+ });
+}
+
+function closeEditor(){
+ $("#editModal").classList.remove("open");
+ $("#editForm").innerHTML="";
+ adminEditingId=null;
+}
+
+async function saveEditor(){
+ let p=products.find(x=>x.id===adminEditingId);
+ if(!p)return;
+ let name=$("#eName").value.trim();
+ let price=parsePrice($("#ePrice").value);
+ if(!name || !Number.isFinite(price) || price<0){toast("Nombre y precio válidos son obligatorios");return;}
+ 
+ let oldVideo=p.video||"";
+ let newVideo=oldVideo;
+ let f2=$("#eVideo").files[0];
+ let banner=$("#eBanner").checked;
+ let featured=$("#eFeatured").checked;
+
+ let finalImages=eImagesState.existing.filter(id=>!eImagesState.removed.includes(id));
+
+ try{
+  for(let entry of eImagesState.newFiles){
+   finalImages.push(await prepareMedia(entry.file,"image"));
+  }
+  if(f2) newVideo=await prepareMedia(f2,"video");
+ }catch(e){
+  console.error(e);toast(e.message || "No se pudo guardar el nuevo multimedia");return;
+ }
+
+ eImagesState.removed.forEach(delMedia);
+ if(f2 && oldVideo && oldVideo!==newVideo) delMedia(oldVideo);
+ if(p._removeVideo && !f2){newVideo="";if(oldVideo)delMedia(oldVideo);}
+
+ p.images=finalImages; p.image=finalImages[0]||""; p.video=newVideo; p.name=name;
+ let {cat,subcat,type}=readCategorySelection("e");
+ p.cat=cat; p.subcat=subcat; p.type=type;
+ p.price=price;
+ p.desc=$("#eDesc").value.trim().slice(0,1000);
+ p.banner=banner;
+ p.featured=featured;
+
+ delete p._removeVideo;
+ eImagesState.newFiles.forEach(e=>{try{URL.revokeObjectURL(e.url);}catch(err){}});
+ eImagesState={existing:[],removed:[],newFiles:[]};
+ save();closeEditor();renderAll();renderAdminList();renderBannerAdmin();
+ toast("Producto actualizado correctamente");
+}
+
+/* =========================================================
+   BANNERS DINÁMICOS
+========================================================= */
+function bannerItems(){
+ let arr = Array.isArray(config.banners) ? config.banners.filter(b=>b && b.enabled!==false) : [];
+ products.forEach(p=>{
+  if(p.banner){
+   arr.push({
+    id:"prod_"+p.id,
+    type: p.video ? "video" : "image",
+    title: p.name,
+    text: p.desc,
+    image: p.image,
+    video: p.video,
+    productId: p.id,
+    enabled: true
+   });
+  }
+ });
+ return arr;
+}
+
+async function renderBanner(){
+ let items=bannerItems();
+ let bg=$("#heroBg"), title=$("#heroTitle"), text=$("#heroText"), dots=$("#bannerDots");
+ if(!bg || !title || !text || !dots)return;
+
+ if(!items.length){
+  bg.style.backgroundImage="";bg.innerHTML="";
+  title.textContent=config.heroTitle;
+  text.textContent=config.heroText;
+  dots.innerHTML="";
+  bg.classList.add("show");
+  return;
+ }
+
+ bannerIndex=(bannerIndex%items.length+items.length)%items.length;
+ let it=items[bannerIndex];
+ title.textContent=it.title || config.heroTitle;
+ text.textContent=it.text || config.heroText;
+ 
+ dots.innerHTML=items.map((_,i)=>`<button class="banner-dot ${i===bannerIndex?"active":""}" type="button" aria-label="Banner ${i+1}"></button>`).join("");
+ dots.querySelectorAll("button").forEach((d,i)=>{d.onclick=()=>{bannerIndex=i;renderBanner();};});
+
+ const oldMedia = bg.querySelector('video, img');
+ if(oldMedia && oldMedia.src && oldMedia.src.startsWith('blob:')){
+  URL.revokeObjectURL(oldMedia.src);
+ }
+ bg.innerHTML = "";
+
+ let u="";
+ if(it.video){
+  u=await mediaUrl(it.video);
+  if(u){
+   bg.style.backgroundImage="";
+   bg.innerHTML=`<video src="${u}" autoplay muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover"></video>`;
+   bg.classList.add("show");
+   return;
+  }
+ }
+
+ if(it.image){
+  u=await mediaUrl(it.image);
+  bg.style.backgroundImage = u ? `url("${u}")` : "";
+ }else{
+  bg.style.backgroundImage="";
+ }
+ bg.classList.add("show");
+}
+
+function startBanner(){
+ clearInterval(bannerTimer);
+ renderBanner();
+ bannerTimer=setInterval(()=>{
+  bannerIndex++;
+  renderBanner();
+ }, 5000);
+}
+
+/* =========================================================
+   BOTONES FLOTANTES: ciclo con burbuja de "escritura mecanografiada"
+========================================================= */
+function getFabSequence(){
+ return [
+  {btn:"fab", text:config.fabTextWa||"¿Cómo le podemos ayudar?"},
+  {btn:"fabFacebook", text:config.fabTextFb||"¡Síguenos!"},
+  {btn:"fabInstagram", text:config.fabTextIg||"¡Síguenos!"},
+  {btn:"fabYoutube", text:config.fabTextYt||"¡Suscríbete!"}
+ ];
+}
+let fabHoldTimer=null;
+let fabTypeTimer=null;
+const FAB_TYPE_SPEED=45;
+const FAB_HOLD_MS=19000;
+const FAB_GAP_MS=350;
+
+function clearFabTimers(){
+ if(fabHoldTimer){clearTimeout(fabHoldTimer);fabHoldTimer=null;}
+ if(fabTypeTimer){clearInterval(fabTypeTimer);fabTypeTimer=null;}
+}
+
+function hideAllFabs(){
+ document.querySelectorAll(".fab").forEach(el=>el.classList.remove("show"));
+ let bubble=$("#fabBubble"), textEl=$("#fabBubbleText");
+ if(bubble) bubble.classList.remove("show");
+ if(textEl){textEl.textContent="";textEl.classList.remove("typing");}
+}
+
+function startFabCycle(){
+ clearFabTimers();
+ let i=0;
+
+ function showStep(){
+  hideAllFabs();
+  let seq=getFabSequence();
+  let step=seq[i];
+  let btnEl=$("#"+step.btn);
+  let bubble=$("#fabBubble"), textEl=$("#fabBubbleText");
+  if(!btnEl){ i=(i+1)%seq.length; showStep(); return; }
+
+  btnEl.classList.add("show");
+  if(bubble) bubble.classList.add("show");
+  if(textEl){textEl.textContent="";textEl.classList.add("typing");}
+
+  let chars=[...step.text];
+  let idx=0;
+  fabTypeTimer=setInterval(()=>{
+   idx++;
+   if(textEl) textEl.textContent=chars.slice(0,idx).join("");
+   if(idx>=chars.length){
+    clearInterval(fabTypeTimer);fabTypeTimer=null;
+    if(textEl) textEl.classList.remove("typing");
+    fabHoldTimer=setTimeout(()=>{
+     hideAllFabs();
+     fabHoldTimer=setTimeout(()=>{
+      i=(i+1)%getFabSequence().length;
+      showStep();
+     },FAB_GAP_MS);
+    },FAB_HOLD_MS);
+   }
+  },FAB_TYPE_SPEED);
+ }
+
+ showStep();
+}
+
+async function renderBannerAdmin(){
+ let b=$("#bannerAdmin");
+ if(!b)return;
+ let arr=config.banners||[];
+ b.innerHTML="";
+ if(!arr.length){
+  b.innerHTML=`<div class="empty">No hay promociones propias todavía. Añade una abajo.</div>`;
+  return;
+ }
+ for(let x of arr){
+  let d=document.createElement("div");
+  d.className="banner-admin-item";
+  d.innerHTML=`
+   <input class="bTitle" value="${esc(x.title||"")}" placeholder="Título/promoción">
+   <textarea class="bText" maxlength="300" placeholder="Texto">${esc(x.text||"")}</textarea>
+   <select class="bType">
+    <option value="image" ${x.type==="image"?"selected":""}>Imagen</option>
+    <option value="video" ${x.type==="video"?"selected":""}>Video corto (Máx 5s)</option>
+    <option value="promo" ${x.type==="promo"?"selected":""}>Solo texto</option>
+   </select>
+   <div class="banner-preview" id="bp-${x.id}">Cargando…</div>
+   <button type="button" class="filepick bPickBtn">📁 Seleccionar imagen o video de galería</button>
+   <input class="bFile visually-hidden" id="bFile-${x.id}" type="file" accept="image/*,video/*">
+   <div class="small media-info">Selecciona un archivo para reemplazar el multimedia del banner.</div>
+   <div>
+    <button class="btn primary save-banner" type="button">Guardar</button>
+    <button class="btn danger delete-banner" type="button">Eliminar</button>
+   </div>`;
+  b.appendChild(d);
+
+  let fileInput=d.querySelector(".bFile");
+  let pickBtn=d.querySelector(".bPickBtn");
+  let info=d.querySelector(".media-info");
+  pickBtn.onclick=()=>{fileInput.click();};
+  fileInput.onchange=()=>{
+   let f=fileInput.files[0];
+   if(!f){info.textContent="Selecciona un archivo para reemplazar el multimedia del banner.";return;}
+   info.textContent=`Seleccionado: ${fileInfo(f)}`;
+  };
+
+  d.querySelector(".save-banner").onclick=async()=>{
+   x.title=d.querySelector(".bTitle").value.trim();
+   x.text=d.querySelector(".bText").value.trim();
+   x.type=d.querySelector(".bType").value;
+   let f=fileInput.files[0];
+   try{
+    if(f){
+     let kind=f.type.startsWith("video/")?"video":"image";
+     if(kind === "video") {
+         await validateBannerVideo(f);
+     }
+     let id=await prepareMediaBanner(f,kind);
+     if(kind==="video"){
+      if(x.video)delMedia(x.video);
+      x.video=id;x.image="";x.type="video";
+     }else{
+      if(x.image)delMedia(x.image);
+      x.image=id;x.video="";x.type="image";
+     }
+    }
+    save();startBanner();toast("Promoción guardada");renderBannerAdmin();
+   }catch(e){
+    console.error(e);toast(e.message || "No se pudo guardar el multimedia del banner");
+   }
+  };
+
+  d.querySelector(".delete-banner").onclick=async()=>{
+   if(!(await customConfirm("¿Eliminar esta promoción?")))return;
+   delMedia(x.image);delMedia(x.video);
+   config.banners=config.banners.filter(y=>y.id!==x.id);
+   save();renderBannerAdmin();startBanner();
+  };
+
+  let prev=$("#bp-"+x.id);
+  if(x.video){
+   let u=await mediaUrl(x.video);
+   prev.innerHTML=u?`<video src="${u}" muted controls playsinline preload="metadata"></video>`:"Sin video";
+  }else if(x.image){
+   let u=await mediaUrl(x.image);
+   prev.innerHTML=u?`<img src="${u}" alt="">`:"Sin imagen";
+  }else{
+   prev.innerHTML="Sin imagen ni video todavía";
+  }
+ }
+}
+
+async function prepareMediaBanner(file,kind){
+ if(!file)return "";
+ if(kind==="image"){
+  validateMediaFile(file,kind);
+  const optimizedBlob = await resizeImage(file);
+  return putMedia(optimizedBlob);
+ }
+ return putMedia(file);
+}
+
+function addBanner(){
+ config.banners.push({id:createId("b"),type:"image",title:"Nueva promoción",text:"Oferta especial",image:"",video:"",enabled:true});
+ save();renderBannerAdmin();
+}
+
+/* =========================================================
+   GESTIÓN DE CATEGORÍAS (admin)
+========================================================= */
+function saveCategoryTree(){
+ config.categoryTree=CATEGORY_TREE;
+ save();
+}
+
+function renderCategoryAdmin(){
+ let box=$("#categoryAdminList");
+ if(!box)return;
+ box.innerHTML="";
+ if(!CATEGORY_TREE.length){
+  box.innerHTML=`<div class="empty">No hay categorías todavía. Añade una para empezar.</div>`;
+  return;
+ }
+ CATEGORY_TREE.forEach((cat,ci)=>{
+  let subCount=cat.subcats?cat.subcats.length:0;
+  let catDiv=document.createElement("div");
+  catDiv.className="admin-item";
+  catDiv.innerHTML=`
+   <div class="admin-item-main">
+    <strong>${esc(cat.name)}</strong>
+    <span class="small">${subCount?subCount+" subcategoría"+(subCount===1?"":"s"):"Sin subcategorías"}</span>
+   </div>
+   <div class="admin-item-actions">
+    <button class="btn" type="button" data-act="addsub">＋ Subcat.</button>
+    <button class="btn" type="button" data-act="edit">✎</button>
+    <button class="btn danger" type="button" data-act="delete">🗑</button>
+    ${subCount?`<button class="btn" type="button" data-act="toggle">▾</button>`:""}
+   </div>`;
+  catDiv.querySelector('[data-act="edit"]').onclick=()=>renameCategory(ci);
+  catDiv.querySelector('[data-act="delete"]').onclick=()=>deleteCategory(ci);
+  catDiv.querySelector('[data-act="addsub"]').onclick=()=>addSubcategoryPrompt(ci);
+  box.appendChild(catDiv);
+
+  if(subCount){
+   let subBox=document.createElement("div");
+   subBox.className="admin-list hidden";
+   subBox.style.marginLeft="18px";
+   let toggleBtn=catDiv.querySelector('[data-act="toggle"]');
+   toggleBtn.onclick=()=>{
+    let hidden=subBox.classList.toggle("hidden");
+    toggleBtn.textContent=hidden?"▾":"▴";
+   };
+
+   cat.subcats.forEach((sub,si)=>{
+    let typeCount=sub.types?sub.types.length:0;
+    let subDiv=document.createElement("div");
+    subDiv.className="admin-item";
+    subDiv.innerHTML=`
+     <div class="admin-item-main">
+      <span>${esc(sub.name)}</span>
+      <span class="small">${typeCount?typeCount+" tipo"+(typeCount===1?"":"s"):"Sin tipos"}</span>
+     </div>
+     <div class="admin-item-actions">
+      <button class="btn" type="button" data-act="addtype">＋ Tipo</button>
+      <button class="btn" type="button" data-act="edit">✎</button>
+      <button class="btn danger" type="button" data-act="delete">🗑</button>
+     </div>`;
+    subDiv.querySelector('[data-act="edit"]').onclick=()=>renameSubcategory(ci,si);
+    subDiv.querySelector('[data-act="delete"]').onclick=()=>deleteSubcategory(ci,si);
+    subDiv.querySelector('[data-act="addtype"]').onclick=()=>addTypePrompt(ci,si);
+    subBox.appendChild(subDiv);
+
+    if(typeCount){
+     let typeBox=document.createElement("div");
+     typeBox.style.marginLeft="18px";
+     sub.types.forEach((t,ti)=>{
+      let typeDiv=document.createElement("div");
+      typeDiv.className="admin-item";
+      typeDiv.innerHTML=`
+       <div class="admin-item-main"><span class="small">${esc(t)}</span></div>
+       <div class="admin-item-actions">
+        <button class="btn" type="button" data-act="edit">✎</button>
+        <button class="btn danger" type="button" data-act="delete">🗑</button>
+       </div>`;
+      typeDiv.querySelector('[data-act="edit"]').onclick=()=>renameType(ci,si,ti);
+      typeDiv.querySelector('[data-act="delete"]').onclick=()=>deleteType(ci,si,ti);
+      typeBox.appendChild(typeDiv);
+     });
+     subBox.appendChild(typeBox);
+    }
+   });
+   box.appendChild(subBox);
+  }
+ });
+}
+
+function refreshAfterCategoryChange(){
+ renderCategoryAdmin();
+ renderCategoryBar();
+ renderAdminList();
+ renderAll();
+ bindCategorySelects("p","","");
+}
+
+async function addCategoryPrompt(){
+ let name=await customPrompt("Nombre de la nueva categoría");
+ if(name===null)return;
+ name=name.trim();
+ if(!name){toast("Escribe un nombre válido");return;}
+ if(CATEGORY_TREE.some(c=>c.name===name)){toast("Ya existe una categoría con ese nombre");return;}
+ CATEGORY_TREE.push({name});
+ saveCategoryTree();
+ refreshAfterCategoryChange();
+ toast("Categoría añadida");
+}
+
+async function renameCategory(ci){
+ let cat=CATEGORY_TREE[ci];
+ let name=await customPrompt("Nuevo nombre para la categoría",cat.name);
+ if(name===null)return;
+ name=name.trim();
+ if(!name){toast("Escribe un nombre válido");return;}
+ if(CATEGORY_TREE.some((c,i)=>i!==ci && c.name===name)){toast("Ya existe otra categoría con ese nombre");return;}
+ let oldName=cat.name;
+ cat.name=name;
+ products.forEach(p=>{ if(p.cat===oldName) p.cat=name; });
+ if(selectedCat===oldName) selectedCat=name;
+ save();saveCategoryTree();
+ refreshAfterCategoryChange();
+ toast("Categoría actualizada");
+}
+
+async function deleteCategory(ci){
+ let cat=CATEGORY_TREE[ci];
+ let inUse=products.filter(p=>p.cat===cat.name).length;
+ let msg=`¿Eliminar la categoría "${cat.name}"?`+(inUse?` Hay ${inUse} producto(s) usándola — no se eliminan, pero quedarán con esa categoría hasta que los reasignes.`:"");
+ if(!(await customConfirm(msg)))return;
+ CATEGORY_TREE.splice(ci,1);
+ saveCategoryTree();
+ if(selectedCat===cat.name){selectedCat="Todos";selectedSubcat="Todas";selectedType="Todas";}
+ refreshAfterCategoryChange();
+ toast("Categoría eliminada");
+}
+
+async function addSubcategoryPrompt(ci){
+ let cat=CATEGORY_TREE[ci];
+ let name=await customPrompt(`Nueva subcategoría dentro de "${cat.name}"`);
+ if(name===null)return;
+ name=name.trim();
+ if(!name){toast("Escribe un nombre válido");return;}
+ if(!cat.subcats)cat.subcats=[];
+ if(cat.subcats.some(s=>s.name===name)){toast("Ya existe esa subcategoría");return;}
+ cat.subcats.push({name});
+ saveCategoryTree();
+ refreshAfterCategoryChange();
+ toast("Subcategoría añadida");
+}
+
+async function renameSubcategory(ci,si){
+ let cat=CATEGORY_TREE[ci];
+ let sub=cat.subcats[si];
+ let name=await customPrompt("Nuevo nombre para la subcategoría",sub.name);
+ if(name===null)return;
+ name=name.trim();
+ if(!name){toast("Escribe un nombre válido");return;}
+ if(cat.subcats.some((s,i)=>i!==si && s.name===name)){toast("Ya existe otra subcategoría con ese nombre");return;}
+ let oldName=sub.name;
+ sub.name=name;
+ products.forEach(p=>{ if(p.cat===cat.name && p.subcat===oldName) p.subcat=name; });
+ if(selectedCat===cat.name && selectedSubcat===oldName) selectedSubcat=name;
+ save();saveCategoryTree();
+ refreshAfterCategoryChange();
+ toast("Subcategoría actualizada");
+}
+
+async function deleteSubcategory(ci,si){
+ let cat=CATEGORY_TREE[ci];
+ let sub=cat.subcats[si];
+ let inUse=products.filter(p=>p.cat===cat.name && p.subcat===sub.name).length;
+ let msg=`¿Eliminar la subcategoría "${sub.name}"?`+(inUse?` Hay ${inUse} producto(s) usándola.`:"");
+ if(!(await customConfirm(msg)))return;
+ cat.subcats.splice(si,1);
+ saveCategoryTree();
+ if(selectedCat===cat.name && selectedSubcat===sub.name){selectedSubcat="Todas";selectedType="Todas";}
+ refreshAfterCategoryChange();
+ toast("Subcategoría eliminada");
+}
+
+async function addTypePrompt(ci,si){
+ let sub=CATEGORY_TREE[ci].subcats[si];
+ let name=await customPrompt(`Nuevo tipo dentro de "${sub.name}"`);
+ if(name===null)return;
+ name=name.trim();
+ if(!name){toast("Escribe un nombre válido");return;}
+ if(!sub.types)sub.types=[];
+ if(sub.types.includes(name)){toast("Ya existe ese tipo");return;}
+ sub.types.push(name);
+ saveCategoryTree();
+ refreshAfterCategoryChange();
+ toast("Tipo añadido");
+}
+
+async function renameType(ci,si,ti){
+ let cat=CATEGORY_TREE[ci];
+ let sub=cat.subcats[si];
+ let oldName=sub.types[ti];
+ let name=await customPrompt("Nuevo nombre para el tipo",oldName);
+ if(name===null)return;
+ name=name.trim();
+ if(!name){toast("Escribe un nombre válido");return;}
+ if(sub.types.some((t,i)=>i!==ti && t===name)){toast("Ya existe otro tipo con ese nombre");return;}
+ sub.types[ti]=name;
+ products.forEach(p=>{ if(p.cat===cat.name && p.subcat===sub.name && p.type===oldName) p.type=name; });
+ if(selectedType===oldName) selectedType=name;
+ save();saveCategoryTree();
+ refreshAfterCategoryChange();
+ toast("Tipo actualizado");
+}
+
+async function deleteType(ci,si,ti){
+ let cat=CATEGORY_TREE[ci];
+ let sub=cat.subcats[si];
+ let name=sub.types[ti];
+ let inUse=products.filter(p=>p.cat===cat.name && p.subcat===sub.name && p.type===name).length;
+ let msg=`¿Eliminar el tipo "${name}"?`+(inUse?` Hay ${inUse} producto(s) usándolo.`:"");
+ if(!(await customConfirm(msg)))return;
+ sub.types.splice(ti,1);
+ saveCategoryTree();
+ if(selectedType===name) selectedType="Todas";
+ refreshAfterCategoryChange();
+ toast("Tipo eliminado");
+}
+
+/* =========================================================
+   TASAS
+========================================================= */
+async function fetchRates(){
+ try{
+  if(!config.fxProxy){
+   $("#rateStatus").textContent=`Tasas de respaldo · 1 USD = ${rates.USD.toLocaleString("es-ES")} CUP`;
+   return;
+  }
+  let r=await fetch(config.fxProxy,{headers:{Accept:"application/json"},cache:"no-store"});
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  let j=await r.json();
+  let t=j.tasas || j.rates || j.data || j;
+  let usd=Number(t.USD || t.usd);
+  let eur=Number(t.EUR || t.ECU || t.eur || t.ecu);
+  if(!Number.isFinite(usd) || usd<=0 || !Number.isFinite(eur) || eur<=0) throw new Error("Tasas inválidas");
+  rates={USD:usd, EUR:eur, CUP:1};
+  $("#rateStatus").textContent=`elTOQUE · 1 USD = ${usd.toLocaleString("es-ES")} CUP`;
+  renderProducts();
+ }catch(e){
+  $("#rateStatus").textContent=`Sin conexión · respaldo 1 USD = ${rates.USD.toLocaleString("es-ES")} CUP`;
+ }
+}
+
+/* =========================================================
+   INPUTS DE ARCHIVOS
+========================================================= */
+let pImagesFiles=[]; // [{file, url}] pendientes para el formulario "Nuevo producto"
+let eImagesState={existing:[],removed:[],newFiles:[]}; // estado de imágenes del editor de producto
+
+function renderPImagesPreview(){
+ let box=$("#pImagesPreview");
+ let countEl=$("#pImagesCount");
+ let btn=$("#pImagesBtn");
+ if(countEl) countEl.textContent=pImagesFiles.length;
+ if(btn) btn.disabled = pImagesFiles.length>=10;
+ if(!box)return;
+ box.innerHTML="";
+ pImagesFiles.forEach((entry,idx)=>{
+  let thumb=document.createElement("div");
+  thumb.className="image-thumb";
+  thumb.innerHTML=`<img src="${entry.url}" alt=""><button type="button" class="image-thumb-remove" aria-label="Quitar">✕</button>`;
+  thumb.querySelector(".image-thumb-remove").onclick=()=>{
+   try{URL.revokeObjectURL(entry.url);}catch(e){}
+   pImagesFiles.splice(idx,1);
+   renderPImagesPreview();
+  };
+  box.appendChild(thumb);
+ });
+}
+
+function resetPImages(){
+ pImagesFiles.forEach(e=>{try{URL.revokeObjectURL(e.url);}catch(err){}});
+ pImagesFiles=[];
+ renderPImagesPreview();
+}
+
+function resetFileInput(id,infoId,text){
+ let el=$("#"+id);if(el)el.value="";
+ let info=$("#"+infoId);if(info)info.textContent=text;
+}
+
+function updateFileInfo(id,infoId,prefix){
+ let el=$("#"+id);let f=el?.files?.[0];let info=$("#"+infoId);
+ if(info) info.textContent = f ? `${prefix}: ${fileInfo(f)}` : `${prefix}.`;
+}
+
+function bindMediaPickers(){
+ // Botones visibles que activan los inputs de archivo ocultos (más compatible con WebViews móviles)
+ let btn1=$("#pImagesBtn"), btn2=$("#pVideoBtn");
+ if(btn1) btn1.onclick=()=>{$("#pImages").click();};
+ if(btn2) btn2.onclick=()=>{$("#pVideo").click();};
+
+ let pImagesInput=$("#pImages");
+ if(pImagesInput) pImagesInput.onchange=()=>{
+  let files=Array.from(pImagesInput.files||[]);
+  for(let f of files){
+   if(pImagesFiles.length>=10){toast("Máximo 10 fotos por producto");break;}
+   try{
+    validateMediaFile(f,"image");
+    pImagesFiles.push({file:f, url:URL.createObjectURL(f)});
+   }catch(e){
+    toast(e.message || "Archivo no válido");
+   }
+  }
+  pImagesInput.value="";
+  renderPImagesPreview();
+ };
+
+ let pVideoInput=$("#pVideo");
+ if(pVideoInput) pVideoInput.onchange=async()=>{
+  let f=pVideoInput.files[0];if(!f)return;
+  try{
+   await validatePromoVideo(f);
+   updateFileInfo("pVideo","pVideoInfo","Video seleccionado");
+  }catch(e){
+   toast(e.message || "Archivo no válido");
+   resetFileInput("pVideo","pVideoInfo","Ningún video seleccionado. (De 7 a 60 seg, hasta 4K)");
+  }
+ };
+}
+
+/* =========================================================
+   BIND GENERAL
+========================================================= */
+function bind(){
+ $("#hamb").onclick=()=>{$("#drawer").classList.add("open");};
+ $("#drawer").onclick=e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove("open");};
+ document.querySelectorAll(".drawer-panel button").forEach(b=>{
+  b.onclick=()=>{
+   let a=b.dataset.action;
+   if(a==="admin") openAdmin();
+   if(a==="faq") openFaq();
+   if(a==="notify") enableNotifications();
+   if(a==="all"){selectedCat="Todos";selectedSubcat="Todas";selectedType="Todas";renderAll();}
+   if(a==="home") window.scrollTo({top:0,behavior:"smooth"});
+   if(!b.classList.contains("theme-opt")) $("#drawer").classList.remove("open");
+  };
+ });
+ document.querySelectorAll(".theme-opt").forEach(b=>{
+  b.onclick=()=>{ applyTheme(b.dataset.themeChoice); };
+ });
+ $("#currency").onchange=()=>{renderProducts();};
+ $("#search").oninput=()=>{renderProducts();renderSearchSuggestions();};
+ $("#search").addEventListener("focus",()=>{renderSearchSuggestions();});
+ $("#search").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){saveRecentSearch($("#search").value);closeSuggestions();renderProducts();}
+  if(e.key==="Escape"){closeSuggestions();}
+ });
+ $("#searchBtn").onclick=()=>{saveRecentSearch($("#search").value);closeSuggestions();renderProducts();};
+ document.addEventListener("click",e=>{
+  let wrap=document.querySelector(".search-wrap");
+  if(wrap && !wrap.contains(e.target)) closeSuggestions();
+ });
+ $("#searchClear").onclick=()=>{
+  $("#search").value="";
+  renderProducts();
+  closeSuggestions();
+  $("#search").focus();
+ };
+ $("#fab").onclick=()=>{wa(config.waMsgSupport||"Hola!, soporte, quisiera, más información acerca de sus productos y servicios.");};
+ $("#fabFacebook").onclick=()=>{window.open(config.facebookUrl||"https://facebook.com","_blank","noopener,noreferrer");};
+ $("#fabInstagram").onclick=()=>{window.open(config.instagramUrl||"https://instagram.com","_blank","noopener,noreferrer");};
+ $("#fabYoutube").onclick=()=>{window.open(config.youtubeUrl||"https://youtube.com","_blank","noopener,noreferrer");};
+ $("#heroBtn").onclick=()=>{let c=$("#catalog");if(c)c.scrollIntoView({behavior:"smooth"});};
+ $("#zoomClose").onclick=closeZoom;
+ $("#zoomModal").onclick=e=>{if(e.target===e.currentTarget)closeZoom();};
+ $("#faqClose").onclick=closeFaq;
+ $("#faqModal").onclick=e=>{if(e.target===e.currentTarget)closeFaq();};
+ $("#promptCancel").onclick=()=>closePromptModal(null);
+ $("#promptOk").onclick=()=>{
+  let showingInput=!$("#promptFieldWrap").classList.contains("hidden");
+  closePromptModal(showingInput?$("#promptInput").value:true);
+ };
+ $("#promptInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("#promptOk").click();}});
+ $("#promptModal").onclick=e=>{if(e.target===e.currentTarget)closePromptModal(null);};
+ $("#adminClose").onclick=()=>{$("#admin").classList.remove("open");};
+ $("#adminLoginCancel").onclick=closeAdminLogin;
+ $("#adminLoginEnter").onclick=enterAdmin;
+ $("#adminPinInput").addEventListener("keydown",e=>{if(e.key==="Enter")enterAdmin();if(e.key==="Escape")closeAdminLogin();});
+ $("#adminEmailInput").addEventListener("keydown",e=>{if(e.key==="Enter")enterAdmin();if(e.key==="Escape")closeAdminLogin();});
+ $("#adminForgotPass").onclick=async()=>{
+  let email=$("#adminEmailInput").value.trim();
+  let errEl=$("#adminLoginError");
+  if(!email){if(errEl)errEl.textContent="Escribe tu correo primero.";return;}
+  if(!usingFirebaseAuth || !fbAuth){toast("Firebase Authentication no está configurado todavía.");return;}
+  try{
+   await fbAuth.sendPasswordResetEmail(email);
+   toast("Si ese correo existe, te llegará un enlace para restablecer la contraseña.");
+  }catch(e){
+   console.error(e);
+   toast("No se pudo enviar el correo de restablecimiento.");
+  }
+ };
+ 
+ $("#saveCfg").onclick=()=>{
+  try{
+   config.name=$("#cfgName").value.trim() || "MERCADO";
+   config.heroTitle=$("#cfgHeroTitle").value.trim() || "Compra directo y fácil";
+   config.heroText=$("#cfgHeroText").value.trim();
+   config.location=$("#cfgLocation").value.trim() || "Calle. Cualquiera #489 / la ruta y más";
+   config.contactPhone=$("#cfgPhone").value.trim();
+   config.contactEmail=$("#cfgEmail").value.trim();
+   config.contactAddress=$("#cfgAddress").value.trim();
+   config.contactHours=$("#cfgHours").value.trim();
+   config.fxProxy=$("#cfgFxProxy").value.trim();
+   config.facebookUrl=$("#cfgFacebook").value.trim();
+   config.instagramUrl=$("#cfgInstagram").value.trim();
+   config.youtubeUrl=$("#cfgYoutube").value.trim();
+   config.base=$("#cfgBase").value;
+   let ok=save();
+   renderHero();renderProducts();renderFooter();startBanner();
+   if(ok) toast("Configuración guardada");
+  }catch(e){
+   console.error("Error al guardar configuración:",e);
+   toast("Ocurrió un error al guardar. Revisa la consola del navegador (F12) para más detalles.");
+  }
+ };
+ 
+ $("#saveWaCfg").onclick=()=>{
+  try{
+   config.whatsappNumber=$("#cfgWhatsapp").value.trim();
+   config.waMsgProduct=$("#cfgMsgProduct").value.trim() || "Hola! le escribo, porque quiero comprar 🛒 {producto}.";
+   config.waMsgService=$("#cfgMsgService").value.trim() || "Hola!, necesito los servicios de: {producto}.";
+   config.waMsgSupport=$("#cfgMsgSupport").value.trim() || "Hola!, soporte, quisiera, más información acerca de sus productos y servicios.";
+   config.fabTextWa=$("#cfgFabWa").value.trim() || "¿Cómo le podemos ayudar?";
+   config.fabTextFb=$("#cfgFabFb").value.trim() || "¡Síguenos!";
+   config.fabTextIg=$("#cfgFabIg").value.trim() || "¡Síguenos!";
+   config.fabTextYt=$("#cfgFabYt").value.trim() || "¡Suscríbete!";
+   let ok=save();
+   startFabCycle();
+   if(ok) toast("Textos y WhatsApp guardados");
+  }catch(e){
+   console.error("Error al guardar textos:",e);
+   toast("Ocurrió un error al guardar. Revisa la consola del navegador (F12) para más detalles.");
+  }
+ };
+ 
+ $("#addProduct").onclick=addProduct;
+ bindCategorySelects("p","","");
+ bindMediaPickers();
+
+ let pCatSel=$("#pCat");
+ if(pCatSel) pCatSel.onchange=()=>{
+  $("#pCatCustom").classList.toggle("hidden", pCatSel.value!=="__custom__");
+ };
+
+ let logoBtn=$("#logoBtn"), logoInput=$("#logoInput");
+ if(logoBtn && logoInput){
+  logoBtn.onclick=()=>{logoInput.click();};
+  logoInput.onchange=async()=>{
+   let f=logoInput.files[0];
+   if(!f)return;
+   $("#logoInfo").textContent="Subiendo logo…";
+   await uploadLogo(f);
+   logoInput.value="";
+   $("#logoInfo").textContent="Se usará en la pantalla de bienvenida y el encabezado. Recomendado: imagen cuadrada.";
+  };
+ }
+ let removeLogoBtn=$("#removeLogo");
+ if(removeLogoBtn) removeLogoBtn.onclick=removeLogo;
+ $("#refreshAdmin").onclick=()=>{renderAdminList();renderBannerAdmin();};
+ $("#changePass").onclick=changePassword;
+ $("#sendPassResetBtn").onclick=async()=>{
+  if(!fbAuth || !fbAuth.currentUser){toast("No hay sesión activa");return;}
+  try{
+   await fbAuth.sendPasswordResetEmail(fbAuth.currentUser.email);
+   toast("Correo de restablecimiento enviado a "+fbAuth.currentUser.email);
+  }catch(e){
+   console.error(e);
+   toast("No se pudo enviar el correo: "+(e.message||"error desconocido"));
+  }
+ };
+ $("#signOutBtn").onclick=async()=>{
+  try{ if(fbAuth) await fbAuth.signOut(); }catch(e){console.error(e);}
+  $("#admin").classList.remove("open");
+  toast("Sesión cerrada");
+ };
+ $("#newPass").oninput=updatePasswordMeter;
+ $("#addBanner").onclick=addBanner;
+ $("#addCategory").onclick=addCategoryPrompt;
+ $("#sendNotif").onclick=sendPushNotification;
+ $("#editClose").onclick=closeEditor;
+ $("#editModal").onclick=e=>{if(e.target===e.currentTarget)closeEditor();};
+ 
+ document.addEventListener("keydown",e=>{
+  if(e.key!=="Escape")return;
+  closeAdminLogin();closeZoom();closeEditor();closeFaq();closeSuggestions();closePromptModal(null);
+  $("#drawer").classList.remove("open");
+ });
+}
+
+/* =========================================================
+   INICIO DE APLICACIÓN
+========================================================= */
+(async()=>{
+ initTheme();
+ load();bind();
+ try{renderHero();renderCategoryBar();renderProducts();renderFooter();}catch(e){console.error(e);}
+ setTimeout(()=>{$("#splash").classList.add("out");},5000);
+ 
+ // Inicializar DB de forma robusta al inicio
+ try{
+  await openDB();
+  await renderLogo();
+  await renderCarousel();
+  await renderProducts();
+  await renderBanner();
+ }catch(e){
+  console.warn("IndexedDB multimedia no disponible",e);
+  toast("Multimedia no disponible: revisa permisos/almacenamiento del WebView");
+ }
+ 
+ startBanner();
+ startFabCycle();
+ fetchRates();
+ if(FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey){
+  registerPushServiceWorker();
+ }
+})();
+</script>
+</body>
+</html>
