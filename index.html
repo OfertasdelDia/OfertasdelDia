@@ -202,6 +202,14 @@ main{max-width:var(--max);margin:auto;padding:14px}
 .zoom-dots .dot.active{background:#fff}
 .zoom-counter{position:absolute;top:14px;left:14px;background:#0009;color:#fff;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;z-index:5}
 .pimg-badge{position:absolute;left:9px;bottom:9px;background:#0009;color:#fff;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;display:flex;gap:6px;pointer-events:none}
+.pshare-btn{position:absolute;right:9px;top:9px;width:34px;height:34px;border-radius:50%;border:0;background:#fffe;color:#17202a;font-size:16px;display:grid;place-items:center;box-shadow:0 2px 8px #0003;z-index:3}
+.stock-row{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;margin-top:8px}
+.stock-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;background:#9aa5b1}
+.stock-dot.in{background:#25d366}
+.stock-dot.out{background:#e04343}
+.stock-row.out{color:#e04343}
+.delivery-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin-top:4px}
+.zoom-share-btn{position:absolute;top:14px;right:54px;background:#0009;color:#fff;border:0;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:800;z-index:6;display:flex;align-items:center;gap:5px}
 .close{position:absolute;right:10px;top:10px;width:38px;height:38px;border-radius:50%;border:0;background:#fff;font-size:23px;z-index:20}
 
 /* ================= ADMIN LOGIN ================= */
@@ -485,6 +493,7 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 <!-- ================= ZOOM ================= -->
 <div class="modal" id="zoomModal">
  <div class="zoom-box">
+  <button class="zoom-share-btn" id="zoomShareBtn" type="button">🔗 Compartir</button>
   <button class="close" id="zoomClose" type="button" aria-label="Cerrar">×</button>
   <div id="zoomMedia"></div>
  </div>
@@ -533,6 +542,14 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
     <div class="field">
      <label>📍 Ubicación (pie de página)</label>
      <input id="cfgLocation" placeholder="Calle. Cualquiera #489 / la ruta y más">
+    </div>
+    <label class="checkbox-wrap">
+     <input type="checkbox" id="cfgDeliveryEnabled" checked>
+     <span>🚚 Mostrar insignia de entrega en las tarjetas de producto</span>
+    </label>
+    <div class="field">
+     <label>Texto de la insignia de entrega</label>
+     <input id="cfgDeliveryText" placeholder="Entregas a Domicilio">
     </div>
     <div class="field">
      <label>📞 Teléfono de contacto</label>
@@ -691,6 +708,10 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    <div class="field">
     <label>Precio base</label>
     <input id="pPrice" type="text" placeholder="Ej: 39.99 o 39,99">
+   </div>
+   <div class="field">
+    <label>Unidades en stock (déjalo vacío si no quieres controlar inventario)</label>
+    <input id="pStock" type="number" min="0" step="1" placeholder="Ej: 5">
    </div>
    <div class="field">
     <label>Descripción (máx. 1000 caracteres)</label>
@@ -932,6 +953,8 @@ let config={
  fabTextFb:"¡Síguenos!",
  fabTextIg:"¡Síguenos!",
  fabTextYt:"¡Suscríbete!",
+ deliveryBadgeEnabled:true,
+ deliveryBadgeText:"Entregas a Domicilio",
  banners:[]
 };
 
@@ -1658,6 +1681,36 @@ async function renderCarousel(){
  }
 }
 
+function stockStatus(p){
+ if(p.stock===undefined || p.stock===null || p.stock==="") return {tracked:false, available:true, label:"Disponible", units:null};
+ let n=Number(p.stock);
+ if(!Number.isFinite(n)) return {tracked:false, available:true, label:"Disponible", units:null};
+ return {tracked:true, available:n>0, label:n>0?"Disponible":"Agotado", units:n};
+}
+
+async function shareProduct(p){
+ let url=new URL(location.href);
+ url.search="";url.hash="";
+ url.searchParams.set("p",p.id);
+ let shareUrl=url.toString();
+ try{
+  if(navigator.share){
+   await navigator.share({title:p.name, text:`Mira este producto: ${p.name}`, url:shareUrl});
+  }else{
+   await navigator.clipboard.writeText(shareUrl);
+   toast("🔗 Enlace copiado al portapapeles");
+  }
+ }catch(e){
+  if(e && e.name==="AbortError")return;
+  try{
+   await navigator.clipboard.writeText(shareUrl);
+   toast("🔗 Enlace copiado al portapapeles");
+  }catch(err){
+   toast("No se pudo compartir el enlace");
+  }
+ }
+}
+
 async function renderProducts(){
  let searchEl=$("#search"), currencyEl=$("#currency");
  if(!searchEl || !currencyEl)return;
@@ -1688,16 +1741,23 @@ async function renderProducts(){
   card.className="product";
   let u=await mediaUrl(p.image);
   let pr=convert(p.price,base,cur);
+  let status=stockStatus(p);
   card.innerHTML=`
    <div class="pimg" role="button" tabindex="0" aria-label="Ampliar imagen de ${esc(p.name)}">
     ${u ? `<img src="${u}" alt="${esc(p.name)}" loading="lazy" draggable="false">` : `<div style="height:100%;display:grid;place-items:center;font-size:55px">🛍️</div>`}
     <span class="zoom-hint">⌕ ampliar</span>
     ${(()=>{let n=(p.images&&p.images.length)?p.images.length:(p.image?1:0);return (n>1||p.video)?`<span class="pimg-badge">${n>1?`📷 ${n}`:""}${p.video?"🎬":""}</span>`:"";})()}
+    <button type="button" class="pshare-btn" aria-label="Compartir producto">🔗</button>
    </div>
    <div class="pbody">
     <div class="pname">${esc(p.name)}</div>
     <div class="desc">${esc(p.desc)}</div>
     <div class="price">${money(pr,cur)} <small>${cur}</small></div>
+    <div class="stock-row ${status.available?"":"out"}">
+     <span class="stock-dot ${status.available?"in":"out"}"></span>
+     <span>${status.label}${status.tracked?` — ${status.units} unidad${status.units===1?"":"es"}`:""}</span>
+    </div>
+    ${config.deliveryBadgeEnabled!==false ? `<div class="delivery-row">🚚 ${esc(config.deliveryBadgeText||"Entregas a Domicilio")}</div>` : ""}
     <button type="button" class="wa"><span>◉</span> ${p.cat==="Servicios"?"Solicitar por WhatsApp":"Comprar por WhatsApp"}</button>
    </div>`;
   
@@ -1705,6 +1765,10 @@ async function renderProducts(){
   if(pic){
    pic.onclick=e=>{e.preventDefault();e.stopPropagation();openZoom(p);};
    pic.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openZoom(p);}};
+  }
+  let shareBtn=card.querySelector(".pshare-btn");
+  if(shareBtn){
+   shareBtn.onclick=e=>{e.preventDefault();e.stopPropagation();shareProduct(p);};
   }
   let waBtn=card.querySelector(".wa");
   if(waBtn){
@@ -1794,9 +1858,12 @@ async function renderSearchSuggestions(){
  box.classList.remove("hidden");
 }
 
+let currentZoomProduct=null;
+
 async function openZoom(p){
  let modal=$("#zoomModal"), m=$("#zoomMedia");
  if(!modal || !m)return;
+ currentZoomProduct=p;
  modal.classList.add("open");
  document.body.style.overflow="hidden";
  m.innerHTML=`<div class="zoom-loading">Cargando multimedia…</div>`;
@@ -2036,6 +2103,8 @@ function loadAdminFields(){
  $("#cfgHeroTitle").value=config.heroTitle || "";
  $("#cfgHeroText").value=config.heroText || "";
  $("#cfgLocation").value=config.location || "";
+ $("#cfgDeliveryEnabled").checked = config.deliveryBadgeEnabled!==false;
+ $("#cfgDeliveryText").value=config.deliveryBadgeText || "";
  $("#cfgPhone").value=config.contactPhone || "";
  $("#cfgEmail").value=config.contactEmail || "";
  $("#cfgAddress").value=config.contactAddress || "";
@@ -2077,7 +2146,7 @@ function renderAdminList(){
   d.innerHTML=`
    <div class="admin-item-main">
     <strong>${esc(p.name)} ${p.featured?'🌟':''}${p.banner?'⭐':''}</strong>
-    <span class="small">${esc(p.cat)}${p.subcat?" › "+esc(p.subcat):""}${p.type?" › "+esc(p.type):""} · ${money(p.price,config.base)} ${(()=>{let n=(p.images&&p.images.length)?p.images.length:(p.image?1:0);return n?` · 📷${n>1?" ×"+n:""}`:"";})()} ${p.video?" · 🎬":""}</span>
+    <span class="small">${esc(p.cat)}${p.subcat?" › "+esc(p.subcat):""}${p.type?" › "+esc(p.type):""} · ${money(p.price,config.base)} ${(()=>{let n=(p.images&&p.images.length)?p.images.length:(p.image?1:0);return n?` · 📷${n>1?" ×"+n:""}`:"";})()} ${p.video?" · 🎬":""} ${(()=>{let s=stockStatus(p);return s.tracked?` · ${s.available?"✅":"🔴"} ${s.label} (${s.units})`:"";})()}</span>
    </div>
    <div class="admin-item-actions">
     <button class="btn primary edit-product" type="button">✎ Editar</button>
@@ -2111,9 +2180,14 @@ async function addProduct(){
  let desc=$("#pDesc").value.trim();
  let banner=$("#pBanner").checked;
  let featured=$("#pFeatured").checked;
+ let stockRaw=$("#pStock").value.trim();
+ let stock=stockRaw===""?null:Math.max(0,Math.floor(Number(stockRaw)));
 
  if(!name || !Number.isFinite(price) || price<0){
   toast("Completa nombre y precio válido (usa punto o coma para decimales)");return;
+ }
+ if(stockRaw!=="" && !Number.isFinite(stock)){
+  toast("El stock debe ser un número válido");return;
  }
 
  let videoFile=$("#pVideo").files[0];
@@ -2129,11 +2203,11 @@ async function addProduct(){
  }
 
  products.unshift({
-  id:createId("p"),name,cat,subcat,type,price,desc:desc.slice(0,1000),images,image:images[0]||"",video,banner,featured
+  id:createId("p"),name,cat,subcat,type,price,stock,desc:desc.slice(0,1000),images,image:images[0]||"",video,banner,featured
  });
 
  save();
- ["pName","pPrice","pDesc"].forEach(id=>{let el=$("#"+id);if(el)el.value="";});
+ ["pName","pPrice","pStock","pDesc"].forEach(id=>{let el=$("#"+id);if(el)el.value="";});
  $("#pCat").selectedIndex=0;
  $("#pCatCustom").value="";
  $("#pCatCustom").classList.add("hidden");
@@ -2189,6 +2263,7 @@ async function openEditor(id){
    <select id="eType" class="hidden" style="margin-top:8px"></select>
   </div>
   <div class="field"><label>Precio base</label><input id="ePrice" type="text" value="${Number(p.price)||0}"></div>
+  <div class="field"><label>Unidades en stock (vacío = sin controlar inventario)</label><input id="eStock" type="number" min="0" step="1" value="${(p.stock===undefined||p.stock===null)?"":p.stock}"></div>
   <div class="field"><label>Descripción</label><textarea id="eDesc" maxlength="1000">${esc(p.desc)}</textarea></div>
   
   <label class="checkbox-wrap">
@@ -2313,6 +2388,9 @@ async function saveEditor(){
  let name=$("#eName").value.trim();
  let price=parsePrice($("#ePrice").value);
  if(!name || !Number.isFinite(price) || price<0){toast("Nombre y precio válidos son obligatorios");return;}
+ let stockRaw=$("#eStock").value.trim();
+ let stock=stockRaw===""?null:Math.max(0,Math.floor(Number(stockRaw)));
+ if(stockRaw!=="" && !Number.isFinite(stock)){toast("El stock debe ser un número válido");return;}
  
  let oldVideo=p.video||"";
  let newVideo=oldVideo;
@@ -2339,6 +2417,7 @@ async function saveEditor(){
  let {cat,subcat,type}=readCategorySelection("e");
  p.cat=cat; p.subcat=subcat; p.type=type;
  p.price=price;
+ p.stock=stock;
  p.desc=$("#eDesc").value.trim().slice(0,1000);
  p.banner=banner;
  p.featured=featured;
@@ -2969,6 +3048,7 @@ function bind(){
  $("#fabYoutube").onclick=()=>{window.open(config.youtubeUrl||"https://youtube.com","_blank","noopener,noreferrer");};
  $("#heroBtn").onclick=()=>{let c=$("#catalog");if(c)c.scrollIntoView({behavior:"smooth"});};
  $("#zoomClose").onclick=closeZoom;
+ $("#zoomShareBtn").onclick=()=>{if(currentZoomProduct) shareProduct(currentZoomProduct);};
  $("#zoomModal").onclick=e=>{if(e.target===e.currentTarget)closeZoom();};
  $("#faqClose").onclick=closeFaq;
  $("#faqModal").onclick=e=>{if(e.target===e.currentTarget)closeFaq();};
@@ -3004,6 +3084,8 @@ function bind(){
    config.heroTitle=$("#cfgHeroTitle").value.trim() || "Compra directo y fácil";
    config.heroText=$("#cfgHeroText").value.trim();
    config.location=$("#cfgLocation").value.trim() || "Calle. Cualquiera #489 / la ruta y más";
+   config.deliveryBadgeEnabled=$("#cfgDeliveryEnabled").checked;
+   config.deliveryBadgeText=$("#cfgDeliveryText").value.trim() || "Entregas a Domicilio";
    config.contactPhone=$("#cfgPhone").value.trim();
    config.contactEmail=$("#cfgEmail").value.trim();
    config.contactAddress=$("#cfgAddress").value.trim();
@@ -3111,6 +3193,13 @@ function bind(){
   await renderCarousel();
   await renderProducts();
   await renderBanner();
+
+  let sharedId=new URLSearchParams(location.search).get("p");
+  if(sharedId){
+   let shared=products.find(x=>x.id===sharedId);
+   if(shared) openZoom(shared);
+   else toast("El producto compartido ya no está disponible");
+  }
  }catch(e){
   console.warn("IndexedDB multimedia no disponible",e);
   toast("Multimedia no disponible: revisa permisos/almacenamiento del WebView");
