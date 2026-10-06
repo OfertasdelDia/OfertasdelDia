@@ -1237,6 +1237,7 @@ function save(){
  try{
   localStorage.setItem("mercado_products",JSON.stringify(products));
   localStorage.setItem("mercado_config",JSON.stringify(config));
+  scheduleCloudSync();
   return true;
  }catch(e){
   console.error(e);
@@ -1247,6 +1248,91 @@ function save(){
   }
   return false;
  }
+}
+
+/* =========================================================
+   CATÁLOGO COMPARTIDO (Firestore) — Fase 1: texto, no fotos/video todavía
+========================================================= */
+let cloudSyncTimer=null;
+let sharedIdToOpen=new URLSearchParams(location.search).get("p");
+
+function scheduleCloudSync(){
+ clearTimeout(cloudSyncTimer);
+ cloudSyncTimer=setTimeout(syncToCloud,600);
+}
+
+async function syncToCloud(){
+ if(!initFirebaseIfConfigured())return;
+ if(!isAdminAuthed)return; // solo el admin autenticado puede escribir (coincide con las reglas de seguridad)
+ try{
+  let {password, ...cloudConfig}=config;
+  await fbDb.collection("store").doc("config").set(cloudConfig);
+
+  let batch=fbDb.batch();
+  products.forEach(p=>{
+   let {image, images, video, ...textFields}=p;
+   batch.set(fbDb.collection("products").doc(p.id), textFields);
+  });
+  await batch.commit();
+
+  let localIds=new Set(products.map(p=>p.id));
+  let cloudSnap=await fbDb.collection("products").get();
+  let delBatch=fbDb.batch();
+  let anyDeletes=false;
+  cloudSnap.forEach(doc=>{
+   if(!localIds.has(doc.id)){delBatch.delete(doc.ref);anyDeletes=true;}
+  });
+  if(anyDeletes) await delBatch.commit();
+ }catch(e){
+  console.warn("No se pudo sincronizar con la nube:",e);
+ }
+}
+
+async function maybeMigrateToCloud(){
+ if(!fbDb || !isAdminAuthed)return;
+ try{
+  let snap=await fbDb.collection("products").limit(1).get();
+  if(snap.empty && products.length){
+   toast("Subiendo tu catálogo actual a la nube por primera vez…");
+   await syncToCloud();
+   toast("Catálogo sincronizado — ya es visible para todos");
+  }
+ }catch(e){console.warn("No se pudo migrar el catálogo a la nube:",e);}
+}
+
+function watchCloudCatalog(){
+ if(!fbDb)return;
+ fbDb.collection("store").doc("config").onSnapshot(snap=>{
+  if(snap.exists){
+   let cloudConfig=snap.data();
+   config={...config, ...cloudConfig, password:config.password};
+   if(Array.isArray(config.categoryTree) && config.categoryTree.length){
+    CATEGORY_TREE=config.categoryTree;
+   }
+   renderAll();
+   let adminPanel=$("#admin");
+   if(adminPanel && adminPanel.classList.contains("open")){
+    loadAdminFields();renderBannerAdmin();renderCategoryAdmin();
+   }
+  }
+ }, e=>console.warn("No se pudo escuchar cambios de configuración:",e));
+
+ fbDb.collection("products").onSnapshot(snap=>{
+  let localById={}; products.forEach(p=>{localById[p.id]=p;});
+  products=snap.docs.map(doc=>{
+   let cloudP=doc.data();
+   let local=localById[doc.id];
+   return {...cloudP, id:doc.id, image:local?.image||"", images:local?.images||[], video:local?.video||""};
+  });
+  renderAll();
+  let adminPanel=$("#admin");
+  if(adminPanel && adminPanel.classList.contains("open")) renderAdminList();
+
+  if(sharedIdToOpen){
+   let shared=products.find(x=>x.id===sharedIdToOpen);
+   if(shared){openZoom(shared);sharedIdToOpen=null;}
+  }
+ }, e=>console.warn("No se pudo escuchar cambios de productos:",e));
 }
 
 function seed(){
@@ -2096,6 +2182,7 @@ async function enterAdmin(){
 function openAdminPanel(){
  $("#admin").classList.add("open");
  loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();
+ maybeMigrateToCloud();
 }
 
 function loadAdminFields(){
@@ -3193,13 +3280,6 @@ function bind(){
   await renderCarousel();
   await renderProducts();
   await renderBanner();
-
-  let sharedId=new URLSearchParams(location.search).get("p");
-  if(sharedId){
-   let shared=products.find(x=>x.id===sharedId);
-   if(shared) openZoom(shared);
-   else toast("El producto compartido ya no está disponible");
-  }
  }catch(e){
   console.warn("IndexedDB multimedia no disponible",e);
   toast("Multimedia no disponible: revisa permisos/almacenamiento del WebView");
@@ -3210,6 +3290,14 @@ function bind(){
  fetchRates();
  if(FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey){
   registerPushServiceWorker();
+  if(initFirebaseIfConfigured()) watchCloudCatalog();
+  else if(sharedIdToOpen){
+   let shared=products.find(x=>x.id===sharedIdToOpen);
+   if(shared){openZoom(shared);sharedIdToOpen=null;}
+  }
+ }else if(sharedIdToOpen){
+  let shared=products.find(x=>x.id===sharedIdToOpen);
+  if(shared){openZoom(shared);sharedIdToOpen=null;}
  }
 })();
 </script>
