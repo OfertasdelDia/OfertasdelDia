@@ -1197,13 +1197,27 @@ function isCloudUrl(id){
  return typeof id==="string" && /^https?:\/\//.test(id);
 }
 
+let storageAvailable=null; // null=aún no comprobado, true/false tras el primer intento real
+let storageWarningShown=false;
+
+function markStorageUnavailable(e){
+ storageAvailable=false;
+ console.warn("Firebase Storage no disponible todavía:",e);
+ if(!storageWarningShown){
+  storageWarningShown=true;
+  toast("Firebase Storage aún no está activo — tus fotos/videos se guardan solo en este dispositivo por ahora.",5000);
+ }
+}
+
 async function uploadToStorage(blob,kind){
  if(!fbStorage) throw new Error("Firebase Storage no está inicializado");
  let ext = kind==="video" ? "mp4" : "jpg";
  let path = `media/${createId(kind)}.${ext}`;
  let ref = fbStorage.ref().child(path);
  await ref.put(blob);
- return await ref.getDownloadURL();
+ let url = await ref.getDownloadURL();
+ storageAvailable=true;
+ return url;
 }
 
 async function prepareMedia(file,kind){
@@ -1216,12 +1230,14 @@ async function prepareMedia(file,kind){
   validateMediaFile(file, kind);
   blob=await resizeImage(file);
  }
- // Prioridad: subir a la nube (Firebase Storage) para que se vea desde cualquier dispositivo
- if(initFirebaseIfConfigured() && isAdminAuthed){
+ // Prioridad: subir a la nube (Firebase Storage) para que se vea desde cualquier dispositivo.
+ // Si Storage todavía no está activado (Fase 2 pendiente), no reintentamos en cada foto —
+ // nos quedamos con el respaldo local rápido durante el resto de esta sesión.
+ if(storageAvailable!==false && initFirebaseIfConfigured() && isAdminAuthed){
   try{
    return await uploadToStorage(blob,kind);
   }catch(e){
-   console.warn("No se pudo subir a la nube, se guardará solo en este dispositivo:",e);
+   markStorageUnavailable(e);
   }
  }
  // Respaldo: solo local (IndexedDB) — visible únicamente en este dispositivo
@@ -1563,9 +1579,9 @@ async function uploadLogo(file){
   validateMediaFile(file,"image");
   const blob = await resizeImage(file, 512);
   let id;
-  if(initFirebaseIfConfigured() && isAdminAuthed){
+  if(storageAvailable!==false && initFirebaseIfConfigured() && isAdminAuthed){
    try{ id=await uploadToStorage(blob,"image"); }
-   catch(e){ console.warn("No se pudo subir el logo a la nube, se guarda solo local:",e); id=await putMedia(blob); }
+   catch(e){ markStorageUnavailable(e); id=await putMedia(blob); }
   }else{
    id=await putMedia(blob);
   }
@@ -2815,11 +2831,11 @@ async function prepareMediaBanner(file,kind){
  }else{
   blob=file;
  }
- if(initFirebaseIfConfigured() && isAdminAuthed){
+ if(storageAvailable!==false && initFirebaseIfConfigured() && isAdminAuthed){
   try{
    return await uploadToStorage(blob,kind);
   }catch(e){
-   console.warn("No se pudo subir a la nube, se guardará solo en este dispositivo:",e);
+   markStorageUnavailable(e);
   }
  }
  return putMedia(blob);
