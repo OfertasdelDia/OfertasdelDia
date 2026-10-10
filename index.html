@@ -1774,19 +1774,25 @@ function renderCategoryBar(){
  }
 }
 
+let carouselRenderToken=0;
+
 async function renderCarousel(){
+ let myToken=++carouselRenderToken;
  let b=$("#carousel");
  if(!b)return;
  b.innerHTML="";
  let featured=products.filter(p=>p.featured).slice(0,8);
  if(!featured.length){
+  if(myToken!==carouselRenderToken)return;
   b.innerHTML=`<div class="empty">Aún no hay productos destacados. Márcalos con "🌟 Mostrar en Destacados" al añadirlos o editarlos.</div>`;
   return;
  }
  for(let p of featured){
+  if(myToken!==carouselRenderToken)return; // una renderización más nueva ya empezó; abortamos esta
   let s=document.createElement("div");
   s.className="slide";
   let u=await mediaUrl(p.image);
+  if(myToken!==carouselRenderToken)return; // comprobar de nuevo tras la espera asíncrona
   if(u){
    s.innerHTML=`<img src="${u}" alt="${esc(p.name)}" draggable="false">`;
   }else{
@@ -1838,7 +1844,10 @@ async function shareProduct(p){
  }
 }
 
+let productsRenderToken=0;
+
 async function renderProducts(){
+ let myToken=++productsRenderToken;
  let searchEl=$("#search"), currencyEl=$("#currency");
  if(!searchEl || !currencyEl)return;
  let q=searchEl.value.trim().toLowerCase();
@@ -1864,9 +1873,11 @@ async function renderProducts(){
   return;
  }
  for(let p of list){
+  if(myToken!==productsRenderToken)return; // una renderización más nueva ya empezó; abortamos esta
   let card=document.createElement("article");
   card.className="product";
   let u=await mediaUrl(p.image);
+  if(myToken!==productsRenderToken)return; // comprobar de nuevo tras la espera asíncrona
   let pr=convert(p.price,base,cur);
   let status=stockStatus(p);
   card.innerHTML=`
@@ -2703,7 +2714,10 @@ function startFabCycle(){
  showStep();
 }
 
+let bannerAdminRenderToken=0;
+
 async function renderBannerAdmin(){
+ let myToken=++bannerAdminRenderToken;
  let b=$("#bannerAdmin");
  if(!b)return;
  let arr=config.banners||[];
@@ -2713,6 +2727,7 @@ async function renderBannerAdmin(){
   return;
  }
  for(let x of arr){
+  if(myToken!==bannerAdminRenderToken)return;
   let d=document.createElement("div");
   d.className="banner-admin-item";
   d.innerHTML=`
@@ -2779,9 +2794,11 @@ async function renderBannerAdmin(){
   let prev=$("#bp-"+x.id);
   if(x.video){
    let u=await mediaUrl(x.video);
+   if(myToken!==bannerAdminRenderToken)return;
    prev.innerHTML=u?`<video src="${u}" muted controls playsinline preload="metadata"></video>`:"Sin video";
   }else if(x.image){
    let u=await mediaUrl(x.image);
+   if(myToken!==bannerAdminRenderToken)return;
    prev.innerHTML=u?`<img src="${u}" alt="">`:"Sin imagen";
   }else{
    prev.innerHTML="Sin imagen ni video todavía";
