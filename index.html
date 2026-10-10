@@ -357,6 +357,7 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 </head>
 
 <body>
@@ -1192,16 +1193,39 @@ async function putMedia(blob){
  });
 }
 
+function isCloudUrl(id){
+ return typeof id==="string" && /^https?:\/\//.test(id);
+}
+
+async function uploadToStorage(blob,kind){
+ if(!fbStorage) throw new Error("Firebase Storage no está inicializado");
+ let ext = kind==="video" ? "mp4" : "jpg";
+ let path = `media/${createId(kind)}.${ext}`;
+ let ref = fbStorage.ref().child(path);
+ await ref.put(blob);
+ return await ref.getDownloadURL();
+}
+
 async function prepareMedia(file,kind){
  if(!file)return "";
+ let blob;
  if(kind==="video"){
   await validatePromoVideo(file);
+  blob=file;
  }else{
   validateMediaFile(file, kind);
-  const optimizedBlob = await resizeImage(file);
-  return putMedia(optimizedBlob);
+  blob=await resizeImage(file);
  }
- return putMedia(file);
+ // Prioridad: subir a la nube (Firebase Storage) para que se vea desde cualquier dispositivo
+ if(initFirebaseIfConfigured() && isAdminAuthed){
+  try{
+   return await uploadToStorage(blob,kind);
+  }catch(e){
+   console.warn("No se pudo subir a la nube, se guardará solo en este dispositivo:",e);
+  }
+ }
+ // Respaldo: solo local (IndexedDB) — visible únicamente en este dispositivo
+ return putMedia(blob);
 }
 
 /* =========================================================
@@ -1220,11 +1244,20 @@ function getMedia(id){
 }
 
 function delMedia(id){
- if(!id || !db)return;
+ if(!id)return;
+ if(isCloudUrl(id)){
+  if(fbStorage){
+   try{ fbStorage.refFromURL(id).delete().catch(()=>{}); }catch(e){}
+  }
+  return;
+ }
+ if(!db)return;
  try{db.transaction(STORE,"readwrite").objectStore(STORE).delete(id);}catch(e){}
 }
 
 async function mediaUrl(id){
+ if(!id)return "";
+ if(isCloudUrl(id))return id;
  let b=await getMedia(id);
  if(!b)return "";
  try{return URL.createObjectURL(b);}catch(e){return "";}
@@ -1479,9 +1512,10 @@ function readCategorySelection(prefix){
 }
 
 function renderHero(){
- let h=$("#heroTitle"), t=$("#heroText");
+ let h=$("#heroTitle"), t=$("#heroText"), splashName=$("#splashLogoName");
  if(h) h.textContent = config.heroTitle || "Compra directo y fácil";
  if(t) t.textContent = config.heroText || "";
+ if(splashName) splashName.textContent = config.name || "MERCADO";
  document.title = config.name || "MERCADO";
 }
 
@@ -1528,7 +1562,13 @@ async function uploadLogo(file){
  try{
   validateMediaFile(file,"image");
   const blob = await resizeImage(file, 512);
-  const id = await putMedia(blob);
+  let id;
+  if(initFirebaseIfConfigured() && isAdminAuthed){
+   try{ id=await uploadToStorage(blob,"image"); }
+   catch(e){ console.warn("No se pudo subir el logo a la nube, se guarda solo local:",e); id=await putMedia(blob); }
+  }else{
+   id=await putMedia(blob);
+  }
   if(config.logo) delMedia(config.logo);
   config.logo=id;
   save();
@@ -1554,7 +1594,7 @@ async function removeLogo(){
 /* =========================================================
    NOTIFICACIONES PUSH
 ========================================================= */
-let fbMessaging=null, fbDb=null, fbAuth=null;
+let fbMessaging=null, fbDb=null, fbAuth=null, fbStorage=null;
 let isAdminAuthed=false, usingFirebaseAuth=false;
 
 function ensureFirebaseApp(){
@@ -1575,6 +1615,7 @@ function initFirebaseIfConfigured(){
  try{
   fbMessaging=firebase.messaging();
   fbDb=firebase.firestore();
+  try{ fbStorage=firebase.storage(); }catch(e){ console.warn("Firebase Storage no se pudo inicializar:",e); }
   return true;
  }catch(e){
   console.warn("Firebase (mensajería) no se pudo inicializar:",e);
@@ -2750,12 +2791,21 @@ async function renderBannerAdmin(){
 
 async function prepareMediaBanner(file,kind){
  if(!file)return "";
+ let blob;
  if(kind==="image"){
   validateMediaFile(file,kind);
-  const optimizedBlob = await resizeImage(file);
-  return putMedia(optimizedBlob);
+  blob=await resizeImage(file);
+ }else{
+  blob=file;
  }
- return putMedia(file);
+ if(initFirebaseIfConfigured() && isAdminAuthed){
+  try{
+   return await uploadToStorage(blob,kind);
+  }catch(e){
+   console.warn("No se pudo subir a la nube, se guardará solo en este dispositivo:",e);
+  }
+ }
+ return putMedia(blob);
 }
 
 function addBanner(){
