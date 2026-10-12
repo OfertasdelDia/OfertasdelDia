@@ -73,7 +73,8 @@ button{cursor:pointer}
 /* ================= HEADER ================= */
 .top{position:sticky;top:0;z-index:100;background:var(--nav);color:#fff;box-shadow:0 2px 12px #0002}
 .toprow{max-width:var(--max);margin:auto;display:grid;grid-template-columns:auto minmax(180px,1fr) auto auto;gap:12px;align-items:center;padding:10px 14px}
-.hamb{width:44px;height:44px;border:1px solid #ffffff33;background:transparent;color:#fff;border-radius:8px;font-size:24px}
+.hamb-wrap{display:flex;align-items:center;gap:8px}
+.hamb{width:44px;height:44px;border:1px solid #ffffff33;background:transparent;color:#fff;border-radius:8px;font-size:24px;flex:0 0 auto}
 .brand{font-weight:950;font-size:22px;white-space:nowrap;display:flex;align-items:center;gap:9px}
 .brand b{color:var(--accent)}
 .header-logo{height:34px;width:34px;border-radius:9px;object-fit:cover;display:block;flex:0 0 auto}
@@ -92,7 +93,10 @@ button{cursor:pointer}
 .search-clear:hover{color:#17202a}
 .search input{border:0;outline:0;flex:1;padding:0 14px;min-width:0}
 .search button{border:0;background:var(--accent);width:50px}
+.currency-wrap{display:flex;align-items:center;gap:10px}
 .currency{height:44px;border-radius:8px;border:1px solid #ffffff33;background:var(--nav2);color:#fff;padding:0 10px;font-weight:800}
+.cart-btn{position:relative;width:44px;height:44px;flex:0 0 auto;border-radius:8px;border:1px solid #ffffff33;background:var(--nav2);color:#fff;font-size:19px;display:grid;place-items:center}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:var(--accent);color:#111;border-radius:999px;min-width:18px;height:18px;padding:0 4px;font-size:11px;font-weight:900;display:grid;place-items:center;line-height:1}
 .currency option{color:#111}
 
 /* ================= MAIN ================= */
@@ -317,6 +321,17 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 .faq-item[open] summary:before{content:"▾ "}
 .faq-item p{margin:10px 0 0;color:var(--muted);line-height:1.5;font-size:14px}
 
+/* ================= CARRITO ================= */
+.cart-row{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
+.cart-row-info{min-width:0;display:flex;flex-direction:column}
+.cart-row-info strong{font-size:14px}
+.cart-row-qty{display:flex;align-items:center;gap:8px}
+.cart-qty-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:#fff;font-weight:900}
+.cart-row-subtotal{font-weight:900;font-size:13px;white-space:nowrap}
+.cart-row-remove{border:0;background:transparent;color:#98a2ae;font-size:15px;padding:4px}
+.cart-total{font-weight:900;font-size:19px;margin-top:14px;text-align:right}
+.pcart-btn{position:absolute;right:9px;top:48px;width:34px;height:34px;border-radius:50%;border:0;background:var(--success);color:#fff;font-size:15px;display:grid;place-items:center;box-shadow:0 2px 8px #0003;z-index:3}
+
 /* ================= FOOTER ================= */
 .site-footer{background:var(--nav);color:#cfd6dd;margin-top:26px;padding:26px 14px 100px;text-align:center}
 .site-footer .footer-inner{max-width:var(--max);margin:auto;display:grid;gap:8px}
@@ -333,14 +348,14 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
  .toprow{grid-template-columns:auto 1fr auto}
  .brand{display:none}
  .search-wrap{grid-column:2/4}
- .currency{grid-column:3}
+ .currency-wrap{grid-column:3}
  .admin-grid{grid-template-columns:1fr}
 }
 @media(max-width:700px){
  main{padding:10px}
  .toprow{grid-template-columns:auto 1fr auto}
  .search-wrap{grid-column:1/-1;grid-row:2}
- .currency{grid-column:3;grid-row:1}
+ .currency-wrap{grid-column:3;grid-row:1}
  .hero{min-height:235px;padding:25px 20px}
  .hero.dynamic{min-height:300px}
  .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
@@ -384,8 +399,11 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 <!-- ================= HEADER ================= -->
 <header class="top">
  <div class="toprow">
-  <button class="hamb" id="hamb" type="button">☰</button>
-  <div class="brand" id="brandWrap"><img id="headerLogoImg" class="header-logo hidden" alt="Logo"><span id="brandText">MERCADO <b>+</b></span></div>
+  <div class="hamb-wrap">
+   <button class="hamb" id="hamb" type="button">☰</button>
+   <img id="headerLogoImg" class="header-logo hidden" alt="Logo">
+  </div>
+  <div class="brand" id="brandWrap"><span id="brandText">MERCADO <b>+</b></span></div>
   <div class="search-wrap">
    <div class="search">
     <input id="search" placeholder="Buscar productos..." autocomplete="off">
@@ -394,11 +412,14 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    </div>
    <div class="search-suggest hidden" id="searchSuggest"></div>
   </div>
-  <select id="currency" class="currency">
-   <option value="USD">USD $</option>
-   <option value="EUR">EUR €</option>
-   <option value="CUP">CUP ₱</option>
-  </select>
+  <div class="currency-wrap">
+   <select id="currency" class="currency">
+    <option value="USD">USD $</option>
+    <option value="EUR">EUR €</option>
+    <option value="CUP">CUP ₱</option>
+   </select>
+   <button class="cart-btn" id="cartBtn" type="button" aria-label="Carrito">🛒<span class="cart-badge hidden" id="cartBadge">0</span></button>
+  </div>
  </div>
 </header>
 
@@ -864,6 +885,22 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
     <summary>¿Métodos de pago aceptados en la plataforma?</summary>
     <p>USD (Dólar)<br>Euros<br>CUP<br>Transferencias bancarias<br>Criptomonedas y tokens (Bitcoin & USDT)</p>
    </details>
+  </div>
+ </div>
+</div>
+
+<!-- ================= CARRITO ================= -->
+<div class="edit-modal" id="cartModal">
+ <div class="edit-box">
+  <div class="edit-head">
+   <h2>🛒 Tu carrito</h2>
+   <button class="close" id="cartClose" type="button" style="position:static">×</button>
+  </div>
+  <div id="cartItems"></div>
+  <div id="cartTotal" class="cart-total"></div>
+  <div class="edit-actions">
+   <button class="btn" id="cartClear" type="button">Vaciar carrito</button>
+   <button class="btn primary" id="cartCheckout" type="button">📱 Pedir por WhatsApp</button>
   </div>
  </div>
 </div>
@@ -2020,6 +2057,135 @@ async function shareProduct(p){
  }
 }
 
+/* =========================================================
+   CARRITO DE COMPRAS
+========================================================= */
+let cart=[]; // [{id, qty}]
+
+function loadCart(){
+ try{cart=JSON.parse(localStorage.getItem("mercado_cart")||"[]");}catch(e){cart=[];}
+ if(!Array.isArray(cart))cart=[];
+}
+
+function saveCart(){
+ try{localStorage.setItem("mercado_cart",JSON.stringify(cart));}catch(e){}
+ renderCartBadge();
+}
+
+function cartTotalCount(){
+ return cart.reduce((sum,c)=>sum+c.qty,0);
+}
+
+function renderCartBadge(){
+ let badge=$("#cartBadge");
+ if(!badge)return;
+ let n=cartTotalCount();
+ badge.textContent=n;
+ badge.classList.toggle("hidden", n===0);
+}
+
+function addToCart(productId){
+ let entry=cart.find(c=>c.id===productId);
+ if(entry) entry.qty++;
+ else cart.push({id:productId, qty:1});
+ saveCart();
+ toast("🛒 Añadido al carrito");
+}
+
+function removeFromCart(productId){
+ cart=cart.filter(c=>c.id!==productId);
+ saveCart();
+ renderCartModal();
+}
+
+function setCartQty(productId,qty){
+ let entry=cart.find(c=>c.id===productId);
+ if(!entry)return;
+ if(qty<1){removeFromCart(productId);return;}
+ entry.qty=qty;
+ saveCart();
+ renderCartModal();
+}
+
+function openCart(){
+ renderCartModal();
+ let m=$("#cartModal");
+ if(m) m.classList.add("open");
+}
+
+function closeCart(){
+ let m=$("#cartModal");
+ if(m) m.classList.remove("open");
+}
+
+function renderCartModal(){
+ let box=$("#cartItems"), totalEl=$("#cartTotal");
+ if(!box)return;
+ box.innerHTML="";
+ if(!cart.length){
+  box.innerHTML=`<div class="empty">Tu carrito está vacío.</div>`;
+  if(totalEl) totalEl.textContent="";
+  return;
+ }
+ let currencyEl=$("#currency");
+ let cur=currencyEl?currencyEl.value:"USD";
+ let base=config.base;
+ let total=0;
+ cart.forEach(entry=>{
+  let p=products.find(x=>x.id===entry.id);
+  if(!p)return;
+  let pr=convert(p.price,base,cur);
+  let subtotal=pr*entry.qty;
+  total+=subtotal;
+  let row=document.createElement("div");
+  row.className="cart-row";
+  row.innerHTML=`
+   <div class="cart-row-info">
+    <strong>${esc(p.name)}</strong>
+    <span class="small">${money(pr,cur)} c/u</span>
+   </div>
+   <div class="cart-row-qty">
+    <button type="button" class="cart-qty-btn" data-act="dec">−</button>
+    <span>${entry.qty}</span>
+    <button type="button" class="cart-qty-btn" data-act="inc">+</button>
+   </div>
+   <div class="cart-row-subtotal">${money(subtotal,cur)}</div>
+   <button type="button" class="cart-row-remove" aria-label="Quitar">✕</button>`;
+  row.querySelector('[data-act="dec"]').onclick=()=>setCartQty(entry.id,entry.qty-1);
+  row.querySelector('[data-act="inc"]').onclick=()=>setCartQty(entry.id,entry.qty+1);
+  row.querySelector(".cart-row-remove").onclick=()=>removeFromCart(entry.id);
+  box.appendChild(row);
+ });
+ if(totalEl) totalEl.textContent=`Total: ${money(total,cur)} ${cur}`;
+}
+
+async function clearCart(){
+ if(!cart.length){toast("El carrito ya está vacío");return;}
+ if(!(await customConfirm("¿Vaciar el carrito?")))return;
+ cart=[];
+ saveCart();
+ renderCartModal();
+}
+
+function checkoutCart(){
+ if(!cart.length){toast("Tu carrito está vacío");return;}
+ let currencyEl=$("#currency");
+ let cur=currencyEl?currencyEl.value:"USD";
+ let base=config.base;
+ let lines=[];
+ let total=0;
+ cart.forEach(entry=>{
+  let p=products.find(x=>x.id===entry.id);
+  if(!p)return;
+  let pr=convert(p.price,base,cur);
+  let subtotal=pr*entry.qty;
+  total+=subtotal;
+  lines.push(`- ${p.name} x${entry.qty} — ${money(subtotal,cur)}`);
+ });
+ let msg=`Hola! Quiero hacer el siguiente pedido 🛒:\n\n${lines.join("\n")}\n\nTotal: ${money(total,cur)} ${cur}`;
+ wa(msg);
+}
+
 let productsRenderToken=0;
 
 async function renderProducts(){
@@ -2062,6 +2228,7 @@ async function renderProducts(){
     <span class="zoom-hint">⌕ ampliar</span>
     ${(()=>{let n=(p.images&&p.images.length)?p.images.length:(p.image?1:0);return (n>1||p.video)?`<span class="pimg-badge">${n>1?`📷 ${n}`:""}${p.video?"🎬":""}</span>`:"";})()}
     <button type="button" class="pshare-btn" aria-label="Compartir producto">🔗</button>
+    ${p.cat!=="Servicios" ? `<button type="button" class="pcart-btn" aria-label="Añadir al carrito">🛒</button>` : ""}
    </div>
    <div class="pbody">
     <div class="pname">${esc(p.name)}</div>
@@ -2083,6 +2250,10 @@ async function renderProducts(){
   let shareBtn=card.querySelector(".pshare-btn");
   if(shareBtn){
    shareBtn.onclick=e=>{e.preventDefault();e.stopPropagation();shareProduct(p);};
+  }
+  let cartBtn=card.querySelector(".pcart-btn");
+  if(cartBtn){
+   cartBtn.onclick=e=>{e.preventDefault();e.stopPropagation();addToCart(p.id);};
   }
   let waBtn=card.querySelector(".wa");
   if(waBtn){
@@ -3381,6 +3552,11 @@ function bind(){
  $("#zoomShareBtn").onclick=()=>{if(currentZoomProduct) shareProduct(currentZoomProduct);};
  $("#zoomModal").onclick=e=>{if(e.target===e.currentTarget)closeZoom();};
  $("#faqClose").onclick=closeFaq;
+ $("#cartBtn").onclick=openCart;
+ $("#cartClose").onclick=closeCart;
+ $("#cartModal").onclick=e=>{if(e.target===e.currentTarget)closeCart();};
+ $("#cartClear").onclick=clearCart;
+ $("#cartCheckout").onclick=checkoutCart;
  $("#faqModal").onclick=e=>{if(e.target===e.currentTarget)closeFaq();};
  $("#promptCancel").onclick=()=>closePromptModal(null);
  $("#promptOk").onclick=()=>{
@@ -3516,7 +3692,7 @@ function bind(){
  
  document.addEventListener("keydown",e=>{
   if(e.key!=="Escape")return;
-  closeAdminLogin();closeZoom();closeEditor();closeFaq();closeSuggestions();closePromptModal(null);
+  closeAdminLogin();closeZoom();closeEditor();closeFaq();closeSuggestions();closePromptModal(null);closeCart();
   $("#drawer").classList.remove("open");
  });
 }
@@ -3527,6 +3703,7 @@ function bind(){
 (async()=>{
  initTheme();
  load();bind();
+ loadCart();renderCartBadge();
  try{renderHero();renderCategoryBar();renderNewsReel();renderProducts();renderFooter();}catch(e){console.error(e);}
  setTimeout(()=>{$("#splash").classList.add("out");},5000);
  
