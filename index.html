@@ -83,7 +83,7 @@ button{cursor:pointer}
 .brand b{color:var(--accent)}
 .header-logo{height:34px;width:34px;border-radius:9px;object-fit:cover;display:block;flex:0 0 auto}
 .logo-mark img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
-.search{height:44px;display:flex;align-items:center;background:#fff;border-radius:999px;border:1px solid #e2e5e8;overflow:hidden}
+.search{height:44px;display:flex;align-items:center;background:#fff;border-radius:10px;border:1px solid #e2e5e8;overflow:hidden}
 .search-wrap{position:relative;min-width:0}
 .search-suggest{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border-radius:10px;box-shadow:0 12px 30px #0004;max-height:360px;overflow:auto;z-index:200;color:#17202a}
 .suggest-row{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;border-bottom:1px solid #f1f1f1}
@@ -96,7 +96,7 @@ button{cursor:pointer}
 .search-clear{border:0;background:transparent;color:#98a2ae;font-size:16px;width:34px;height:100%;flex:0 0 auto}
 .search-clear:hover{color:#17202a}
 .search input{border:0;outline:0;flex:1;padding:0 16px;min-width:0}
-.search button{border:0;background:var(--accent);color:#111;width:52px;height:100%;font-size:19px;font-weight:900;border-radius:0 999px 999px 0;flex:0 0 auto}
+.search button{border:0;background:var(--accent);color:#111;width:52px;height:100%;font-size:19px;font-weight:900;border-radius:0 9px 9px 0;flex:0 0 auto}
 .currency-wrap{display:flex;align-items:center;gap:10px}
 .currency{height:44px;border-radius:8px;border:1px solid #ffffff33;background:var(--nav2);color:#fff;padding:0 10px;font-weight:800}
 .cart-btn{position:relative;width:44px;height:44px;flex:0 0 auto;border-radius:8px;border:1px solid #ffffff33;background:var(--nav2);color:#fff;font-size:19px;display:grid;place-items:center}
@@ -2199,8 +2199,10 @@ async function renderProducts(){
   (selectedType==="Todas" || p.type===selectedType) &&
   (!q || (p.name+" "+p.desc+" "+p.cat).toLowerCase().includes(q))
  );
- let clearBtn=$("#searchClear");
- if(clearBtn) clearBtn.classList.toggle("hidden", !searchEl.value);
+ let clearBtn=$("#searchClear"), searchBtn=$("#searchBtn");
+ let hasQuery=!!searchEl.value;
+ if(clearBtn) clearBtn.classList.toggle("hidden", !hasQuery);
+ if(searchBtn) searchBtn.classList.toggle("hidden", hasQuery);
  let title=$("#catalogTitle");
  if(title) title.textContent = selectedType!=="Todas" ? selectedType : selectedSubcat!=="Todas" ? selectedSubcat : selectedCat==="Todos" ? "Productos" : selectedCat;
  let count=$("#count");
