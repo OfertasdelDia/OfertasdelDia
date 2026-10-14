@@ -326,14 +326,22 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 .faq-item p{margin:10px 0 0;color:var(--muted);line-height:1.5;font-size:14px}
 
 /* ================= CARRITO ================= */
-.cart-row{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
+.cart-row{display:grid;grid-template-columns:auto 1fr auto auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
 .cart-row-info{min-width:0;display:flex;flex-direction:column}
 .cart-row-info strong{font-size:14px}
 .cart-row-qty{display:flex;align-items:center;gap:8px}
 .cart-qty-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:#fff;font-weight:900}
 .cart-row-subtotal{font-weight:900;font-size:13px;white-space:nowrap}
 .cart-row-remove{border:0;background:transparent;color:#98a2ae;font-size:15px;padding:4px}
-.cart-total{font-weight:900;font-size:19px;margin-top:14px;text-align:right}
+.cart-totals{margin-top:14px;text-align:right}
+.cart-totals .line{font-weight:900;font-size:16px;padding:3px 0}
+.cart-totals .line.products{font-size:19px}
+.cart-totals .line.delivery{color:var(--nav2)}
+.cart-row-thumb{width:46px;height:46px;border-radius:8px;object-fit:cover;background:#eef1f4;flex:0 0 auto}
+.delivery-section{margin-top:14px;border-top:1px solid #eee;padding-top:14px}
+.delivery-toggle{width:100%;text-align:left;border:1px solid var(--line);background:#fafbfc;border-radius:9px;padding:11px 14px;font-weight:800}
+.delivery-toggle.active{background:var(--nav2);color:#fff;border-color:var(--nav2)}
+.delivery-fields{margin-top:10px;display:grid;gap:4px}
 .pcart-btn{position:absolute;right:9px;top:48px;width:34px;height:34px;border-radius:50%;border:0;background:var(--success);color:#fff;font-size:15px;display:grid;place-items:center;box-shadow:0 2px 8px #0003;z-index:3}
 
 /* ================= FOOTER ================= */
@@ -841,6 +849,16 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    <button class="primary" id="addNewsVideo" type="button" style="margin-top:10px">＋ Añadir a "Lo Nuevo"</button>
    <div class="admin-list" id="newsAdminList" style="margin-top:14px"></div>
   </div>
+
+  <!-- ZONAS DE ENTREGA -->
+  <div class="panel" style="margin-top:14px">
+   <h3>🚚 Zonas de entrega y tarifas</h3>
+   <p class="small">Municipios hacia los que se realizan entregas a domicilio, con su tarifa correspondiente. Puedes añadir, editar o eliminar municipios en cualquier momento.</p>
+   <div class="admin-toolbar">
+    <button class="btn primary" id="addDeliveryZone" type="button">＋ Añadir municipio</button>
+   </div>
+   <div class="admin-list" id="deliveryZonesAdminList"></div>
+  </div>
  </div>
 </div>
 
@@ -895,10 +913,23 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    <button class="close" id="cartClose" type="button" style="position:static">×</button>
   </div>
   <div id="cartItems"></div>
-  <div id="cartTotal" class="cart-total"></div>
+  <div id="cartTotals"></div>
+
+  <div class="delivery-section">
+   <button type="button" class="delivery-toggle" id="deliveryToggle">🚚 Entregas a Domicilio</button>
+   <div class="delivery-fields hidden" id="deliveryFields">
+    <div class="field"><label>Pedido a nombre de:</label><input id="deliveryName" placeholder="Nombre de quien recibe"></div>
+    <div class="field"><label>Dirección de entrega:</label><input id="deliveryAddress" placeholder="Calle, número, referencia"></div>
+    <div class="field"><label>Municipio:</label>
+     <select id="deliveryMunicipio"><option value="">Selecciona un municipio…</option></select>
+    </div>
+    <div class="small" id="deliveryFeeDisplay"></div>
+   </div>
+  </div>
+
   <div class="edit-actions">
    <button class="btn" id="cartClear" type="button">Vaciar carrito</button>
-   <button class="btn primary" id="cartCheckout" type="button">📱 Pedir por WhatsApp</button>
+   <button class="btn primary" id="cartCheckout" type="button"><svg viewBox="0 0 32 32" fill="currentColor" width="16" height="16" xmlns="http://www.w3.org/2000/svg" style="vertical-align:-3px;margin-right:5px"><path d="M16.001 3C9.107 3 3.5 8.606 3.5 15.5c0 2.297.615 4.45 1.688 6.307L3 29l7.4-2.142A12.44 12.44 0 0 0 16 28c6.894 0 12.5-5.606 12.5-12.5S22.895 3 16.001 3zm0 22.688c-2.02 0-3.916-.55-5.548-1.51l-.397-.235-4.393 1.272 1.294-4.28-.259-.415a10.15 10.15 0 0 1-1.573-5.02C4.925 9.79 9.79 4.925 16 4.925c6.21 0 11.075 4.865 11.075 10.575 0 5.71-4.865 10.188-10.074 10.188zm5.746-7.596c-.313-.157-1.85-.913-2.136-1.017-.286-.104-.494-.157-.702.157-.208.313-.807 1.017-.99 1.226-.182.208-.364.234-.677.078-.313-.157-1.322-.487-2.518-1.552-.931-.83-1.56-1.856-1.743-2.169-.182-.313-.02-.482.137-.638.14-.14.313-.365.47-.547.156-.183.208-.313.313-.522.104-.208.052-.39-.026-.548-.078-.157-.702-1.692-.963-2.317-.253-.61-.51-.527-.702-.536l-.598-.011c-.208 0-.548.078-.834.39-.286.313-1.093 1.068-1.093 2.604 0 1.537 1.119 3.023 1.275 3.232.156.208 2.203 3.366 5.34 4.72.746.322 1.328.514 1.782.658.749.238 1.43.204 1.968.124.6-.09 1.85-.756 2.11-1.487.26-.73.26-1.356.182-1.487-.078-.13-.286-.208-.6-.365z"/></svg>Pedir por WhatsApp</button>
   </div>
  </div>
 </div>
@@ -1025,6 +1056,18 @@ let config={
  fabTextYt:"¡Suscríbete!",
  deliveryBadgeEnabled:true,
  deliveryBadgeText:"Entregas a Domicilio",
+ deliveryZones:[
+  {name:"Vedado", fee:1200},
+  {name:"Miramar", fee:1500},
+  {name:"Alturas de Miramar", fee:1400},
+  {name:"Playa", fee:2000},
+  {name:"Nuevo Vedado", fee:1600},
+  {name:"Reparto Koly", fee:1500},
+  {name:"Puentes Grandes", fee:1800},
+  {name:"Boyeros", fee:2100},
+  {name:"Centro Habana", fee:1700},
+  {name:"Habana Vieja", fee:1800}
+ ],
  banners:[]
 };
 
@@ -1488,6 +1531,12 @@ function load(){
   if(!config.contactHours)config.contactHours="Lunes a Viernes / 9:00am - 5:30pm";
   if(!Array.isArray(config.banners))config.banners=[];
   if(!Array.isArray(config.newsVideos))config.newsVideos=[];
+  if(!Array.isArray(config.deliveryZones))config.deliveryZones=[
+   {name:"Vedado", fee:1200},{name:"Miramar", fee:1500},{name:"Alturas de Miramar", fee:1400},
+   {name:"Playa", fee:2000},{name:"Nuevo Vedado", fee:1600},{name:"Reparto Koly", fee:1500},
+   {name:"Puentes Grandes", fee:1800},{name:"Boyeros", fee:2100},{name:"Centro Habana", fee:1700},
+   {name:"Habana Vieja", fee:1800}
+  ];
   if(Array.isArray(config.categoryTree) && config.categoryTree.length){
    CATEGORY_TREE=config.categoryTree;
   }else{
@@ -2059,15 +2108,24 @@ async function shareProduct(p){
    CARRITO DE COMPRAS
 ========================================================= */
 let cart=[]; // [{id, qty}]
+let deliveryInfo={enabled:false, name:"", address:"", municipio:"", fee:0};
 
 function loadCart(){
  try{cart=JSON.parse(localStorage.getItem("mercado_cart")||"[]");}catch(e){cart=[];}
  if(!Array.isArray(cart))cart=[];
+ try{
+  let d=JSON.parse(localStorage.getItem("mercado_delivery")||"null");
+  if(d && typeof d==="object") deliveryInfo={enabled:false, name:"", address:"", municipio:"", fee:0, ...d, enabled:false};
+ }catch(e){}
 }
 
 function saveCart(){
  try{localStorage.setItem("mercado_cart",JSON.stringify(cart));}catch(e){}
  renderCartBadge();
+}
+
+function saveDeliveryInfo(){
+ try{localStorage.setItem("mercado_delivery",JSON.stringify(deliveryInfo));}catch(e){}
 }
 
 function cartTotalCount(){
@@ -2107,6 +2165,12 @@ function setCartQty(productId,qty){
 
 function openCart(){
  renderCartModal();
+ let nameEl=$("#deliveryName"), addrEl=$("#deliveryAddress"), toggle=$("#deliveryToggle"), fields=$("#deliveryFields");
+ if(nameEl) nameEl.value=deliveryInfo.name||"";
+ if(addrEl) addrEl.value=deliveryInfo.address||"";
+ if(toggle) toggle.classList.toggle("active", deliveryInfo.enabled);
+ if(fields) fields.classList.toggle("hidden", !deliveryInfo.enabled);
+ renderDeliveryZoneOptions();
  let m=$("#cartModal");
  if(m) m.classList.add("open");
 }
@@ -2116,28 +2180,40 @@ function closeCart(){
  if(m) m.classList.remove("open");
 }
 
-function renderCartModal(){
- let box=$("#cartItems"), totalEl=$("#cartTotal");
+function cartProductsTotal(cur,base){
+ let total=0;
+ cart.forEach(entry=>{
+  let p=products.find(x=>x.id===entry.id);
+  if(!p)return;
+  total+=convert(p.price,base,cur)*entry.qty;
+ });
+ return total;
+}
+
+async function renderCartModal(){
+ let box=$("#cartItems"), totalsEl=$("#cartTotals");
  if(!box)return;
  box.innerHTML="";
  if(!cart.length){
   box.innerHTML=`<div class="empty">Tu carrito está vacío.</div>`;
-  if(totalEl) totalEl.textContent="";
+  if(totalsEl) totalsEl.innerHTML="";
   return;
  }
  let currencyEl=$("#currency");
  let cur=currencyEl?currencyEl.value:"USD";
  let base=config.base;
  let total=0;
- cart.forEach(entry=>{
+ for(let entry of cart){
   let p=products.find(x=>x.id===entry.id);
-  if(!p)return;
+  if(!p)continue;
   let pr=convert(p.price,base,cur);
   let subtotal=pr*entry.qty;
   total+=subtotal;
+  let thumbUrl=await mediaUrl(p.image);
   let row=document.createElement("div");
   row.className="cart-row";
   row.innerHTML=`
+   ${thumbUrl?`<img class="cart-row-thumb" src="${thumbUrl}" alt="">`:`<div class="cart-row-thumb" style="display:grid;place-items:center;font-size:18px">🛍️</div>`}
    <div class="cart-row-info">
     <strong>${esc(p.name)}</strong>
     <span class="small">${money(pr,cur)} c/u</span>
@@ -2153,8 +2229,41 @@ function renderCartModal(){
   row.querySelector('[data-act="inc"]').onclick=()=>setCartQty(entry.id,entry.qty+1);
   row.querySelector(".cart-row-remove").onclick=()=>removeFromCart(entry.id);
   box.appendChild(row);
- });
- if(totalEl) totalEl.textContent=`Total: ${money(total,cur)} ${cur}`;
+ }
+ renderCartTotalsDisplay();
+}
+
+function renderCartTotalsDisplay(){
+ let totalsEl=$("#cartTotals");
+ if(!totalsEl)return;
+ let currencyEl=$("#currency");
+ let cur=currencyEl?currencyEl.value:"USD";
+ let base=config.base;
+ let total=cartProductsTotal(cur,base);
+ let html=`<div class="line products">Total productos: ${money(total,cur)} ${cur}</div>`;
+ if(deliveryInfo.enabled && deliveryInfo.municipio){
+  html+=`<div class="line delivery">🚚 Costo de entrega (${esc(deliveryInfo.municipio)}): ${deliveryInfo.fee.toLocaleString("es-ES")} CUP</div>`;
+ }
+ totalsEl.innerHTML=html;
+}
+
+function renderDeliveryZoneOptions(){
+ let sel=$("#deliveryMunicipio");
+ if(!sel)return;
+ let zones=config.deliveryZones||[];
+ sel.innerHTML=`<option value="">Selecciona un municipio…</option>`+zones.map(z=>
+  `<option value="${esc(z.name)}" ${z.name===deliveryInfo.municipio?"selected":""}>${esc(z.name)} — ${Number(z.fee).toLocaleString("es-ES")} CUP</option>`
+ ).join("");
+ updateDeliveryFeeDisplay();
+}
+
+function updateDeliveryFeeDisplay(){
+ let el=$("#deliveryFeeDisplay");
+ let zones=config.deliveryZones||[];
+ let zone=zones.find(z=>z.name===deliveryInfo.municipio);
+ deliveryInfo.fee=zone?Number(zone.fee):0;
+ if(el) el.textContent = zone ? `Costo de entrega a ${zone.name}: ${deliveryInfo.fee.toLocaleString("es-ES")} CUP` : "";
+ renderCartTotalsDisplay();
 }
 
 async function clearCart(){
@@ -2165,11 +2274,21 @@ async function clearCart(){
  renderCartModal();
 }
 
-function checkoutCart(){
- if(!cart.length){toast("Tu carrito está vacío");return;}
- let currencyEl=$("#currency");
- let cur=currencyEl?currencyEl.value:"USD";
- let base=config.base;
+/* =========================================================
+   GENERAR IMAGEN DEL PEDIDO Y ENVIAR POR WHATSAPP
+========================================================= */
+function loadImageSafe(url){
+ return new Promise(resolve=>{
+  if(!url){resolve(null);return;}
+  let img=new Image();
+  img.crossOrigin="anonymous";
+  img.onload=()=>resolve(img);
+  img.onerror=()=>resolve(null);
+  img.src=url;
+ });
+}
+
+function buildOrderTextSummary(cur,base,now){
  let lines=[];
  let total=0;
  cart.forEach(entry=>{
@@ -2180,8 +2299,145 @@ function checkoutCart(){
   total+=subtotal;
   lines.push(`- ${p.name} x${entry.qty} — ${money(subtotal,cur)}`);
  });
- let msg=`Hola! Quiero hacer el siguiente pedido 🛒:\n\n${lines.join("\n")}\n\nTotal: ${money(total,cur)} ${cur}`;
- wa(msg);
+ let msg=`Hola! Quiero hacer el siguiente pedido 🛒\nFecha y hora: ${now.toLocaleString("es-ES")}\n\n${lines.join("\n")}\n\nTotal productos: ${money(total,cur)} ${cur}`;
+ if(deliveryInfo.enabled && deliveryInfo.municipio){
+  msg+=`\n\n🚚 Entrega a domicilio:\nPedido a nombre de: ${deliveryInfo.name}\nDirección de entrega: ${deliveryInfo.address}\nMunicipio: ${deliveryInfo.municipio}\nCosto de entrega: ${deliveryInfo.fee.toLocaleString("es-ES")} CUP (independiente del total de productos)`;
+ }
+ return msg;
+}
+
+async function generateOrderImageBlob(cur,base,now){
+ let rows=[];
+ for(let entry of cart){
+  let p=products.find(x=>x.id===entry.id);
+  if(!p)continue;
+  let pr=convert(p.price,base,cur);
+  let subtotal=pr*entry.qty;
+  let imgUrl=await mediaUrl(p.image);
+  let img=await loadImageSafe(imgUrl);
+  rows.push({name:p.name, qty:entry.qty, subtotal, img});
+ }
+ let productsTotal=rows.reduce((s,r)=>s+r.subtotal,0);
+
+ let W=720;
+ let rowH=72;
+ let headerH=86;
+ let footerH=70 + (deliveryInfo.enabled && deliveryInfo.municipio ? 140 : 0);
+ let H=headerH + rows.length*rowH + footerH;
+
+ let canvas=document.createElement("canvas");
+ canvas.width=W; canvas.height=H;
+ let ctx=canvas.getContext("2d");
+
+ ctx.fillStyle="#f5f6f7";
+ ctx.fillRect(0,0,W,H);
+
+ ctx.fillStyle="#131921";
+ ctx.fillRect(0,0,W,headerH);
+ ctx.fillStyle="#ffffff";
+ ctx.font="bold 26px Arial, sans-serif";
+ ctx.fillText(config.name || "MERCADO", 24, 40);
+ ctx.font="14px Arial, sans-serif";
+ ctx.fillText("Pedido — "+now.toLocaleString("es-ES"), 24, 66);
+
+ let y=headerH+14;
+ rows.forEach(r=>{
+  if(r.img){
+   ctx.drawImage(r.img, 24, y, 54, 54);
+  }else{
+   ctx.fillStyle="#e2e5e8";
+   ctx.fillRect(24,y,54,54);
+  }
+  ctx.fillStyle="#17202a";
+  ctx.font="bold 17px Arial, sans-serif";
+  ctx.fillText(r.name.length>34?r.name.slice(0,34)+"…":r.name, 92, y+22);
+  ctx.font="14px Arial, sans-serif";
+  ctx.fillStyle="#667085";
+  ctx.fillText("Cantidad: "+r.qty, 92, y+44);
+  ctx.textAlign="right";
+  ctx.fillStyle="#17202a";
+  ctx.font="bold 16px Arial, sans-serif";
+  ctx.fillText(money(r.subtotal,cur), W-24, y+32);
+  ctx.textAlign="left";
+  y+=rowH;
+ });
+
+ ctx.strokeStyle="#d5d9d9";
+ ctx.beginPath();ctx.moveTo(24,y+6);ctx.lineTo(W-24,y+6);ctx.stroke();
+ y+=32;
+
+ ctx.font="bold 19px Arial, sans-serif";
+ ctx.fillStyle="#131921";
+ ctx.fillText("Total productos:", 24, y);
+ ctx.textAlign="right";
+ ctx.fillText(`${money(productsTotal,cur)} ${cur}`, W-24, y);
+ ctx.textAlign="left";
+ y+=20;
+
+ if(deliveryInfo.enabled && deliveryInfo.municipio){
+  y+=24;
+  ctx.strokeStyle="#d5d9d9";
+  ctx.beginPath();ctx.moveTo(24,y-14);ctx.lineTo(W-24,y-14);ctx.stroke();
+  ctx.font="bold 16px Arial, sans-serif";
+  ctx.fillStyle="#131921";
+  ctx.fillText("🚚 Entrega a domicilio", 24, y); y+=24;
+  ctx.font="14px Arial, sans-serif";
+  ctx.fillStyle="#667085";
+  ctx.fillText("A nombre de: "+(deliveryInfo.name||"—"), 24, y); y+=20;
+  ctx.fillText("Dirección: "+(deliveryInfo.address||"—"), 24, y); y+=20;
+  ctx.fillText("Municipio: "+deliveryInfo.municipio, 24, y); y+=26;
+  ctx.font="bold 17px Arial, sans-serif";
+  ctx.fillStyle="#131921";
+  ctx.fillText("Costo de entrega (independiente):", 24, y);
+  ctx.textAlign="right";
+  ctx.fillText(`${deliveryInfo.fee.toLocaleString("es-ES")} CUP`, W-24, y);
+  ctx.textAlign="left";
+ }
+
+ return new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
+}
+
+async function checkoutCart(){
+ if(!cart.length){toast("Tu carrito está vacío");return;}
+ if(deliveryInfo.enabled){
+  if(!deliveryInfo.name.trim() || !deliveryInfo.address.trim() || !deliveryInfo.municipio){
+   toast("Completa nombre, dirección y municipio para la entrega a domicilio");
+   return;
+  }
+ }
+ saveDeliveryInfo();
+ let currencyEl=$("#currency");
+ let cur=currencyEl?currencyEl.value:"USD";
+ let base=config.base;
+ let now=new Date();
+ let textSummary=buildOrderTextSummary(cur,base,now);
+
+ toast("Generando imagen del pedido…");
+ try{
+  let blob=await generateOrderImageBlob(cur,base,now);
+  if(!blob) throw new Error("No se pudo generar la imagen");
+  let file=new File([blob], "pedido.png", {type:"image/png"});
+
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+   await navigator.share({files:[file], title:"Pedido", text:textSummary});
+   closeCart();
+  }else{
+   let url=URL.createObjectURL(blob);
+   let a=document.createElement("a");
+   a.href=url; a.download="pedido.png";
+   document.body.appendChild(a); a.click(); a.remove();
+   setTimeout(()=>{try{URL.revokeObjectURL(url);}catch(e){}},4000);
+   toast("Imagen del pedido descargada — ábrela y adjúntala en WhatsApp");
+   wa(textSummary);
+   closeCart();
+  }
+ }catch(e){
+  if(e && e.name==="AbortError")return; // el cliente canceló el menú de compartir
+  console.error(e);
+  toast("No se pudo generar la imagen, se enviará el pedido como texto");
+  wa(textSummary);
+  closeCart();
+ }
 }
 
 let productsRenderToken=0;
@@ -2580,7 +2836,7 @@ async function enterAdmin(){
 
 function openAdminPanel(){
  $("#admin").classList.add("open");
- loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();
+ loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();
  maybeMigrateToCloud();
 }
 
@@ -3404,6 +3660,84 @@ async function deleteType(ci,si,ti){
 }
 
 /* =========================================================
+   ZONAS DE ENTREGA (admin)
+========================================================= */
+function renderDeliveryZonesAdmin(){
+ let box=$("#deliveryZonesAdminList");
+ if(!box)return;
+ let zones=config.deliveryZones||[];
+ box.innerHTML="";
+ if(!zones.length){
+  box.innerHTML=`<div class="empty">No hay municipios configurados todavía.</div>`;
+  return;
+ }
+ zones.forEach((z,i)=>{
+  let d=document.createElement("div");
+  d.className="admin-item";
+  d.innerHTML=`
+   <div class="admin-item-main">
+    <strong>${esc(z.name)}</strong>
+    <span class="small">${Number(z.fee).toLocaleString("es-ES")} CUP</span>
+   </div>
+   <div class="admin-item-actions">
+    <button class="btn edit-zone" type="button">✎</button>
+    <button class="btn danger delete-zone" type="button">🗑</button>
+   </div>`;
+  d.querySelector(".edit-zone").onclick=()=>editDeliveryZone(i);
+  d.querySelector(".delete-zone").onclick=()=>deleteDeliveryZone(i);
+  box.appendChild(d);
+ });
+}
+
+async function addDeliveryZonePrompt(){
+ let name=await customPrompt("Nombre del municipio");
+ if(name===null)return;
+ name=name.trim();
+ if(!name){toast("Escribe un nombre válido");return;}
+ if((config.deliveryZones||[]).some(z=>z.name===name)){toast("Ya existe ese municipio");return;}
+ let feeStr=await customPrompt("Tarifa de entrega (en CUP)","");
+ if(feeStr===null)return;
+ let fee=Number(String(feeStr).replace(/[^\d.]/g,""));
+ if(!Number.isFinite(fee) || fee<0){toast("Escribe una tarifa válida");return;}
+ if(!Array.isArray(config.deliveryZones))config.deliveryZones=[];
+ config.deliveryZones.push({name,fee});
+ save();
+ renderDeliveryZonesAdmin();
+ renderDeliveryZoneOptions();
+ toast("Municipio añadido");
+}
+
+async function editDeliveryZone(i){
+ let zone=config.deliveryZones[i];
+ let name=await customPrompt("Nuevo nombre del municipio",zone.name);
+ if(name===null)return;
+ name=name.trim();
+ if(!name){toast("Escribe un nombre válido");return;}
+ let feeStr=await customPrompt("Nueva tarifa de entrega (en CUP)",String(zone.fee));
+ if(feeStr===null)return;
+ let fee=Number(String(feeStr).replace(/[^\d.]/g,""));
+ if(!Number.isFinite(fee) || fee<0){toast("Escribe una tarifa válida");return;}
+ let oldName=zone.name;
+ zone.name=name; zone.fee=fee;
+ if(deliveryInfo.municipio===oldName) deliveryInfo.municipio=name;
+ save();
+ renderDeliveryZonesAdmin();
+ renderDeliveryZoneOptions();
+ toast("Municipio actualizado");
+}
+
+async function deleteDeliveryZone(i){
+ let zone=config.deliveryZones[i];
+ if(!(await customConfirm(`¿Eliminar "${zone.name}" de las zonas de entrega?`)))return;
+ config.deliveryZones.splice(i,1);
+ if(deliveryInfo.municipio===zone.name){deliveryInfo.municipio="";deliveryInfo.fee=0;}
+ save();
+ renderDeliveryZonesAdmin();
+ renderDeliveryZoneOptions();
+ toast("Municipio eliminado");
+}
+
+/* =========================================================
    TASAS
 ========================================================= */
 async function fetchRates(){
@@ -3557,6 +3891,19 @@ function bind(){
  $("#cartModal").onclick=e=>{if(e.target===e.currentTarget)closeCart();};
  $("#cartClear").onclick=clearCart;
  $("#cartCheckout").onclick=checkoutCart;
+ $("#deliveryToggle").onclick=()=>{
+  deliveryInfo.enabled=!deliveryInfo.enabled;
+  $("#deliveryFields").classList.toggle("hidden", !deliveryInfo.enabled);
+  $("#deliveryToggle").classList.toggle("active", deliveryInfo.enabled);
+  if(deliveryInfo.enabled) renderDeliveryZoneOptions();
+  renderCartTotalsDisplay();
+ };
+ $("#deliveryName").oninput=e=>{deliveryInfo.name=e.target.value;};
+ $("#deliveryAddress").oninput=e=>{deliveryInfo.address=e.target.value;};
+ $("#deliveryMunicipio").onchange=e=>{
+  deliveryInfo.municipio=e.target.value;
+  updateDeliveryFeeDisplay();
+ };
  $("#faqModal").onclick=e=>{if(e.target===e.currentTarget)closeFaq();};
  $("#promptCancel").onclick=()=>closePromptModal(null);
  $("#promptOk").onclick=()=>{
@@ -3672,6 +4019,7 @@ function bind(){
  $("#newPass").oninput=updatePasswordMeter;
  $("#addBanner").onclick=addBanner;
  $("#addCategory").onclick=addCategoryPrompt;
+ $("#addDeliveryZone").onclick=addDeliveryZonePrompt;
 
  $("#newsVideoBtn").onclick=()=>{$("#newsVideoInput").click();};
  $("#newsVideoInput").onchange=async()=>{
