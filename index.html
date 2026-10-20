@@ -176,9 +176,6 @@ main{max-width:var(--max);margin:auto;padding:14px}
 .fab.show{opacity:1;transform:scale(1) translateY(0);pointer-events:auto}
 .fab svg{width:28px;height:28px;display:block}
 .fab.wa-fab{background:var(--success);--pulse:rgba(37,211,102,.55)}
-.fab.fb-fab{background:#1877F2;--pulse:rgba(24,119,242,.55)}
-.fab.ig-fab{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);--pulse:rgba(214,36,159,.55)}
-.fab.yt-fab{background:#FF0000;--pulse:rgba(255,0,0,.5)}
 @keyframes fabPulse{
  0%{box-shadow:0 10px 25px #0003, 0 0 0 0 var(--pulse)}
  70%{box-shadow:0 10px 25px #0003, 0 0 0 14px rgba(0,0,0,0)}
@@ -342,7 +339,8 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 .delivery-toggle{width:100%;text-align:left;border:1px solid var(--line);background:#fafbfc;border-radius:9px;padding:11px 14px;font-weight:800}
 .delivery-toggle.active{background:var(--nav2);color:#fff;border-color:var(--nav2)}
 .delivery-fields{margin-top:10px;display:grid;gap:4px}
-.pcart-btn{position:absolute;right:9px;top:48px;width:34px;height:34px;border-radius:50%;border:0;background:var(--success);color:#fff;font-size:15px;display:grid;place-items:center;box-shadow:0 2px 8px #0003;z-index:3}
+.pcart-btn{position:absolute;right:9px;top:48px;width:34px;height:34px;border-radius:50%;border:0;background:var(--cart-btn-color, var(--success));color:#fff;font-size:15px;display:grid;place-items:center;box-shadow:0 2px 8px #0003;z-index:3}
+.field input[type=color]{height:46px;padding:4px;cursor:pointer}
 
 /* ================= FOOTER ================= */
 .site-footer{background:var(--nav);color:#cfd6dd;margin-top:26px;padding:26px 14px 100px;text-align:center}
@@ -497,20 +495,12 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
  </div>
 </footer>
 
-<div class="fab-group">
+<div class="fab-group" id="fabGroup">
  <div class="fab-bubble" id="fabBubble"><span id="fabBubbleText"></span></div>
  <button class="fab wa-fab" id="fab" type="button" aria-label="WhatsApp">
   <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.001 3C9.107 3 3.5 8.606 3.5 15.5c0 2.297.615 4.45 1.688 6.307L3 29l7.4-2.142A12.44 12.44 0 0 0 16 28c6.894 0 12.5-5.606 12.5-12.5S22.895 3 16.001 3zm0 22.688c-2.02 0-3.916-.55-5.548-1.51l-.397-.235-4.393 1.272 1.294-4.28-.259-.415a10.15 10.15 0 0 1-1.573-5.02C4.925 9.79 9.79 4.925 16 4.925c6.21 0 11.075 4.865 11.075 10.575 0 5.71-4.865 10.188-10.074 10.188zm5.746-7.596c-.313-.157-1.85-.913-2.136-1.017-.286-.104-.494-.157-.702.157-.208.313-.807 1.017-.99 1.226-.182.208-.364.234-.677.078-.313-.157-1.322-.487-2.518-1.552-.931-.83-1.56-1.856-1.743-2.169-.182-.313-.02-.482.137-.638.14-.14.313-.365.47-.547.156-.183.208-.313.313-.522.104-.208.052-.39-.026-.548-.078-.157-.702-1.692-.963-2.317-.253-.61-.51-.527-.702-.536l-.598-.011c-.208 0-.548.078-.834.39-.286.313-1.093 1.068-1.093 2.604 0 1.537 1.119 3.023 1.275 3.232.156.208 2.203 3.366 5.34 4.72.746.322 1.328.514 1.782.658.749.238 1.43.204 1.968.124.6-.09 1.85-.756 2.11-1.487.26-.73.26-1.356.182-1.487-.078-.13-.286-.208-.6-.365z"/></svg>
  </button>
- <button class="fab fb-fab" id="fabFacebook" type="button" aria-label="Facebook">
-  <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M28 16c0-6.627-5.373-12-12-12S4 9.373 4 16c0 5.99 4.388 10.954 10.125 11.854V19.46h-3.047V16h3.047v-2.64c0-3.008 1.792-4.669 4.533-4.669 1.312 0 2.686.234 2.686.234v2.953H19.83c-1.491 0-1.956.925-1.956 1.874V16h3.328l-.532 3.46h-2.796v8.394C23.612 26.954 28 21.99 28 16z"/></svg>
- </button>
- <button class="fab ig-fab" id="fabInstagram" type="button" aria-label="Instagram">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg>
- </button>
- <button class="fab yt-fab" id="fabYoutube" type="button" aria-label="YouTube">
-  <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M29.4 9.7s-.29-2.05-1.18-2.95c-1.13-1.19-2.4-1.19-2.98-1.26C21.1 5.1 16 5.1 16 5.1h-.01s-5.1 0-9.24.39c-.58.07-1.85.07-2.98 1.26C2.89 7.65 2.6 9.7 2.6 9.7S2.3 12.1 2.3 14.5v2.25c0 2.4.3 4.8.3 4.8s.29 2.05 1.17 2.95c1.13 1.19 2.61 1.15 3.27 1.28C9.4 25.9 16 25.96 16 25.96s5.11-.01 9.25-.4c.58-.07 1.85-.07 2.98-1.26.89-.9 1.18-2.95 1.18-2.95s.3-2.4.3-4.8v-2.25c0-2.4-.3-4.8-.3-4.8zM13 19.45v-8.9l7.6 4.46-7.6 4.44z"/></svg>
- </button>
+ <!-- Los botones de las demás redes sociales se generan aquí dinámicamente, según la configuración del admin -->
 </div>
 </div>
 
@@ -627,18 +617,6 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
      <input id="cfgFxProxy" placeholder="https://tu-servidor.com/api/rates">
     </div>
     <div class="field">
-     <label>📘 URL de la página de Facebook</label>
-     <input id="cfgFacebook" placeholder="https://facebook.com/tu-pagina">
-    </div>
-    <div class="field">
-     <label>📸 URL del perfil de Instagram</label>
-     <input id="cfgInstagram" placeholder="https://instagram.com/tu-perfil">
-    </div>
-    <div class="field">
-     <label>▶️ URL del canal de YouTube</label>
-     <input id="cfgYoutube" placeholder="https://youtube.com/@tu-canal">
-    </div>
-    <div class="field">
      <label>Moneda base</label>
      <select id="cfgBase">
       <option>USD</option>
@@ -703,18 +681,6 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    <div class="field">
     <label>Texto de la burbuja de WhatsApp</label>
     <input id="cfgFabWa" placeholder="¿Cómo le podemos ayudar?">
-   </div>
-   <div class="field">
-    <label>Texto de la burbuja de Facebook</label>
-    <input id="cfgFabFb" placeholder="¡Síguenos!">
-   </div>
-   <div class="field">
-    <label>Texto de la burbuja de Instagram</label>
-    <input id="cfgFabIg" placeholder="¡Síguenos!">
-   </div>
-   <div class="field">
-    <label>Texto de la burbuja de YouTube</label>
-    <input id="cfgFabYt" placeholder="¡Suscríbete!">
    </div>
    <button class="primary" id="saveWaCfg" type="button">Guardar textos y WhatsApp</button>
   </div>
@@ -859,6 +825,47 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    </div>
    <div class="admin-list" id="deliveryZonesAdminList"></div>
   </div>
+
+  <!-- REDES SOCIALES -->
+  <div class="panel" style="margin-top:14px">
+   <h3>🌐 Redes sociales (botones flotantes)</h3>
+   <p class="small">WhatsApp es fijo. Aquí puedes añadir o quitar las demás redes que aparecen como botones flotantes en bucle.</p>
+   <div class="field">
+    <label>Red social</label>
+    <select id="socialPlatform">
+     <option value="facebook">Facebook</option>
+     <option value="instagram">Instagram</option>
+     <option value="youtube">YouTube</option>
+     <option value="tiktok">TikTok</option>
+     <option value="twitter">Twitter / X</option>
+     <option value="telegram">Telegram</option>
+     <option value="linkedin">LinkedIn</option>
+     <option value="pinterest">Pinterest</option>
+    </select>
+   </div>
+   <div class="field">
+    <label>Enlace / URL del perfil</label>
+    <input id="socialUrl" placeholder="https://...">
+   </div>
+   <div class="field">
+    <label>Texto de la burbuja</label>
+    <input id="socialBubbleText" placeholder="¡Síguenos!">
+   </div>
+   <button class="primary" id="addSocialBtn" type="button">＋ Añadir red social</button>
+   <div class="admin-list" id="socialAdminList" style="margin-top:14px"></div>
+  </div>
+
+  <!-- COLOR DEL BOTÓN DE CARRITO -->
+  <div class="panel" style="margin-top:14px">
+   <h3>🎨 Color del botón "Añadir al carrito"</h3>
+   <p class="small">Elige el color de fondo del botón 🛒 que aparece sobre la foto de cada producto.</p>
+   <div class="field">
+    <label>Color de fondo</label>
+    <input type="color" id="cfgCartColor" value="#25d366">
+   </div>
+   <button class="btn" id="resetCartColor" type="button">Restablecer color predeterminado</button>
+   <button class="primary" id="saveCartColor" type="button" style="margin-top:8px">Guardar color</button>
+  </div>
  </div>
 </div>
 
@@ -956,6 +963,17 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    CONFIGURACIÓN PRINCIPAL
 ========================================================= */
 const WA="1506452277745";
+
+const SOCIAL_PLATFORMS={
+ facebook:{label:"Facebook", color:"#1877F2", pulse:"rgba(24,119,242,.55)", icon:`<svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M28 16c0-6.627-5.373-12-12-12S4 9.373 4 16c0 5.99 4.388 10.954 10.125 11.854V19.46h-3.047V16h3.047v-2.64c0-3.008 1.792-4.669 4.533-4.669 1.312 0 2.686.234 2.686.234v2.953H19.83c-1.491 0-1.956.925-1.956 1.874V16h3.328l-.532 3.46h-2.796v8.394C23.612 26.954 28 21.99 28 16z"/></svg>`},
+ instagram:{label:"Instagram", color:"radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%)", pulse:"rgba(214,36,159,.55)", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg>`},
+ youtube:{label:"YouTube", color:"#FF0000", pulse:"rgba(255,0,0,.5)", icon:`<svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M29.4 9.7s-.29-2.05-1.18-2.95c-1.13-1.19-2.4-1.19-2.98-1.26C21.1 5.1 16 5.1 16 5.1h-.01s-5.1 0-9.24.39c-.58.07-1.85.07-2.98 1.26C2.89 7.65 2.6 9.7 2.6 9.7S2.3 12.1 2.3 14.5v2.25c0 2.4.3 4.8.3 4.8s.29 2.05 1.17 2.95c1.13 1.19 2.61 1.15 3.27 1.28C9.4 25.9 16 25.96 16 25.96s5.11-.01 9.25-.4c.58-.07 1.85-.07 2.98-1.26.89-.9 1.18-2.95 1.18-2.95s.3-2.4.3-4.8v-2.25c0-2.4-.3-4.8-.3-4.8zM13 19.45v-8.9l7.6 4.46-7.6 4.44z"/></svg>`},
+ tiktok:{label:"TikTok", color:"#010101", pulse:"rgba(255,255,255,.4)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.6 5.82c-1.05-.9-1.6-2.17-1.6-3.52h-3.03v13.6c0 1.64-1.32 2.98-2.96 2.98a2.97 2.97 0 0 1-2.96-2.98 2.97 2.97 0 0 1 2.96-2.97c.28 0 .55.04.8.1V9.9a6.1 6.1 0 0 0-.8-.06A6.03 6.03 0 0 0 3 15.9a6.03 6.03 0 0 0 6 6.03 6.03 6.03 0 0 0 6-6.03V9.1a7.9 7.9 0 0 0 4.5 1.4V7.48a4.8 4.8 0 0 1-2.9-1.66z"/></svg>`},
+ twitter:{label:"Twitter / X", color:"#000000", pulse:"rgba(255,255,255,.4)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.9l-5.4-6.9L4.4 22H1.3l8.1-9.3L1 2h7.1l4.9 6.3L18.9 2Zm-1.2 18h1.9L7.4 4H5.4l12.3 16Z"/></svg>`},
+ telegram:{label:"Telegram", color:"#229ED9", pulse:"rgba(34,158,217,.5)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.9 4.3 18.7 19.8c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.3-8.4c.4-.4-.1-.6-.6-.2L6 12.7l-4.9-1.5c-1.1-.3-1.1-1.1.2-1.6L20.5 2.9c.9-.3 1.7.2 1.4 1.4Z"/></svg>`},
+ linkedin:{label:"LinkedIn", color:"#0A66C2", pulse:"rgba(10,102,194,.5)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.82-2.05 3.75-2.05 4 0 4.75 2.6 4.75 6V21H18v-5.3c0-1.27-.02-2.9-1.77-2.9-1.78 0-2.05 1.38-2.05 2.8V21H10V9Z"/></svg>`},
+ pinterest:{label:"Pinterest", color:"#E60023", pulse:"rgba(230,0,35,.5)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 0 0-3.64 19.3c-.05-.8-.1-2 .02-2.86.1-.78.68-5 .68-5s-.17-.35-.17-.85c0-.8.46-1.4 1.04-1.4.5 0 .73.37.73.8 0 .5-.32 1.24-.48 1.93-.14.58.3 1.05.86 1.05 1.04 0 1.84-1.1 1.84-2.68 0-1.4-1-2.38-2.44-2.38-1.66 0-2.64 1.25-2.64 2.53 0 .5.2 1.04.43 1.33.05.06.05.1.04.2l-.17.68c-.03.1-.09.13-.2.08-.76-.35-1.23-1.46-1.23-2.35 0-1.9 1.38-3.66 4-3.66 2.1 0 3.72 1.5 3.72 3.5 0 2.1-1.32 3.78-3.16 3.78-.62 0-1.2-.32-1.4-.7l-.38 1.46c-.14.52-.5 1.18-.75 1.58A10 10 0 1 0 12 2Z"/></svg>`}
+};
 const DEFAULT_PASSWORD="M3rcado+2026";
 const DB_NAME="mercado_catalog_v2";
 const DB_VER=2;
@@ -1054,6 +1072,7 @@ let config={
  fabTextFb:"¡Síguenos!",
  fabTextIg:"¡Síguenos!",
  fabTextYt:"¡Suscríbete!",
+ cartBtnColor:"#25d366",
  deliveryBadgeEnabled:true,
  deliveryBadgeText:"Entregas a Domicilio",
  deliveryZones:[
@@ -1478,9 +1497,10 @@ function watchCloudCatalog(){
     CATEGORY_TREE=config.categoryTree;
    }
    renderAll();
+   renderSocialFabs();
    let adminPanel=$("#admin");
    if(adminPanel && adminPanel.classList.contains("open")){
-    loadAdminFields();renderBannerAdmin();renderCategoryAdmin();
+    loadAdminFields();renderBannerAdmin();renderCategoryAdmin();renderDeliveryZonesAdmin();renderSocialAdmin();loadCartColorAdmin();
    }
   }
  }, e=>console.warn("No se pudo escuchar cambios de configuración:",e));
@@ -1537,6 +1557,12 @@ function load(){
    {name:"Puentes Grandes", fee:1800},{name:"Boyeros", fee:2100},{name:"Centro Habana", fee:1700},
    {name:"Habana Vieja", fee:1800}
   ];
+  if(!Array.isArray(config.socialLinks)){
+   config.socialLinks=[];
+   if(config.facebookUrl) config.socialLinks.push({id:createId("soc"), platform:"facebook", url:config.facebookUrl, bubbleText:config.fabTextFb||"¡Síguenos!"});
+   if(config.instagramUrl) config.socialLinks.push({id:createId("soc"), platform:"instagram", url:config.instagramUrl, bubbleText:config.fabTextIg||"¡Síguenos!"});
+   if(config.youtubeUrl) config.socialLinks.push({id:createId("soc"), platform:"youtube", url:config.youtubeUrl, bubbleText:config.fabTextYt||"¡Suscríbete!"});
+  }
   if(Array.isArray(config.categoryTree) && config.categoryTree.length){
    CATEGORY_TREE=config.categoryTree;
   }else{
@@ -1659,6 +1685,7 @@ function renderHero(){
  if(t) t.textContent = config.heroText || "";
  if(splashName) splashName.textContent = config.name || "MERCADO";
  document.title = config.name || "MERCADO";
+ document.documentElement.style.setProperty("--cart-btn-color", config.cartBtnColor || "#25d366");
 }
 
 function renderFooter(){
@@ -2836,7 +2863,7 @@ async function enterAdmin(){
 
 function openAdminPanel(){
  $("#admin").classList.add("open");
- loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();
+ loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();renderSocialAdmin();loadCartColorAdmin();
  maybeMigrateToCloud();
 }
 
@@ -2852,17 +2879,13 @@ function loadAdminFields(){
  $("#cfgAddress").value=config.contactAddress || "";
  $("#cfgHours").value=config.contactHours || "";
  $("#cfgFxProxy").value=config.fxProxy || "";
- $("#cfgFacebook").value=config.facebookUrl || "";
- $("#cfgInstagram").value=config.instagramUrl || "";
- $("#cfgYoutube").value=config.youtubeUrl || "";
+
  $("#cfgWhatsapp").value=config.whatsappNumber || "";
  $("#cfgMsgProduct").value=config.waMsgProduct || "";
  $("#cfgMsgService").value=config.waMsgService || "";
  $("#cfgMsgSupport").value=config.waMsgSupport || "";
  $("#cfgFabWa").value=config.fabTextWa || "";
- $("#cfgFabFb").value=config.fabTextFb || "";
- $("#cfgFabIg").value=config.fabTextIg || "";
- $("#cfgFabYt").value=config.fabTextYt || "";
+
  $("#cfgBase").value=config.base || "USD";
 
  let localBlock=$("#localPassBlock"), fbBlock=$("#firebasePassBlock");
@@ -3254,12 +3277,11 @@ function startBanner(){
    BOTONES FLOTANTES: ciclo con burbuja de "escritura mecanografiada"
 ========================================================= */
 function getFabSequence(){
- return [
-  {btn:"fab", text:config.fabTextWa||"¿Cómo le podemos ayudar?"},
-  {btn:"fabFacebook", text:config.fabTextFb||"¡Síguenos!"},
-  {btn:"fabInstagram", text:config.fabTextIg||"¡Síguenos!"},
-  {btn:"fabYoutube", text:config.fabTextYt||"¡Suscríbete!"}
- ];
+ let seq=[{btn:"fab", text:config.fabTextWa||"¿Cómo le podemos ayudar?"}];
+ (config.socialLinks||[]).forEach(s=>{
+  seq.push({btn:"social-"+s.id, text:s.bubbleText||"¡Síguenos!"});
+ });
+ return seq;
 }
 let fabHoldTimer=null;
 let fabTypeTimer=null;
@@ -3277,6 +3299,26 @@ function hideAllFabs(){
  let bubble=$("#fabBubble"), textEl=$("#fabBubbleText");
  if(bubble) bubble.classList.remove("show");
  if(textEl){textEl.textContent="";textEl.classList.remove("typing");}
+}
+
+function renderSocialFabs(){
+ let group=$("#fabGroup");
+ if(!group)return;
+ group.querySelectorAll(".fab.social-fab").forEach(el=>el.remove());
+ (config.socialLinks||[]).forEach(s=>{
+  let meta=SOCIAL_PLATFORMS[s.platform]||SOCIAL_PLATFORMS.facebook;
+  let btn=document.createElement("button");
+  btn.type="button";
+  btn.className="fab social-fab";
+  btn.id="social-"+s.id;
+  btn.setAttribute("aria-label", meta.label);
+  btn.style.background=meta.color;
+  btn.style.setProperty("--pulse", meta.pulse);
+  btn.innerHTML=meta.icon;
+  btn.onclick=()=>{window.open(s.url||("https://"+s.platform+".com"),"_blank","noopener,noreferrer");};
+  group.appendChild(btn);
+ });
+ startFabCycle();
 }
 
 function startFabCycle(){
@@ -3738,6 +3780,85 @@ async function deleteDeliveryZone(i){
 }
 
 /* =========================================================
+   REDES SOCIALES (admin)
+========================================================= */
+function renderSocialAdmin(){
+ let box=$("#socialAdminList");
+ if(!box)return;
+ let list=config.socialLinks||[];
+ box.innerHTML="";
+ if(!list.length){
+  box.innerHTML=`<div class="empty">No hay redes sociales añadidas todavía.</div>`;
+  return;
+ }
+ list.forEach(s=>{
+  let meta=SOCIAL_PLATFORMS[s.platform]||SOCIAL_PLATFORMS.facebook;
+  let d=document.createElement("div");
+  d.className="admin-item";
+  d.innerHTML=`
+   <div class="admin-item-main">
+    <strong>${esc(meta.label)}</strong>
+    <span class="small">${esc(s.url||"(sin enlace)")}</span>
+   </div>
+   <div class="admin-item-actions">
+    <button class="btn danger delete-social" type="button">Eliminar</button>
+   </div>`;
+  d.querySelector(".delete-social").onclick=()=>deleteSocialLink(s.id);
+  box.appendChild(d);
+ });
+}
+
+function addSocialLink(){
+ let platform=$("#socialPlatform").value;
+ let url=$("#socialUrl").value.trim();
+ let bubbleText=$("#socialBubbleText").value.trim();
+ if(!url){toast("Escribe el enlace del perfil");return;}
+ if(!Array.isArray(config.socialLinks))config.socialLinks=[];
+ config.socialLinks.push({id:createId("soc"), platform, url, bubbleText: bubbleText || "¡Síguenos!"});
+ save();
+ $("#socialUrl").value="";
+ $("#socialBubbleText").value="";
+ renderSocialAdmin();
+ renderSocialFabs();
+ toast("Red social añadida");
+}
+
+async function deleteSocialLink(id){
+ if(!(await customConfirm("¿Eliminar esta red social de los botones flotantes?")))return;
+ config.socialLinks=(config.socialLinks||[]).filter(s=>s.id!==id);
+ save();
+ renderSocialAdmin();
+ renderSocialFabs();
+ toast("Red social eliminada");
+}
+
+/* =========================================================
+   COLOR DEL BOTÓN DE CARRITO (admin)
+========================================================= */
+function loadCartColorAdmin(){
+ let input=$("#cfgCartColor");
+ if(input) input.value=config.cartBtnColor || "#25d366";
+}
+
+function saveCartColor(){
+ let input=$("#cfgCartColor");
+ if(!input)return;
+ config.cartBtnColor=input.value;
+ save();
+ renderHero();
+ toast("Color del botón actualizado");
+}
+
+function resetCartColor(){
+ config.cartBtnColor="#25d366";
+ let input=$("#cfgCartColor");
+ if(input) input.value="#25d366";
+ save();
+ renderHero();
+ toast("Color restablecido al predeterminado");
+}
+
+/* =========================================================
    TASAS
 ========================================================= */
 async function fetchRates(){
@@ -3878,9 +3999,7 @@ function bind(){
   $("#search").focus();
  };
  $("#fab").onclick=()=>{wa(config.waMsgSupport||"Hola!, soporte, quisiera, más información acerca de sus productos y servicios.");};
- $("#fabFacebook").onclick=()=>{window.open(config.facebookUrl||"https://facebook.com","_blank","noopener,noreferrer");};
- $("#fabInstagram").onclick=()=>{window.open(config.instagramUrl||"https://instagram.com","_blank","noopener,noreferrer");};
- $("#fabYoutube").onclick=()=>{window.open(config.youtubeUrl||"https://youtube.com","_blank","noopener,noreferrer");};
+
  $("#heroBtn").onclick=()=>{let c=$("#catalog");if(c)c.scrollIntoView({behavior:"smooth"});};
  $("#zoomClose").onclick=closeZoom;
  $("#zoomShareBtn").onclick=()=>{if(currentZoomProduct) shareProduct(currentZoomProduct);};
@@ -3944,9 +4063,7 @@ function bind(){
    config.contactAddress=$("#cfgAddress").value.trim();
    config.contactHours=$("#cfgHours").value.trim();
    config.fxProxy=$("#cfgFxProxy").value.trim();
-   config.facebookUrl=$("#cfgFacebook").value.trim();
-   config.instagramUrl=$("#cfgInstagram").value.trim();
-   config.youtubeUrl=$("#cfgYoutube").value.trim();
+
    config.base=$("#cfgBase").value;
    let ok=save();
    renderHero();renderProducts();renderFooter();startBanner();
@@ -3964,9 +4081,7 @@ function bind(){
    config.waMsgService=$("#cfgMsgService").value.trim() || "Hola!, necesito los servicios de: {producto}.";
    config.waMsgSupport=$("#cfgMsgSupport").value.trim() || "Hola!, soporte, quisiera, más información acerca de sus productos y servicios.";
    config.fabTextWa=$("#cfgFabWa").value.trim() || "¿Cómo le podemos ayudar?";
-   config.fabTextFb=$("#cfgFabFb").value.trim() || "¡Síguenos!";
-   config.fabTextIg=$("#cfgFabIg").value.trim() || "¡Síguenos!";
-   config.fabTextYt=$("#cfgFabYt").value.trim() || "¡Suscríbete!";
+
    let ok=save();
    startFabCycle();
    if(ok) toast("Textos y WhatsApp guardados");
@@ -4020,6 +4135,9 @@ function bind(){
  $("#addBanner").onclick=addBanner;
  $("#addCategory").onclick=addCategoryPrompt;
  $("#addDeliveryZone").onclick=addDeliveryZonePrompt;
+ $("#addSocialBtn").onclick=addSocialLink;
+ $("#saveCartColor").onclick=saveCartColor;
+ $("#resetCartColor").onclick=resetCartColor;
 
  $("#newsVideoBtn").onclick=()=>{$("#newsVideoInput").click();};
  $("#newsVideoInput").onchange=async()=>{
@@ -4068,7 +4186,7 @@ function bind(){
  }
  
  startBanner();
- startFabCycle();
+ renderSocialFabs();
  fetchRates();
  if(FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey){
   registerPushServiceWorker();
