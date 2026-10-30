@@ -682,6 +682,10 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
     <label>Texto de la burbuja de WhatsApp</label>
     <input id="cfgFabWa" placeholder="¿Cómo le podemos ayudar?">
    </div>
+   <div class="field">
+    <label>⏱️ Tiempo en pantalla de cada botón flotante (segundos)</label>
+    <input id="cfgFabHold" type="number" min="3" max="120" placeholder="19">
+   </div>
    <button class="primary" id="saveWaCfg" type="button">Guardar textos y WhatsApp</button>
   </div>
 
@@ -972,7 +976,7 @@ const SOCIAL_PLATFORMS={
  twitter:{label:"Twitter / X", color:"#000000", pulse:"rgba(255,255,255,.4)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.9l-5.4-6.9L4.4 22H1.3l8.1-9.3L1 2h7.1l4.9 6.3L18.9 2Zm-1.2 18h1.9L7.4 4H5.4l12.3 16Z"/></svg>`},
  telegram:{label:"Telegram", color:"#229ED9", pulse:"rgba(34,158,217,.5)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.9 4.3 18.7 19.8c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.3-8.4c.4-.4-.1-.6-.6-.2L6 12.7l-4.9-1.5c-1.1-.3-1.1-1.1.2-1.6L20.5 2.9c.9-.3 1.7.2 1.4 1.4Z"/></svg>`},
  linkedin:{label:"LinkedIn", color:"#0A66C2", pulse:"rgba(10,102,194,.5)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.82-2.05 3.75-2.05 4 0 4.75 2.6 4.75 6V21H18v-5.3c0-1.27-.02-2.9-1.77-2.9-1.78 0-2.05 1.38-2.05 2.8V21H10V9Z"/></svg>`},
- pinterest:{label:"Pinterest", color:"#E60023", pulse:"rgba(230,0,35,.5)", icon:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 0 0-3.64 19.3c-.05-.8-.1-2 .02-2.86.1-.78.68-5 .68-5s-.17-.35-.17-.85c0-.8.46-1.4 1.04-1.4.5 0 .73.37.73.8 0 .5-.32 1.24-.48 1.93-.14.58.3 1.05.86 1.05 1.04 0 1.84-1.1 1.84-2.68 0-1.4-1-2.38-2.44-2.38-1.66 0-2.64 1.25-2.64 2.53 0 .5.2 1.04.43 1.33.05.06.05.1.04.2l-.17.68c-.03.1-.09.13-.2.08-.76-.35-1.23-1.46-1.23-2.35 0-1.9 1.38-3.66 4-3.66 2.1 0 3.72 1.5 3.72 3.5 0 2.1-1.32 3.78-3.16 3.78-.62 0-1.2-.32-1.4-.7l-.38 1.46c-.14.52-.5 1.18-.75 1.58A10 10 0 1 0 12 2Z"/></svg>`}
+ pinterest:{label:"Pinterest", color:"#fff", pulse:"rgba(230,0,35,.5)", icon:`<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#E60023"/><path fill="#fff" d="M12.017 2.293c-5.372 0-9.73 4.358-9.73 9.73 0 4.124 2.566 7.642 6.187 9.043-.085-.768-.163-1.946.034-2.785.178-.762 1.143-4.852 1.143-4.852s-.292-.584-.292-1.448c0-1.355.786-2.368 1.765-2.368.832 0 1.234.624 1.234 1.374 0 .836-.533 2.086-.808 3.246-.23.971.487 1.763 1.444 1.763 1.733 0 3.067-1.829 3.067-4.468 0-2.336-1.68-3.968-4.078-3.968-2.78 0-4.409 2.085-4.409 4.237 0 .84.323 1.738.726 2.227.08.097.092.183.068.282-.074.308-.238.97-.271 1.106-.043.183-.139.221-.322.133-1.194-.556-1.94-2.303-1.94-3.708 0-3.016 2.19-5.79 6.31-5.79 3.312 0 5.886 2.36 5.886 5.516 0 3.29-2.075 5.939-4.957 5.939-.968 0-1.878-.503-2.19-1.1l-.596 2.274c-.216.831-.8 1.874-1.19 2.51.895.276 1.843.423 2.83.423 5.372 0 9.73-4.358 9.73-9.73 0-5.372-4.358-9.73-9.73-9.73z"/></svg>`}
 };
 const DEFAULT_PASSWORD="M3rcado+2026";
 const DB_NAME="mercado_catalog_v2";
@@ -1069,6 +1073,7 @@ let config={
  waMsgService:"Hola!, necesito los servicios de: {producto}.",
  waMsgSupport:"Hola!, soporte, quisiera, más información acerca de sus productos y servicios.",
  fabTextWa:"¿Cómo le podemos ayudar?",
+ fabHoldSeconds:19,
  fabTextFb:"¡Síguenos!",
  fabTextIg:"¡Síguenos!",
  fabTextYt:"¡Suscríbete!",
@@ -2885,6 +2890,7 @@ function loadAdminFields(){
  $("#cfgMsgService").value=config.waMsgService || "";
  $("#cfgMsgSupport").value=config.waMsgSupport || "";
  $("#cfgFabWa").value=config.fabTextWa || "";
+ $("#cfgFabHold").value=config.fabHoldSeconds || 19;
 
  $("#cfgBase").value=config.base || "USD";
 
@@ -3286,8 +3292,11 @@ function getFabSequence(){
 let fabHoldTimer=null;
 let fabTypeTimer=null;
 const FAB_TYPE_SPEED=45;
-const FAB_HOLD_MS=19000;
 const FAB_GAP_MS=350;
+function getFabHoldMs(){
+ let s=Number(config.fabHoldSeconds);
+ return (Number.isFinite(s) && s>0 ? s : 19) * 1000;
+}
 
 function clearFabTimers(){
  if(fabHoldTimer){clearTimeout(fabHoldTimer);fabHoldTimer=null;}
@@ -3351,7 +3360,7 @@ function startFabCycle(){
       i=(i+1)%getFabSequence().length;
       showStep();
      },FAB_GAP_MS);
-    },FAB_HOLD_MS);
+    },getFabHoldMs());
    }
   },FAB_TYPE_SPEED);
  }
@@ -4081,6 +4090,8 @@ function bind(){
    config.waMsgService=$("#cfgMsgService").value.trim() || "Hola!, necesito los servicios de: {producto}.";
    config.waMsgSupport=$("#cfgMsgSupport").value.trim() || "Hola!, soporte, quisiera, más información acerca de sus productos y servicios.";
    config.fabTextWa=$("#cfgFabWa").value.trim() || "¿Cómo le podemos ayudar?";
+   let holdSec=Number($("#cfgFabHold").value);
+   config.fabHoldSeconds=Number.isFinite(holdSec) && holdSec>0 ? Math.min(120,Math.max(3,Math.round(holdSec))) : 19;
 
    let ok=save();
    startFabCycle();
