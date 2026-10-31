@@ -341,6 +341,7 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 .delivery-fields{margin-top:10px;display:grid;gap:4px}
 .pcart-btn{position:absolute;right:9px;top:48px;width:34px;height:34px;border-radius:50%;border:0;background:var(--cart-btn-color, var(--success));color:#fff;font-size:15px;display:grid;place-items:center;box-shadow:0 2px 8px #0003;z-index:3}
 .field input[type=color]{height:46px;padding:4px;cursor:pointer}
+.font-preview{margin-top:6px;padding:8px 10px;border:1px dashed var(--line);border-radius:8px;font-size:17px;background:#fafbfc;color:#17202a}
 
 /* ================= FOOTER ================= */
 .site-footer{background:var(--nav);color:#cfd6dd;margin-top:26px;padding:26px 14px 100px;text-align:center}
@@ -874,6 +875,30 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    <button class="btn" id="resetCartColor" type="button">Restablecer color predeterminado</button>
    <button class="primary" id="saveCartColor" type="button" style="margin-top:8px">Guardar color</button>
   </div>
+
+  <!-- TIPOGRAFÍAS -->
+  <div class="panel" style="margin-top:14px">
+   <h3>🔤 Tipografías</h3>
+   <p class="small">Elige la fuente (de Google Fonts) para cada parte de la App. Con "Predeterminada" esa zona no cambia. <span id="fontCount"></span></p>
+   <div class="field">
+    <label>Buscar fuente por nombre</label>
+    <input id="fontSearch" placeholder="Ej: Pacifico, Roboto, Playfair...">
+   </div>
+   <div class="field">
+    <label>Estilo de fuente</label>
+    <select id="fontCategory">
+     <option value="">Todos los estilos</option>
+     <option value="sans">Modernas (sans-serif)</option>
+     <option value="serif">Clásicas (serif)</option>
+     <option value="display">Decorativas / para títulos</option>
+     <option value="hand">Manuscritas / cursivas</option>
+     <option value="mono">Monoespaciadas</option>
+    </select>
+   </div>
+   <div id="fontZones"></div>
+   <button class="primary" id="saveFonts" type="button">Guardar tipografías</button>
+   <button class="btn" id="resetFonts" type="button" style="margin-left:8px">Restablecer todo</button>
+  </div>
  </div>
 </div>
 
@@ -971,6 +996,60 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    CONFIGURACIÓN PRINCIPAL
 ========================================================= */
 const WA="1506452277745";
+
+/* =========================================================
+   TIPOGRAFÍAS (Google Fonts) — editables desde el panel admin
+========================================================= */
+const FONT_NAME_OK=/^[A-Za-z0-9 ]{2,40}$/;
+const FONT_ZONES=[
+ {key:"general", label:"Texto general de toda la App", selector:"body,input,select,textarea,button"},
+ {key:"brand", label:"Nombre de la tienda (portada y encabezado)", selector:".logo-name,.brand"},
+ {key:"heading", label:"Títulos y secciones", selector:".hero h1,.section-head h2"},
+ {key:"chips", label:"Categorías (botones redondeados)", selector:".chip"},
+ {key:"product", label:"Nombres y descripciones de productos", selector:".pname,.desc"},
+ {key:"price", label:"Precios", selector:".price"},
+ {key:"button", label:"Botones (Comprar, Guardar, etc.)", selector:".wa,.btn,.primary"},
+ {key:"menu", label:"Menú lateral (☰)", selector:".drawer,.drawer button"},
+ {key:"search", label:"Barra de búsqueda", selector:".search input,.search-suggest"},
+ {key:"footer", label:"Pie de página", selector:".site-footer"},
+ {key:"bubble", label:"Burbujas de los botones flotantes", selector:".fab-bubble"}
+];
+const FONT_CATALOG_RAW={sans:"Roboto,Open Sans,Lato,Montserrat,Poppins,Inter,Nunito,Nunito Sans,Raleway,Ubuntu,Noto Sans,Source Sans 3,Work Sans,Rubik,Mukta,PT Sans,Fira Sans,Quicksand,Karla,Barlow,Barlow Condensed,Barlow Semi Condensed,DM Sans,Manrope,Oxygen,Cabin,Josefin Sans,Hind,Titillium Web,Heebo,Assistant,Mulish,Archivo,Archivo Narrow,Libre Franklin,IBM Plex Sans,Overpass,Exo 2,Signika,Catamaran,Asap,Maven Pro,Varela Round,Dosis,Oswald,Questrial,Prompt,Kanit,Sarabun,Red Hat Display,Red Hat Text,Lexend,Outfit,Plus Jakarta Sans,Sora,Space Grotesk,Urbanist,Albert Sans,Figtree,Be Vietnam Pro,Public Sans,Jost,Epilogue,Syne,Rethink Sans,Onest,Instrument Sans,Hanken Grotesk,Schibsted Grotesk,Chivo,Cairo,Tajawal,Almarai,Encode Sans,Saira,Yantramanav,Abel,Arimo,Istok Web,Nobile,Carme,Actor,Didact Gothic,Gothic A1,Pontano Sans,Rambla,Ruda,Sen,League Spartan,Livvic,Kumbh Sans,Readex Pro,Golos Text,Wix Madefor Display,Bricolage Grotesque,Gabarito,Geologica,Inclusive Sans,Atkinson Hyperlegible,M PLUS Rounded 1c,Roboto Condensed,Fira Sans Condensed,Noto Sans Display,Alata,Alexandria,Arsenal,Average Sans,Basic,Belleza,Biryani,Cantarell,Commissioner,Convergence,Duru Sans,Economica,Expletus Sans,Federo,Gudea,Hammersmith One,Imprima,Inder,Jaldi,Khula,Lekton,Mako,Marmelad,Metrophobic,Molengo,Montserrat Alternates,Orienta,Palanquin,Port Lligat Sans,Quattrocento Sans,Ropa Sans,Rosario,Sansita,Scada,Shanti,Sintony,Snippet,Spinnaker,Strait,Tauri,Telex,Tenor Sans,Text Me One,Voces,Anek Latin,Zen Maru Gothic,Merriweather Sans",serif:"Merriweather,Playfair Display,Lora,PT Serif,Noto Serif,Libre Baskerville,Crimson Text,Crimson Pro,EB Garamond,Cormorant Garamond,Cormorant,Bitter,Roboto Slab,Source Serif 4,Arvo,Domine,Vollkorn,Cardo,Spectral,Alegreya,Alegreya Sans,Cinzel,Josefin Slab,Zilla Slab,Slabo 27px,Rokkitt,Old Standard TT,Gelasio,Frank Ruhl Libre,Libre Caslon Text,Newsreader,Fraunces,DM Serif Display,DM Serif Text,Prata,Yeseva One,Rufina,Neuton,Quattrocento,Bree Serif,Faustina,Literata,Andada Pro,Brygada 1918,Marcellus,Playfair Display SC,Cormorant SC,Bodoni Moda,Libre Bodoni,Young Serif,Instrument Serif,Gloock,Lustria,Judson,Trirong,Taviraj,Amiri,Tinos,Aleo,Alike,Alice,Almendra,Antic Didone,Bentham,Buenard,Caudex,Cantata One,Cambo,Coustard,Crete Round,Enriqueta,Fanwood Text,Fjord One,Gilda Display,Goudy Bookletter 1911,GFS Didot,Headland One,Inknut Antiqua,Kreon,Ledger,Libre Caslon Display,Linden Hill,Lusitana,Mate,Montaga,Noticia Text,Ovo,Petrona,Podkova,Poly,Rasa,Rosarivo,Sorts Mill Goudy,Stoke,Trocchi,Unna,Vidaloka,Volkhov,Average,Artifika,Bellefair,Cinzel Decorative,Della Respira,Esteban,Fenix,Gabriela,Habibi,Italiana,Kameron,Kurale,Manuale,Martel,Radley,Rozha One,Suranna,Vesper Libre",display:"Bebas Neue,Anton,Lobster,Fredoka,Righteous,Bangers,Alfa Slab One,Passion One,Russo One,Black Ops One,Monoton,Orbitron,Audiowide,Press Start 2P,Creepster,Fugaz One,Chewy,Luckiest Guy,Staatliches,Oleo Script,Titan One,Baloo 2,Concert One,Bungee,Rubik Mono One,Shrikhand,Sigmar One,Ultra,Paytone One,Patua One,Squada One,Racing Sans One,Francois One,Archivo Black,Teko,Rammetto One,Lilita One,Boogaloo,Knewave,Special Elite,Abril Fatface,Poller One,Sonsie One,Rye,Spicy Rice,Modak,Carter One,Kavoon,Bowlby One,Chango,Coiny,Bevan,Changa One,Fascinate,Faster One,Frijole,Gravitas One,Holtwood One SC,Unlock,Wendy One,Eater,Nosifer,Metal Mania,Macondo,Fontdiner Swanky,Henny Penny,Mystery Quest,Original Surfer,Ranchers,Sail,Trade Winds,Vast Shadow,Warnes,Yatra One,Zen Dots,Rampart One,Reggae One,Train One,Dela Gothic One,Days One,Bungee Shade,Bungee Inline,Black Han Sans,Big Shoulders Display,Bigshot One,Bubblegum Sans,Cherry Cream Soda,Chicle,Codystar,Combo,Diplomata,Elsie,Flavors,Gorditas,Grand Hotel,Iceberg,Iceland,Jolly Lodger,Joti One,Keania One,Kranky,Lemon,Londrina Solid,Londrina Outline,Margarine,Miltonian,Oregano,Plaster,Revalia,Ribeye,Rum Raisin,Seymour One,Slackey,Smokum,Stalinist One,Supermercado One,Tourney,Unkempt,Vampiro One,Wallpoet,Rubik Glitch,Rubik Bubbles,Rubik Wet Paint,Rubik Dirt,Rubik Puddles",hand:"Pacifico,Dancing Script,Caveat,Satisfy,Great Vibes,Sacramento,Kaushan Script,Shadows Into Light,Indie Flower,Amatic SC,Courgette,Cookie,Parisienne,Allura,Tangerine,Handlee,Patrick Hand,Architects Daughter,Gloria Hallelujah,Rock Salt,Covered By Your Grace,Reenie Beanie,Homemade Apple,Nanum Pen Script,Marck Script,Yellowtail,Lobster Two,Merienda,Kalam,Neucha,Pangolin,Playpen Sans,Itim,Sriracha,Mali,Chilanka,Gaegu,Gamja Flower,Just Another Hand,Cedarville Cursive,La Belle Aurore,Mr Dafoe,Norican,Damion,Niconne,Rochester,Playball,Pinyon Script,Alex Brush,Arizonia,Bad Script,Bilbo Swash Caps,Clicker Script,Dekko,Engagement,Euphoria Script,Italianno,Julee,Leckerli One,Lily Script One,Meddon,Molle,Montez,Mrs Saint Delafield,Over the Rainbow,Qwigley,Rancho,Sofia,Sue Ellen Francisco,The Girl Next Door,Vibur,Waiting for the Sunrise,Zeyada,Fuzzy Bubbles,Comforter,Caveat Brush,Shantell Sans,Gochi Hand,Delicious Handrawn,Oooh Baby,Licorice,Mea Culpa,Send Flowers,Whisper,WindSong,Square Peg,Birthstone,Grechen Fuemen,Water Brush,Ole,Estonia,Permanent Marker,Walter Turncoat,Sedgwick Ave Display,Annie Use Your Telescope,Crafty Girls,Coming Soon,Dawning of a New Day,Schoolbell",mono:"Roboto Mono,Source Code Pro,Fira Code,Fira Mono,JetBrains Mono,IBM Plex Mono,Space Mono,Inconsolata,Ubuntu Mono,PT Mono,Cousine,Courier Prime,Anonymous Pro,Overpass Mono,Red Hat Mono,DM Mono,Nanum Gothic Coding,Share Tech Mono,VT323,Major Mono Display,Cutive Mono,Oxygen Mono,Azeret Mono,Martian Mono,Sometype Mono,Noto Sans Mono,Syne Mono,B612 Mono,Xanh Mono,Nova Mono,Spline Sans Mono,Chivo Mono,Victor Mono"};
+const FONT_CATALOG=[];
+Object.keys(FONT_CATALOG_RAW).forEach(cat=>FONT_CATALOG_RAW[cat].split(",").forEach(n=>{n=n.trim();if(n)FONT_CATALOG.push({name:n,cat});}));
+
+const loadedFonts=new Set();
+function loadGoogleFont(name){
+ if(!name || loadedFonts.has(name) || !FONT_NAME_OK.test(name))return;
+ loadedFonts.add(name);
+ let base="https://fonts.googleapis.com/css2?family="+encodeURIComponent(name).replace(/%20/g,"+");
+ let link=document.createElement("link");
+ link.rel="stylesheet";
+ link.href=base+":wght@400;700&display=swap";
+ link.onerror=()=>{
+  link.remove();
+  let l2=document.createElement("link");
+  l2.rel="stylesheet";
+  l2.href=base+"&display=swap";
+  l2.onerror=()=>{l2.remove();console.warn("No se pudo cargar la fuente:",name);};
+  document.head.appendChild(l2);
+ };
+ document.head.appendChild(link);
+}
+
+function applyFonts(){
+ let f=(config.fonts && typeof config.fonts==="object") ? config.fonts : {};
+ let styleEl=document.getElementById("fontStyles");
+ if(!styleEl){styleEl=document.createElement("style");styleEl.id="fontStyles";document.head.appendChild(styleEl);}
+ let css="";
+ FONT_ZONES.forEach(z=>{
+  let name=f[z.key];
+  if(!name || !FONT_NAME_OK.test(name))return;
+  loadGoogleFont(name);
+  css+=z.selector+'{font-family:"'+name+'",system-ui,sans-serif!important}\n';
+ });
+ if(styleEl.textContent!==css) styleEl.textContent=css;
+}
 
 const SOCIAL_PLATFORMS={
  facebook:{label:"Facebook", color:"#1877F2", pulse:"rgba(24,119,242,.55)", icon:`<svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M28 16c0-6.627-5.373-12-12-12S4 9.373 4 16c0 5.99 4.388 10.954 10.125 11.854V19.46h-3.047V16h3.047v-2.64c0-3.008 1.792-4.669 4.533-4.669 1.312 0 2.686.234 2.686.234v2.953H19.83c-1.491 0-1.956.925-1.956 1.874V16h3.328l-.532 3.46h-2.796v8.394C23.612 26.954 28 21.99 28 16z"/></svg>`},
@@ -1082,6 +1161,7 @@ let config={
  fabTextIg:"¡Síguenos!",
  fabTextYt:"¡Suscríbete!",
  cartBtnColor:"#25d366",
+ fonts:{},
  deliveryBadgeEnabled:true,
  deliveryBadgeText:"Entregas a Domicilio",
  searchPlaceholder:"Buscar productos...",
@@ -1698,6 +1778,7 @@ function renderHero(){
  document.documentElement.style.setProperty("--cart-btn-color", config.cartBtnColor || "#25d366");
  let searchInput=$("#search");
  if(searchInput) searchInput.placeholder = config.searchPlaceholder || "Buscar productos...";
+ applyFonts();
 }
 
 function renderFooter(){
@@ -2875,7 +2956,7 @@ async function enterAdmin(){
 
 function openAdminPanel(){
  $("#admin").classList.add("open");
- loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();renderSocialAdmin();loadCartColorAdmin();
+ loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();renderSocialAdmin();loadCartColorAdmin();loadFontsAdmin();
  maybeMigrateToCloud();
 }
 
@@ -3852,6 +3933,66 @@ async function deleteSocialLink(id){
 /* =========================================================
    COLOR DEL BOTÓN DE CARRITO (admin)
 ========================================================= */
+/* =========================================================
+   TIPOGRAFÍAS (admin)
+========================================================= */
+let fontDraft={};
+let fontFilterTimer=null;
+
+function fontOptionsHtml(current){
+ let q=(($("#fontSearch")||{}).value||"").trim().toLowerCase();
+ let cat=($("#fontCategory")||{}).value||"";
+ let list=FONT_CATALOG.filter(x=>(!cat||x.cat===cat)&&(!q||x.name.toLowerCase().includes(q)));
+ let html='<option value="">Predeterminada</option>';
+ if(current && !list.some(x=>x.name===current)) html+='<option value="'+esc(current)+'" selected>'+esc(current)+'</option>';
+ list.forEach(x=>{html+='<option value="'+esc(x.name)+'"'+(x.name===current?" selected":"")+'>'+esc(x.name)+'</option>';});
+ return html;
+}
+
+function renderFontZones(){
+ let box=$("#fontZones");
+ if(!box)return;
+ box.innerHTML="";
+ FONT_ZONES.forEach(z=>{
+  let cur=fontDraft[z.key]||"";
+  let row=document.createElement("div");
+  row.className="field";
+  row.innerHTML='<label>'+esc(z.label)+'</label><select>'+fontOptionsHtml(cur)+'</select><div class="font-preview">Ofertas del día — 1.250,00 US$</div>';
+  let sel=row.querySelector("select"), prev=row.querySelector(".font-preview");
+  const paint=()=>{prev.style.fontFamily = fontDraft[z.key] ? '"'+fontDraft[z.key]+'",system-ui,sans-serif' : "";};
+  if(cur) loadGoogleFont(cur);
+  paint();
+  sel.onchange=()=>{fontDraft[z.key]=sel.value;if(sel.value)loadGoogleFont(sel.value);paint();};
+  box.appendChild(row);
+ });
+ let c=$("#fontCount");
+ if(c) c.textContent=FONT_CATALOG.length+" fuentes disponibles";
+}
+
+function loadFontsAdmin(){
+ fontDraft=Object.assign({},(config.fonts&&typeof config.fonts==="object")?config.fonts:{});
+ renderFontZones();
+}
+
+function saveFonts(){
+ let clean={};
+ FONT_ZONES.forEach(z=>{let n=fontDraft[z.key];if(n && FONT_NAME_OK.test(n))clean[z.key]=n;});
+ config.fonts=clean;
+ save();
+ applyFonts();
+ toast("Tipografías guardadas");
+}
+
+async function resetFonts(){
+ if(!(await customConfirm("¿Restablecer todas las tipografías a las predeterminadas?")))return;
+ fontDraft={};
+ config.fonts={};
+ save();
+ applyFonts();
+ renderFontZones();
+ toast("Tipografías restablecidas");
+}
+
 function loadCartColorAdmin(){
  let input=$("#cfgCartColor");
  if(input) input.value=config.cartBtnColor || "#25d366";
@@ -4158,6 +4299,10 @@ function bind(){
  $("#addSocialBtn").onclick=addSocialLink;
  $("#saveCartColor").onclick=saveCartColor;
  $("#resetCartColor").onclick=resetCartColor;
+ $("#saveFonts").onclick=saveFonts;
+ $("#resetFonts").onclick=resetFonts;
+ $("#fontCategory").onchange=renderFontZones;
+ $("#fontSearch").oninput=()=>{clearTimeout(fontFilterTimer);fontFilterTimer=setTimeout(renderFontZones,250);};
 
  $("#newsVideoBtn").onclick=()=>{$("#newsVideoInput").click();};
  $("#newsVideoInput").onchange=async()=>{
