@@ -587,6 +587,10 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
      <input id="cfgDeliveryText" placeholder="Entregas a Domicilio">
     </div>
     <div class="field">
+     <label>🔍 Texto de la barra de búsqueda</label>
+     <input id="cfgSearchPlaceholder" maxlength="60" placeholder="Buscar productos...">
+    </div>
+    <div class="field">
      <label>📞 Teléfono de contacto</label>
      <input id="cfgPhone" placeholder="+1 (708) 89-1280">
     </div>
@@ -1080,6 +1084,7 @@ let config={
  cartBtnColor:"#25d366",
  deliveryBadgeEnabled:true,
  deliveryBadgeText:"Entregas a Domicilio",
+ searchPlaceholder:"Buscar productos...",
  deliveryZones:[
   {name:"Vedado", fee:1200},
   {name:"Miramar", fee:1500},
@@ -1691,6 +1696,8 @@ function renderHero(){
  if(splashName) splashName.textContent = config.name || "MERCADO";
  document.title = config.name || "MERCADO";
  document.documentElement.style.setProperty("--cart-btn-color", config.cartBtnColor || "#25d366");
+ let searchInput=$("#search");
+ if(searchInput) searchInput.placeholder = config.searchPlaceholder || "Buscar productos...";
 }
 
 function renderFooter(){
@@ -2879,6 +2886,7 @@ function loadAdminFields(){
  $("#cfgLocation").value=config.location || "";
  $("#cfgDeliveryEnabled").checked = config.deliveryBadgeEnabled!==false;
  $("#cfgDeliveryText").value=config.deliveryBadgeText || "";
+ $("#cfgSearchPlaceholder").value=config.searchPlaceholder || "Buscar productos...";
  $("#cfgPhone").value=config.contactPhone || "";
  $("#cfgEmail").value=config.contactEmail || "";
  $("#cfgAddress").value=config.contactAddress || "";
@@ -4067,6 +4075,7 @@ function bind(){
    config.location=$("#cfgLocation").value.trim() || "Calle. Cualquiera #489 / la ruta y más";
    config.deliveryBadgeEnabled=$("#cfgDeliveryEnabled").checked;
    config.deliveryBadgeText=$("#cfgDeliveryText").value.trim() || "Entregas a Domicilio";
+   config.searchPlaceholder=$("#cfgSearchPlaceholder").value.trim().slice(0,60) || "Buscar productos...";
    config.contactPhone=$("#cfgPhone").value.trim();
    config.contactEmail=$("#cfgEmail").value.trim();
    config.contactAddress=$("#cfgAddress").value.trim();
