@@ -341,6 +341,13 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 .delivery-fields{margin-top:10px;display:grid;gap:4px}
 .pcart-btn{position:absolute;right:9px;top:48px;width:34px;height:34px;border-radius:50%;border:0;background:var(--cart-btn-color, var(--success));color:#fff;font-size:15px;display:grid;place-items:center;box-shadow:0 2px 8px #0003;z-index:3}
 .field input[type=color]{height:46px;padding:4px;cursor:pointer}
+.usage-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #eee;font-size:14px}
+.usage-row.total{font-weight:900;border-bottom:0}
+.usage-bar{height:12px;border-radius:999px;background:#e8ebee;overflow:hidden;margin:8px 0}
+.usage-fill{height:100%;background:#25d366;border-radius:999px}
+.usage-fill.mid{background:#f5a623}
+.usage-fill.high{background:#e04343}
+.usage-msg{font-weight:800;font-size:13.5px;margin:6px 0 12px}
 .font-preview{margin-top:6px;padding:8px 10px;border:1px dashed var(--line);border-radius:8px;font-size:17px;background:#fafbfc;color:#17202a}
 
 /* ================= FOOTER ================= */
@@ -899,6 +906,19 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    <button class="primary" id="saveFonts" type="button">Guardar tipografías</button>
    <button class="btn" id="resetFonts" type="button" style="margin-left:8px">Restablecer todo</button>
   </div>
+
+  <!-- ESPACIO USADO -->
+  <div class="panel" style="margin-top:14px">
+   <h3>📊 Espacio usado en fotos y videos</h3>
+   <p class="small">Se mide con los archivos guardados en este dispositivo. Compáralo con el espacio de tu plan de hosting.</p>
+   <div id="storageUsage" class="storage-usage">Calculando…</div>
+   <div class="field">
+    <label>Espacio de tu plan de hosting (GB)</label>
+    <input id="cfgPlanGB" type="number" min="1" max="2000" step="1" placeholder="50">
+   </div>
+   <button class="btn" id="refreshUsage" type="button">Actualizar medición</button>
+   <button class="primary" id="savePlanGB" type="button" style="margin-left:8px">Guardar capacidad</button>
+  </div>
  </div>
 </div>
 
@@ -1162,6 +1182,7 @@ let config={
  fabTextYt:"¡Suscríbete!",
  cartBtnColor:"#25d366",
  fonts:{},
+ planStorageGB:50,
  deliveryBadgeEnabled:true,
  deliveryBadgeText:"Entregas a Domicilio",
  searchPlaceholder:"Buscar productos...",
@@ -1515,6 +1536,7 @@ function save(){
   localStorage.setItem("mercado_products",JSON.stringify(products));
   localStorage.setItem("mercado_config",JSON.stringify(config));
   scheduleCloudSync();
+  scheduleUsageRefresh();
   return true;
  }catch(e){
   console.error(e);
@@ -2956,7 +2978,7 @@ async function enterAdmin(){
 
 function openAdminPanel(){
  $("#admin").classList.add("open");
- loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();renderSocialAdmin();loadCartColorAdmin();loadFontsAdmin();
+ loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();renderSocialAdmin();loadCartColorAdmin();loadFontsAdmin();renderStorageUsage();
  maybeMigrateToCloud();
 }
 
@@ -3936,6 +3958,95 @@ async function deleteSocialLink(id){
 /* =========================================================
    TIPOGRAFÍAS (admin)
 ========================================================= */
+/* =========================================================
+   ESPACIO USADO EN FOTOS Y VIDEOS (admin)
+========================================================= */
+let usageTimer=null;
+
+function scheduleUsageRefresh(){
+ clearTimeout(usageTimer);
+ usageTimer=setTimeout(()=>{
+  let panel=$("#admin");
+  if(panel && panel.classList.contains("open")) renderStorageUsage();
+ },800);
+}
+
+function fmtBytes(n){
+ if(!Number.isFinite(n) || n<=0) return "0 MB";
+ if(n<1048576) return Math.max(1,Math.round(n/1024))+" KB";
+ if(n<1073741824) return (n/1048576).toFixed(n<104857600?1:0)+" MB";
+ return (n/1073741824).toFixed(2)+" GB";
+}
+
+function measureMediaUsage(){
+ return new Promise(resolve=>{
+  let res={photos:{count:0,bytes:0},videos:{count:0,bytes:0,max:0},other:{count:0,bytes:0}};
+  if(!db){resolve(res);return;}
+  try{
+   let tx=db.transaction(STORE,"readonly");
+   let req=tx.objectStore(STORE).openCursor();
+   req.onsuccess=()=>{
+    let cur=req.result;
+    if(cur){
+     let b=cur.value;
+     let size=(b && b.size)||0, type=(b && b.type)||"";
+     if(type.indexOf("video/")===0){res.videos.count++;res.videos.bytes+=size;if(size>res.videos.max)res.videos.max=size;}
+     else if(type.indexOf("image/")===0){res.photos.count++;res.photos.bytes+=size;}
+     else{res.other.count++;res.other.bytes+=size;}
+     cur.continue();
+    }else resolve(res);
+   };
+   req.onerror=()=>resolve(res);
+  }catch(e){resolve(res);}
+ });
+}
+
+function countCloudMedia(){
+ let ids=[];
+ (products||[]).forEach(p=>{(p.images||[]).forEach(x=>ids.push(x));ids.push(p.image,p.video);});
+ ids.push(config.logo);
+ (config.banners||[]).forEach(b=>ids.push(b.image,b.video));
+ (config.newsVideos||[]).forEach(v=>ids.push(v.media));
+ return new Set(ids.filter(x=>isCloudUrl(x))).size;
+}
+
+async function renderStorageUsage(){
+ let box=$("#storageUsage");
+ if(!box)return;
+ let planGB=Number(config.planStorageGB)>0 ? Number(config.planStorageGB) : 50;
+ let capInput=$("#cfgPlanGB");
+ if(capInput && document.activeElement!==capInput) capInput.value=planGB;
+ let u=await measureMediaUsage();
+ let total=u.photos.bytes+u.videos.bytes+u.other.bytes;
+ let pct=total/(planGB*1073741824)*100;
+ let level=pct>=90?"high":(pct>=70?"mid":"ok");
+ let msg=level==="high" ? "🔴 Casi lleno: comprime o elimina videos antes de subir más."
+  : level==="mid" ? "⚠️ Ya usaste más del 70 % del espacio. Considera comprimir videos o ampliar el plan."
+  : "✅ Tienes espacio de sobra.";
+ let pctTxt=total===0?"0":(pct<1?pct.toFixed(2):pct.toFixed(1));
+ let width=Math.min(100,Math.max(total>0?1:0,pct));
+ let cloud=countCloudMedia();
+ let html=
+  '<div class="usage-row"><span>📷 Fotos</span><strong>'+u.photos.count+' archivos · '+fmtBytes(u.photos.bytes)+'</strong></div>'+
+  '<div class="usage-row"><span>🎬 Videos</span><strong>'+u.videos.count+' archivos · '+fmtBytes(u.videos.bytes)+'</strong></div>'+
+  (u.other.count?'<div class="usage-row"><span>📁 Otros</span><strong>'+u.other.count+' archivos · '+fmtBytes(u.other.bytes)+'</strong></div>':'')+
+  '<div class="usage-row total"><span>Total usado</span><strong>'+fmtBytes(total)+' de '+planGB+' GB ('+pctTxt+' %)</strong></div>'+
+  '<div class="usage-bar"><div class="usage-fill '+level+'" style="width:'+width+'%"></div></div>'+
+  '<div class="usage-msg">'+msg+'</div>'+
+  (u.videos.max>0?'<div class="small">Video más pesado: '+fmtBytes(u.videos.max)+'</div>':'')+
+  (cloud?'<div class="small">☁️ '+cloud+' archivo(s) están en la nube y no se miden aquí.</div>':'');
+ box.innerHTML=html;
+}
+
+function savePlanGB(){
+ let v=Number($("#cfgPlanGB").value);
+ if(!Number.isFinite(v) || v<=0){toast("Escribe un número de GB válido");return;}
+ config.planStorageGB=Math.min(2000,Math.round(v*10)/10);
+ save();
+ renderStorageUsage();
+ toast("Capacidad guardada");
+}
+
 let fontDraft={};
 let fontFilterTimer=null;
 
@@ -4301,6 +4412,8 @@ function bind(){
  $("#resetCartColor").onclick=resetCartColor;
  $("#saveFonts").onclick=saveFonts;
  $("#resetFonts").onclick=resetFonts;
+ $("#refreshUsage").onclick=()=>{renderStorageUsage();toast("Medición actualizada");};
+ $("#savePlanGB").onclick=savePlanGB;
  $("#fontCategory").onchange=renderFontZones;
  $("#fontSearch").oninput=()=>{clearTimeout(fontFilterTimer);fontFilterTimer=setTimeout(renderFontZones,250);};
 
