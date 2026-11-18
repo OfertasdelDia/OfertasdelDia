@@ -212,6 +212,34 @@ main{max-width:var(--max);margin:auto;padding:14px}
 .zoom-gallery::-webkit-scrollbar{display:none}
 .zoom-slide{flex:0 0 100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center}
 .zoom-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5}
+/* ===== Ficha de producto (zoom con scroll vertical) ===== */
+.zoom-scroll{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;border-radius:16px;background:var(--card);-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.zoom-scroll #zoomMedia{height:min(64vh,640px);background:#000}
+.zoom-scroll #zoomMedia img,.zoom-scroll #zoomMedia video{max-width:100%;max-height:100%;border-radius:0;box-shadow:none}
+.zoom-scroll .zoom-dots{bottom:30px}
+.zoom-info{position:relative;margin-top:-18px;background:var(--card);color:var(--text);border-radius:20px 20px 0 0;padding:12px 20px 30px;min-height:46vh}
+.zoom-info::before{content:"";display:block;width:44px;height:5px;border-radius:999px;background:var(--line);margin:0 auto 16px}
+.pd-cat{font-size:12.5px;font-weight:800;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.pd-name{margin:6px 0 10px;font-size:24px;line-height:1.25;font-weight:900;color:var(--text);overflow-wrap:anywhere}
+.pd-price{font-size:30px;font-weight:900;color:var(--text)}
+.pd-price small{font-size:14px;font-weight:700;color:var(--muted)}
+.pd-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pd-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;font-weight:800;font-size:14.5px}
+.pd-badge::before{content:"";width:10px;height:10px;border-radius:50%;background:currentColor}
+.pd-badge.in{background:#e3f6ea;color:#0b6633}
+.pd-badge.out{background:#fde8e8;color:#a31c1c}
+.pd-deliv{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;font-size:14.5px;font-weight:700;background:var(--bg);color:var(--text)}
+.pd-section{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.pd-section h3{margin:0 0 12px;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.pd-desc{font-size:16.5px;line-height:1.7;color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere}
+.pd-desc.empty{color:var(--muted);font-style:italic}
+.pd-actions{display:grid;gap:10px;margin-top:26px}
+.pd-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 16px;border-radius:12px;border:0;font-weight:900;font-size:16px;color:#fff}
+.pd-btn.cart{background:var(--nav2)}
+.pd-btn.wa{background:#128c4a}
+[data-theme="dim"] .pd-badge.in,[data-theme="dark"] .pd-badge.in{background:rgba(37,211,102,.18);color:#62e394}
+[data-theme="dim"] .pd-badge.out,[data-theme="dark"] .pd-badge.out{background:rgba(224,67,67,.22);color:#ff9393}
+[data-theme="dim"] .pd-btn.cart,[data-theme="dark"] .pd-btn.cart{background:#3a4a5c}
 .zoom-dots .dot{width:7px;height:7px;border-radius:50%;background:#fff6;padding:0;border:0}
 .zoom-dots .dot.active{background:#fff}
 .zoom-counter{position:absolute;top:14px;left:14px;background:#0009;color:#fff;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:800;z-index:5}
@@ -538,7 +566,10 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
  <div class="zoom-box">
   <button class="zoom-share-btn" id="zoomShareBtn" type="button"><svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> Compartir</button>
   <button class="close" id="zoomClose" type="button" aria-label="Cerrar">×</button>
-  <div id="zoomMedia"></div>
+  <div class="zoom-scroll" id="zoomScroll">
+   <div id="zoomMedia"></div>
+   <div class="zoom-info" id="zoomInfo"></div>
+  </div>
  </div>
 </div>
 
@@ -741,8 +772,9 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
     <input id="pStock" type="number" min="0" step="1" placeholder="Ej: 5">
    </div>
    <div class="field">
-    <label>Descripción (máx. 1000 caracteres)</label>
-    <textarea id="pDesc" maxlength="1000"></textarea>
+    <label>Descripción / ficha técnica (máx. 10.000 caracteres)</label>
+    <textarea id="pDesc" maxlength="10000" rows="6"></textarea>
+    <div class="small" id="pDescCount" style="text-align:right">0 / 10.000 caracteres</div>
    </div>
    
    <label class="checkbox-wrap">
@@ -2741,6 +2773,38 @@ async function renderSearchSuggestions(){
  box.classList.remove("hidden");
 }
 
+const WA_ICON_PATH="M16.001 3C9.107 3 3.5 8.606 3.5 15.5c0 2.297.615 4.45 1.688 6.307L3 29l7.4-2.142A12.44 12.44 0 0 0 16 28c6.894 0 12.5-5.606 12.5-12.5S22.895 3 16.001 3zm0 22.688c-2.02 0-3.916-.55-5.548-1.51l-.397-.235-4.393 1.272 1.294-4.28-.259-.415a10.15 10.15 0 0 1-1.573-5.02C4.925 9.79 9.79 4.925 16 4.925c6.21 0 11.075 4.865 11.075 10.575 0 5.71-4.865 10.188-10.074 10.188zm5.746-7.596c-.313-.157-1.85-.913-2.136-1.017-.286-.104-.494-.157-.702.157-.208.313-.807 1.017-.99 1.226-.182.208-.364.234-.677.078-.313-.157-1.322-.487-2.518-1.552-.931-.83-1.56-1.856-1.743-2.169-.182-.313-.02-.482.137-.638.14-.14.313-.365.47-.547.156-.183.208-.313.313-.522.104-.208.052-.39-.026-.548-.078-.157-.702-1.692-.963-2.317-.253-.61-.51-.527-.702-.536l-.598-.011c-.208 0-.548.078-.834.39-.286.313-1.093 1.068-1.093 2.604 0 1.537 1.119 3.023 1.275 3.232.156.208 2.203 3.366 5.34 4.72.746.322 1.328.514 1.782.658.749.238 1.43.204 1.968.124.6-.09 1.85-.756 2.11-1.487.26-.73.26-1.356.182-1.487-.078-.13-.286-.208-.6-.365z";
+
+function renderZoomInfo(p){
+ let box=$("#zoomInfo");
+ if(!box)return;
+ let currencyEl=$("#currency");
+ let cur=currencyEl?currencyEl.value:"USD";
+ let pr=convert(p.price,config.base,cur);
+ let st=stockStatus(p);
+ let path=[p.cat,p.subcat,p.type].filter(Boolean).map(x=>esc(x)).join(" › ");
+ let desc=(p.desc||"").trim();
+ let isService=p.cat==="Servicios";
+ box.innerHTML=
+  (path?'<div class="pd-cat">'+path+'</div>':'')+
+  '<h2 class="pd-name">'+esc(p.name)+'</h2>'+
+  '<div class="pd-price">'+money(pr,cur)+' <small>'+cur+'</small></div>'+
+  '<div class="pd-meta"><span class="pd-badge '+(st.available?"in":"out")+'">'+st.label+(st.tracked?' — '+st.units+' unidad'+(st.units===1?'':'es'):'')+'</span>'+
+  (config.deliveryBadgeEnabled!==false?'<span class="pd-deliv">🚚 '+esc(config.deliveryBadgeText||"Entregas a Domicilio")+'</span>':'')+'</div>'+
+  '<div class="pd-section"><h3>Descripción del producto</h3>'+
+  (desc?'<div class="pd-desc">'+esc(desc)+'</div>':'<div class="pd-desc empty">Este producto aún no tiene una descripción detallada.</div>')+'</div>'+
+  '<div class="pd-actions">'+
+  (isService?'':'<button type="button" class="pd-btn cart" id="pdCart">🛒 Añadir al carrito</button>')+
+  '<button type="button" class="pd-btn wa" id="pdWa"><svg viewBox="0 0 32 32" fill="currentColor" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path d="'+WA_ICON_PATH+'"/></svg>'+(isService?'Solicitar por WhatsApp':'Comprar por WhatsApp')+'</button></div>';
+ let c=$("#pdCart"); if(c) c.onclick=()=>addToCart(p.id);
+ let w=$("#pdWa"); if(w) w.onclick=()=>wa(productWaMessage(p));
+}
+
+function updateDescCount(inputId,counterId){
+ let i=$("#"+inputId), c=$("#"+counterId);
+ if(i && c) c.textContent=i.value.length.toLocaleString("es-ES")+" / 10.000 caracteres";
+}
+
 let currentZoomProduct=null;
 
 async function openZoom(p){
@@ -2748,6 +2812,8 @@ async function openZoom(p){
  if(!modal || !m)return;
  currentZoomProduct=p;
  modal.classList.add("open");
+ renderZoomInfo(p);
+ let zs=$("#zoomScroll"); if(zs) zs.scrollTop=0;
  document.body.style.overflow="hidden";
  m.innerHTML=`<div class="zoom-loading">Cargando multimedia…</div>`;
  try{
@@ -2807,6 +2873,7 @@ async function openZoom(p){
 
 function closeZoom(){
  let modal=$("#zoomModal");
+ let zi=$("#zoomInfo"); if(zi) zi.innerHTML="";
  if(modal) modal.classList.remove("open");
  document.body.style.overflow="";
  let m=$("#zoomMedia");
@@ -3085,11 +3152,12 @@ async function addProduct(){
  }
 
  products.unshift({
-  id:createId("p"),name,cat,subcat,type,price,stock,desc:desc.slice(0,1000),images,image:images[0]||"",video,banner,featured
+  id:createId("p"),name,cat,subcat,type,price,stock,desc:desc.slice(0,10000),images,image:images[0]||"",video,banner,featured
  });
 
  save();
  ["pName","pPrice","pStock","pDesc"].forEach(id=>{let el=$("#"+id);if(el)el.value="";});
+ updateDescCount("pDesc","pDescCount");
  $("#pCat").selectedIndex=0;
  $("#pCatCustom").value="";
  $("#pCatCustom").classList.add("hidden");
@@ -3146,7 +3214,7 @@ async function openEditor(id){
   </div>
   <div class="field"><label>Precio base</label><input id="ePrice" type="text" value="${Number(p.price)||0}"></div>
   <div class="field"><label>Unidades en stock (vacío = sin controlar inventario)</label><input id="eStock" type="number" min="0" step="1" value="${(p.stock===undefined||p.stock===null)?"":p.stock}"></div>
-  <div class="field"><label>Descripción</label><textarea id="eDesc" maxlength="1000">${esc(p.desc)}</textarea></div>
+  <div class="field"><label>Descripción / ficha técnica (máx. 10.000 caracteres)</label><textarea id="eDesc" maxlength="10000" rows="8">${esc(p.desc)}</textarea><div class="small" id="eDescCount" style="text-align:right"></div></div>
   
   <label class="checkbox-wrap">
    <input type="checkbox" id="eFeatured" ${p.featured ? 'checked' : ''}>
@@ -3179,6 +3247,8 @@ async function openEditor(id){
  
  $("#editModal").classList.add("open");
  $("#eCancel").onclick=closeEditor;
+ updateDescCount("eDesc","eDescCount");
+ $("#eDesc").addEventListener("input",()=>updateDescCount("eDesc","eDescCount"));
 
  bindCategorySelects("e", p.subcat, p.type);
 
@@ -3300,7 +3370,7 @@ async function saveEditor(){
  p.cat=cat; p.subcat=subcat; p.type=type;
  p.price=price;
  p.stock=stock;
- p.desc=$("#eDesc").value.trim().slice(0,1000);
+ p.desc=$("#eDesc").value.trim().slice(0,10000);
  p.banner=banner;
  p.featured=featured;
 
@@ -4411,6 +4481,7 @@ function bind(){
  $("#saveCartColor").onclick=saveCartColor;
  $("#resetCartColor").onclick=resetCartColor;
  $("#saveFonts").onclick=saveFonts;
+ $("#pDesc").addEventListener("input",()=>updateDescCount("pDesc","pDescCount"));
  $("#resetFonts").onclick=resetFonts;
  $("#refreshUsage").onclick=()=>{renderStorageUsage();toast("Medición actualizada");};
  $("#savePlanGB").onclick=savePlanGB;
