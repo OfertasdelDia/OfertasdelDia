@@ -39,8 +39,6 @@
 [data-theme="dark"] .suggest-icon{background:#22262b}
 [data-theme="dim"] .small,[data-theme="dim"] .desc,[data-theme="dim"] .password-rules,
 [data-theme="dark"] .small,[data-theme="dark"] .desc,[data-theme="dark"] .password-rules{color:var(--muted)}
-[data-theme="dim"] .site-footer{background:#161e26}
-[data-theme="dark"] .site-footer{background:#0b0d10}
 [data-theme="dim"] .toast,[data-theme="dark"] .toast{background:#eef1f4;color:#111}
 [data-theme="dim"] .admin-item,[data-theme="dim"] .banner-admin-item,
 [data-theme="dark"] .admin-item,[data-theme="dark"] .banner-admin-item{border-color:var(--line)}
@@ -379,14 +377,72 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 .font-preview{margin-top:6px;padding:8px 10px;border:1px dashed var(--line);border-radius:8px;font-size:17px;background:#fafbfc;color:#17202a}
 
 /* ================= FOOTER ================= */
-.site-footer{background:var(--nav);color:#cfd6dd;margin-top:26px;padding:26px 14px 100px;text-align:center}
-.site-footer .footer-inner{max-width:var(--max);margin:auto;display:grid;gap:8px}
-.site-footer .footer-loc{font-weight:700;color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px}
-.footer-pin{width:17px;height:17px;flex:0 0 auto}
-.footer-contact{margin-top:14px;padding-top:14px;border-top:1px solid #ffffff22;display:grid;gap:6px}
-.footer-contact h4{margin:0 0 4px;color:#fff;font-size:14px;letter-spacing:.5px}
-.footer-contact div{font-size:13px;color:#cfd6dd}
-.site-footer .footer-copy{font-size:12px;color:#9aa5b1;margin-top:14px}
+.site-footer{margin-top:26px;background:var(--ft-below,#000);color:var(--ft-text,#fff);padding:0 0 90px;text-align:left}
+.ft-top{display:flex;align-items:center;justify-content:center;width:100%;height:60px;border:0;padding:0;background:var(--ft-top,#c6c6c6);cursor:pointer}
+.ft-top svg{width:38px;height:38px;fill:var(--ft-arrow,#fff);transition:transform .2s}
+.ft-top:hover svg{transform:translateY(-3px)}
+.ft-main{background:var(--ft-bg,#737373);padding:34px 8% 42px}
+.ft-inner{max-width:var(--max);margin:auto}
+.ft-title{margin:0 0 20px;font-size:clamp(34px,8vw,54px);line-height:1.1;font-weight:900;color:var(--ft-title,#1f1f1f)}
+.ft-heading{margin:24px 0 14px;font-size:clamp(18px,4.6vw,26px);line-height:1.2;font-weight:900;letter-spacing:.02em;text-transform:uppercase;color:var(--ft-heading,#f5d453)}
+.ft-item{display:flex;align-items:flex-start;gap:12px;margin:0 0 14px;font-size:clamp(16px,4.2vw,22px);line-height:1.35;color:var(--ft-text,#fff);overflow-wrap:anywhere}
+.ft-item a{color:inherit;text-decoration:none}
+.ft-item a:hover{text-decoration:underline}
+.ft-ico{flex:0 0 auto;width:32px;height:32px;display:grid;place-items:center}
+.ft-ico svg{width:100%;height:100%;display:block}
+.ft-item.link{color:var(--ft-link,#222);font-size:clamp(18px,4.8vw,26px);margin-bottom:10px}
+.ft-bottom{background:var(--ft-bottom-bg,#2b2b2b);color:var(--ft-bottom-text,#fff);display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;gap:10px;padding:22px 5%;font-weight:700;font-size:clamp(11px,3.3vw,15px)}
+.ft-store{flex:0 1 auto;max-width:42%;overflow-wrap:anywhere}
+.ft-copy{flex:1 1 auto;text-align:right}
+/* ===== Animaciones de texto (paneo y más) ===== */
+.anim-x{opacity:0}
+.anim-x.go{animation-duration:var(--dur,700ms);animation-delay:var(--delay,0ms);animation-fill-mode:both;animation-timing-function:cubic-bezier(.22,.61,.36,1)}
+.anim-pan-left.go{animation-name:fa-pan-left}
+.anim-pan-right.go{animation-name:fa-pan-right}
+.anim-slide-up.go{animation-name:fa-slide-up}
+.anim-slide-down.go{animation-name:fa-slide-down}
+.anim-fade.go{animation-name:fa-fade}
+.anim-zoom-in.go{animation-name:fa-zoom-in}
+.anim-zoom-out.go{animation-name:fa-zoom-out}
+.anim-bounce.go{animation-name:fa-bounce}
+.anim-elastic.go{animation-name:fa-elastic}
+.anim-flip-x.go{animation-name:fa-flip-x}
+.anim-flip-y.go{animation-name:fa-flip-y}
+.anim-rotate.go{animation-name:fa-rotate}
+.anim-blur.go{animation-name:fa-blur}
+.anim-wipe.go{animation-name:fa-wipe}
+.anim-typewriter.go{animation-name:fa-wipe;animation-timing-function:steps(22,end)}
+.anim-swing.go{animation-name:fa-swing;transform-origin:top center}
+.anim-pulse.go{animation-name:fa-pulse}
+.anim-spread.go{animation-name:fa-spread}
+@keyframes fa-pan-left{from{opacity:0;transform:translateX(-60px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes fa-pan-right{from{opacity:0;transform:translateX(60px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes fa-slide-up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes fa-slide-down{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:none}}
+@keyframes fa-fade{from{opacity:0}to{opacity:1}}
+@keyframes fa-zoom-in{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes fa-zoom-out{from{opacity:0;transform:scale(1.5)}to{opacity:1;transform:none}}
+@keyframes fa-bounce{0%{opacity:0;transform:translateY(-40px)}40%{opacity:1;transform:translateY(0)}60%{transform:translateY(-14px)}80%{transform:translateY(0)}90%{transform:translateY(-5px)}100%{opacity:1;transform:none}}
+@keyframes fa-elastic{0%{opacity:0;transform:scale(.3)}55%{opacity:1;transform:scale(1.12)}75%{transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
+@keyframes fa-flip-x{from{opacity:0;transform:perspective(500px) rotateX(-90deg)}to{opacity:1;transform:perspective(500px) rotateX(0)}}
+@keyframes fa-flip-y{from{opacity:0;transform:perspective(500px) rotateY(-90deg)}to{opacity:1;transform:perspective(500px) rotateY(0)}}
+@keyframes fa-rotate{from{opacity:0;transform:rotate(-12deg) scale(.8)}to{opacity:1;transform:none}}
+@keyframes fa-blur{from{opacity:0;filter:blur(14px)}to{opacity:1;filter:blur(0)}}
+@keyframes fa-wipe{from{opacity:1;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+@keyframes fa-swing{0%{opacity:0;transform:rotateX(-70deg)}60%{opacity:1;transform:rotateX(18deg)}80%{transform:rotateX(-8deg)}100%{opacity:1;transform:none}}
+@keyframes fa-pulse{0%{opacity:0;transform:scale(.9)}40%{opacity:1;transform:scale(1.08)}70%{transform:scale(.97)}100%{opacity:1;transform:scale(1)}}
+@keyframes fa-spread{from{opacity:0;letter-spacing:.5em}to{opacity:1;letter-spacing:0}}
+@media (prefers-reduced-motion:reduce){.anim-x{opacity:1!important}.anim-x.go{animation:none!important}}
+/* ===== Editor del pie de página (admin) ===== */
+.fe-block{border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0;background:var(--card)}
+.fe-item{border-top:1px dashed var(--line);padding-top:10px;margin-top:12px}
+.fe-label{display:block;font-weight:900;font-size:13px;margin-bottom:6px}
+.fe-toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.fe-toolbar button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:7px 10px;font-weight:800;font-size:13px}
+.fe-colors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fe-animrow{display:flex;align-items:center;gap:10px}
+.fe-animrow select{flex:1;min-width:0}
+.anim-demo{display:inline-block;flex:0 0 auto;font-weight:900;color:var(--text)}
 
 /* ================= RESPONSIVE ================= */
 @media(max-width:1050px){
@@ -511,25 +567,7 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
 </section>
 </main>
 
-<footer class="site-footer">
- <div class="footer-inner">
-  <div class="footer-loc">
-   <svg class="footer-pin" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path fill="#e63946" d="M12 2C7.582 2 4 5.582 4 10c0 5.25 6.5 11.34 7.19 11.98a1.15 1.15 0 0 0 1.62 0C13.5 21.34 20 15.25 20 10c0-4.418-3.582-8-8-8z"/>
-    <circle cx="12" cy="10" r="3.3" fill="#fff"/>
-   </svg>
-   <span id="footerLoc">Ubicación: Calle. Cualquiera #489 / la ruta y más</span>
-  </div>
-  <div class="footer-contact">
-   <h4>Contacto</h4>
-   <div id="footerPhone">📞 Teléfono: +1 (708) 89-1280</div>
-   <div id="footerEmail">✉️ Email: ventas@gmail.com</div>
-   <div id="footerAddress">📍 Dirección: Cualquier lugar #123</div>
-   <div id="footerHours">🕒 Horarios: Lunes a Viernes / 9:00am - 5:30pm</div>
-  </div>
-  <div class="footer-copy">Todos los derechos ©️ reservados 2026</div>
- </div>
-</footer>
+<footer class="site-footer" id="siteFooter"></footer>
 
 <div class="fab-group" id="fabGroup">
  <div class="fab-bubble" id="fabBubble"><span id="fabBubbleText"></span></div>
@@ -613,10 +651,7 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
      <label>Texto predeterminado</label>
      <textarea id="cfgHeroText"></textarea>
     </div>
-    <div class="field">
-     <label>📍 Ubicación (pie de página)</label>
-     <input id="cfgLocation" placeholder="Calle. Cualquiera #489 / la ruta y más">
-    </div>
+    <p class="small">📃 El teléfono, correo, dirección, horarios, ubicación y redes del pie de página ahora se editan en el panel «Pie de página».</p>
     <label class="checkbox-wrap">
      <input type="checkbox" id="cfgDeliveryEnabled" checked>
      <span>🚚 Mostrar insignia de entrega en las tarjetas de producto</span>
@@ -628,22 +663,6 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
     <div class="field">
      <label>🔍 Texto de la barra de búsqueda</label>
      <input id="cfgSearchPlaceholder" maxlength="60" placeholder="Buscar productos...">
-    </div>
-    <div class="field">
-     <label>📞 Teléfono de contacto</label>
-     <input id="cfgPhone" placeholder="+1 (708) 89-1280">
-    </div>
-    <div class="field">
-     <label>✉️ Email de contacto</label>
-     <input id="cfgEmail" placeholder="ventas@gmail.com">
-    </div>
-    <div class="field">
-     <label>📍 Dirección de contacto</label>
-     <input id="cfgAddress" placeholder="Cualquier lugar #123">
-    </div>
-    <div class="field">
-     <label>🕒 Horarios de atención</label>
-     <input id="cfgHours" placeholder="Lunes a Viernes / 9:00am - 5:30pm">
     </div>
     <div class="field">
      <label>🖼️ Logo de la tienda</label>
@@ -937,6 +956,15 @@ input[type=file].visually-hidden{position:absolute;width:1px;height:1px;padding:
    <div id="fontZones"></div>
    <button class="primary" id="saveFonts" type="button">Guardar tipografías</button>
    <button class="btn" id="resetFonts" type="button" style="margin-left:8px">Restablecer todo</button>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <div class="panel" style="margin-top:14px">
+   <h3>📃 Pie de página</h3>
+   <p class="small">Edita el título, las secciones, los textos, los enlaces, los colores y la animación de cada texto. Los elementos sin texto se omiten al guardar. Los cambios se ven al guardar.</p>
+   <div id="footerEditor"></div>
+   <button class="primary" id="saveFooter" type="button">Guardar pie de página</button>
+   <button class="btn" id="resetFooter" type="button" style="margin-left:8px">Restablecer diseño</button>
   </div>
 
   <!-- ESPACIO USADO -->
@@ -1637,6 +1665,7 @@ function watchCloudCatalog(){
   if(snap.exists){
    let cloudConfig=snap.data();
    config={...config, ...cloudConfig, password:config.password};
+   if(!cloudConfig.footer) config.footer=buildDefaultFooter();
    if(Array.isArray(config.categoryTree) && config.categoryTree.length){
     CATEGORY_TREE=config.categoryTree;
    }
@@ -1707,6 +1736,7 @@ function load(){
    if(config.instagramUrl) config.socialLinks.push({id:createId("soc"), platform:"instagram", url:config.instagramUrl, bubbleText:config.fabTextIg||"¡Síguenos!"});
    if(config.youtubeUrl) config.socialLinks.push({id:createId("soc"), platform:"youtube", url:config.youtubeUrl, bubbleText:config.fabTextYt||"¡Suscríbete!"});
   }
+  if(!config.footer || typeof config.footer!=="object") config.footer=buildDefaultFooter();
   if(Array.isArray(config.categoryTree) && config.categoryTree.length){
    CATEGORY_TREE=config.categoryTree;
   }else{
@@ -1835,13 +1865,291 @@ function renderHero(){
  applyFonts();
 }
 
+const TEXT_ANIMATIONS=[
+ {id:"none",label:"Sin animación"},
+ {id:"pan-left",label:"Paneo (desde la izquierda)"},
+ {id:"pan-right",label:"Paneo (desde la derecha)"},
+ {id:"slide-up",label:"Subir"},
+ {id:"slide-down",label:"Bajar"},
+ {id:"fade",label:"Aparecer (fundido)"},
+ {id:"zoom-in",label:"Zoom (acercar)"},
+ {id:"zoom-out",label:"Zoom (alejar)"},
+ {id:"bounce",label:"Rebote"},
+ {id:"elastic",label:"Elástico"},
+ {id:"flip-x",label:"Giro vertical 3D"},
+ {id:"flip-y",label:"Giro horizontal 3D"},
+ {id:"rotate",label:"Girar y aparecer"},
+ {id:"blur",label:"Desenfoque a nítido"},
+ {id:"wipe",label:"Revelar (cortina)"},
+ {id:"typewriter",label:"Máquina de escribir"},
+ {id:"swing",label:"Columpio"},
+ {id:"pulse",label:"Latido"},
+ {id:"spread",label:"Letras que se juntan"}
+];
+const FOOTER_DEFAULT_COLORS={topBar:"#c6c6c6",arrow:"#ffffff",bg:"#737373",title:"#1f1f1f",heading:"#f5d453",text:"#ffffff",link:"#222222",bottomBg:"#2b2b2b",bottomText:"#ffffff",below:"#000000"};
+const FOOTER_COLOR_LABELS=[["topBar","Barra superior"],["arrow","Flecha"],["bg","Fondo principal"],["title","Título"],["heading","Subtítulos"],["text","Texto de contacto"],["link","Enlaces (redes)"],["bottomBg","Barra inferior"],["bottomText","Texto barra inferior"],["below","Fondo inferior"]];
+const FT_KINDS=[["phone","📞 Teléfono"],["email","✉️ Correo"],["location","📍 Ubicación"],["hours","🕒 Horario"],["link","🔗 Enlace (red social)"],["text","📝 Texto libre"]];
+const FT_ICONS={
+ phone:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.05 15.05 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.58a1 1 0 0 1-.25 1.02l-2.22 2.2z"/><path fill-rule="evenodd" d="M13 2h8a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5l-3 2.5V9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm1.5 2.5v1h5v-1zm0 2v1H18v-1z"/></svg>',
+ email:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/><circle cx="12" cy="9.3" r="1.5"/><path d="M13.5 9.3v.7a1 1 0 0 0 2 0v-.7a3.5 3.5 0 1 0-1.4 2.8"/></svg>',
+ location:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 6.5 11.34 7.19 11.98a1.15 1.15 0 0 0 1.62 0C13.5 21.34 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>',
+ hours:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>'
+};
+
+function safeUrl(u){
+ u=(u||"").trim();
+ if(!u)return "";
+ if(/^(https?:|mailto:|tel:)/i.test(u))return u;
+ if(/^[\w.-]+\.[a-z]{2,}(\/|$)/i.test(u))return "https://"+u;
+ return "";
+}
+
+function buildDefaultFooter(){
+ let contact=[];
+ const add=(arr,kind,text,url)=>{if(text)arr.push({id:createId("fi"),kind,text,url:url||"",anim:"pan-left"});};
+ add(contact,"phone",config.contactPhone);
+ add(contact,"email",config.contactEmail);
+ add(contact,"location",config.location);
+ add(contact,"location",config.contactAddress);
+ add(contact,"hours",config.contactHours);
+ let social=[];
+ (config.socialLinks||[]).forEach(sl=>{
+  let meta=SOCIAL_PLATFORMS[sl.platform];
+  if(meta && sl.url) add(social,"link",meta.label,sl.url);
+ });
+ let waNum=String(config.whatsappNumber||WA).replace(/\D/g,"");
+ if(waNum) add(social,"link","Whatsapp","https://wa.me/"+waNum);
+ return {
+  title:"Contactos", titleAnim:"pan-left",
+  sections:[
+   {id:createId("fs"), heading:"ATENCIÓN AL PÚBLICO", headingAnim:"pan-left", items:contact},
+   {id:createId("fs"), heading:"REDES SOCIALES", headingAnim:"pan-left", items:social}
+  ],
+  showStoreName:true, storeAnim:"fade",
+  copyright:"©Todos los derechos reservados 2026", copyAnim:"fade",
+  colors:Object.assign({},FOOTER_DEFAULT_COLORS),
+  duration:700, stagger:120
+ };
+}
+
+function ftHref(it){
+ let url=(it.url||"").trim();
+ if(url) return url;
+ if(it.kind==="phone"){let d=(it.text||"").replace(/[^\d+]/g,"");return d?"tel:"+d:"";}
+ if(it.kind==="email"){let t=(it.text||"").trim();return t?"mailto:"+t:"";}
+ return "";
+}
+
+let footerObserver=null;
+
 function renderFooter(){
- let loc=$("#footerLoc");
- if(loc) loc.textContent = "Ubicación: "+(config.location || "Calle. Cualquiera #489 / la ruta y más");
- let ph=$("#footerPhone"); if(ph) ph.textContent = "📞 Teléfono: "+(config.contactPhone||"");
- let em=$("#footerEmail"); if(em) em.textContent = "✉️ Email: "+(config.contactEmail||"");
- let ad=$("#footerAddress"); if(ad) ad.textContent = "📍 Dirección: "+(config.contactAddress||"");
- let hr=$("#footerHours"); if(hr) hr.textContent = "🕒 Horarios: "+(config.contactHours||"");
+ let ft=$("#siteFooter");
+ if(!ft)return;
+ if(!config.footer || typeof config.footer!=="object") config.footer=buildDefaultFooter();
+ let f=config.footer;
+ let sig=JSON.stringify([f,config.name]);
+ if(ft.dataset.sig===sig)return;
+ ft.dataset.sig=sig;
+
+ let col=Object.assign({},FOOTER_DEFAULT_COLORS,f.colors||{});
+ const okc=(k)=>/^#[0-9a-f]{3,8}$/i.test(col[k])?col[k]:FOOTER_DEFAULT_COLORS[k];
+ ft.style.setProperty("--ft-top",okc("topBar"));
+ ft.style.setProperty("--ft-arrow",okc("arrow"));
+ ft.style.setProperty("--ft-bg",okc("bg"));
+ ft.style.setProperty("--ft-title",okc("title"));
+ ft.style.setProperty("--ft-heading",okc("heading"));
+ ft.style.setProperty("--ft-text",okc("text"));
+ ft.style.setProperty("--ft-link",okc("link"));
+ ft.style.setProperty("--ft-bottom-bg",okc("bottomBg"));
+ ft.style.setProperty("--ft-bottom-text",okc("bottomText"));
+ ft.style.setProperty("--ft-below",okc("below"));
+ let dur=Math.min(3000,Math.max(200,Number(f.duration)||700));
+ let stagger=Number.isFinite(Number(f.stagger))?Math.min(600,Math.max(0,Number(f.stagger))):120;
+ ft.style.setProperty("--dur",dur+"ms");
+
+ let idx=0;
+ const an=(name)=>{
+  if(!name || name==="none" || !TEXT_ANIMATIONS.some(a=>a.id===name)) return {cls:"",style:""};
+  let d=idx++*stagger;
+  return {cls:" anim-x anim-"+name, style:' style="--delay:'+d+'ms"'};
+ };
+
+ let h='<button type="button" class="ft-top" id="ftTop" aria-label="Volver al inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 23 21H1z"/></svg></button>';
+ h+='<div class="ft-main"><div class="ft-inner">';
+ if(f.title){let a=an(f.titleAnim);h+='<h2 class="ft-title'+a.cls+'"'+a.style+'>'+esc(f.title)+'</h2>';}
+ (f.sections||[]).forEach(sec=>{
+  if(sec.heading){let a=an(sec.headingAnim);h+='<h3 class="ft-heading'+a.cls+'"'+a.style+'>'+esc(sec.heading)+'</h3>';}
+  (sec.items||[]).forEach(it=>{
+   if(!it.text)return;
+   let a=an(it.anim);
+   let href=safeUrl(ftHref(it));
+   let icon=FT_ICONS[it.kind]||"";
+   let inner=href
+    ? '<a href="'+esc(href)+'"'+(/^https?:/i.test(href)?' target="_blank" rel="noopener noreferrer"':'')+'>'+esc(it.text)+'</a>'
+    : esc(it.text);
+   h+='<div class="ft-item'+(it.kind==="link"?" link":"")+a.cls+'"'+a.style+'>'+(icon?'<span class="ft-ico">'+icon+'</span>':'')+'<span class="ft-txt">'+inner+'</span></div>';
+  });
+ });
+ h+='</div></div>';
+ let aS=an(f.storeAnim), aC=an(f.copyAnim);
+ h+='<div class="ft-bottom">'+
+  (f.showStoreName!==false?'<span class="ft-store'+aS.cls+'"'+aS.style+'>'+esc(config.name||"MERCADO")+'</span>':'<span></span>')+
+  (f.copyright?'<span class="ft-copy'+aC.cls+'"'+aC.style+'>'+esc(f.copyright)+'</span>':'')+
+  '</div>';
+ ft.innerHTML=h;
+ let up=$("#ftTop");
+ if(up) up.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+ setupFooterReveal(ft);
+}
+
+function setupFooterReveal(ft){
+ if(footerObserver){footerObserver.disconnect();footerObserver=null;}
+ let els=ft.querySelectorAll(".anim-x");
+ if(!els.length)return;
+ if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("go"));return;}
+ footerObserver=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+   if(en.isIntersecting) els.forEach(e=>e.classList.add("go"));
+   else els.forEach(e=>e.classList.remove("go"));
+  });
+ },{threshold:0.12});
+ footerObserver.observe(ft.querySelector(".ft-main")||ft);
+}
+
+/* ---------- Editor del pie de página (admin) ---------- */
+let footerDraft=null;
+
+function setByPath(obj,path,val){
+ let k=path.split("."), o=obj;
+ for(let i=0;i<k.length-1;i++){ if(o[k[i]]==null)return; o=o[k[i]]; }
+ o[k[k.length-1]]=val;
+}
+
+function animOptions(sel){
+ return TEXT_ANIMATIONS.map(a=>'<option value="'+a.id+'"'+(a.id===sel?' selected':'')+'>'+esc(a.label)+'</option>').join("");
+}
+
+function feAnimSelect(path,val){
+ return '<div class="field"><label>Animación</label><div class="fe-animrow"><select class="ft-anim" data-path="'+path+'">'+animOptions(val||"none")+'</select><span class="anim-demo">Texto</span></div></div>';
+}
+
+function playAnimDemo(el,name){
+ if(!el)return;
+ el.className="anim-demo";
+ el.style.setProperty("--dur","700ms");
+ el.style.removeProperty("--delay");
+ if(!name || name==="none")return;
+ el.classList.add("anim-x","anim-"+name);
+ void el.offsetWidth;
+ el.classList.add("go");
+}
+
+function renderFooterEditor(){
+ let box=$("#footerEditor");
+ if(!box || !footerDraft)return;
+ let d=footerDraft;
+ const kinds=(sel)=>FT_KINDS.map(k=>'<option value="'+k[0]+'"'+(k[0]===sel?' selected':'')+'>'+k[1]+'</option>').join("");
+ let h='<div class="fe-block"><div class="field"><label>Título principal</label><input data-path="title" value="'+esc(d.title||"")+'"></div>'+feAnimSelect("titleAnim",d.titleAnim)+'</div>';
+ (d.sections||[]).forEach((sec,i)=>{
+  h+='<div class="fe-block"><label class="fe-label">Sección '+(i+1)+'</label>'+
+   '<div class="field"><label>Subtítulo</label><input data-path="sections.'+i+'.heading" value="'+esc(sec.heading||"")+'"></div>'+
+   feAnimSelect("sections."+i+".headingAnim",sec.headingAnim)+
+   '<div class="fe-toolbar"><button type="button" data-act="sec-up" data-i="'+i+'">↑ Subir sección</button><button type="button" data-act="sec-down" data-i="'+i+'">↓ Bajar sección</button><button type="button" data-act="sec-del" data-i="'+i+'">🗑 Eliminar sección</button></div>';
+  (sec.items||[]).forEach((it,j)=>{
+   let pp="sections."+i+".items."+j;
+   h+='<div class="fe-item"><label class="fe-label">Elemento '+(j+1)+'</label>'+
+    '<div class="field"><label>Tipo</label><select data-path="'+pp+'.kind">'+kinds(it.kind)+'</select></div>'+
+    '<div class="field"><label>Texto</label><input data-path="'+pp+'.text" value="'+esc(it.text||"")+'"></div>'+
+    '<div class="field"><label>Enlace (opcional)</label><input data-path="'+pp+'.url" placeholder="https://..." value="'+esc(it.url||"")+'"></div>'+
+    feAnimSelect(pp+".anim",it.anim)+
+    '<div class="fe-toolbar"><button type="button" data-act="item-up" data-i="'+i+'" data-j="'+j+'">↑</button><button type="button" data-act="item-down" data-i="'+i+'" data-j="'+j+'">↓</button><button type="button" data-act="item-del" data-i="'+i+'" data-j="'+j+'">🗑 Eliminar</button></div></div>';
+  });
+  h+='<div class="fe-toolbar"><button type="button" data-act="item-add" data-i="'+i+'">＋ Añadir elemento</button></div></div>';
+ });
+ h+='<button type="button" class="btn" data-act="sec-add">＋ Añadir sección</button>';
+ h+='<div class="fe-block"><label class="fe-label">Barra inferior</label>'+
+  '<label class="checkbox-wrap"><input type="checkbox" data-path="showStoreName"'+(d.showStoreName!==false?' checked':'')+'><span>Mostrar el nombre de la tienda</span></label>'+
+  feAnimSelect("storeAnim",d.storeAnim)+
+  '<div class="field"><label>Texto de derechos</label><input data-path="copyright" value="'+esc(d.copyright||"")+'"></div>'+
+  feAnimSelect("copyAnim",d.copyAnim)+'</div>';
+ h+='<div class="fe-block"><label class="fe-label">Colores del pie de página</label><div class="fe-colors">'+
+  FOOTER_COLOR_LABELS.map(c=>'<div class="field"><label>'+c[1]+'</label><input type="color" data-path="colors.'+c[0]+'" value="'+((d.colors&&/^#[0-9a-f]{6}$/i.test(d.colors[c[0]]))?d.colors[c[0]]:FOOTER_DEFAULT_COLORS[c[0]])+'"></div>').join("")+
+  '</div><div class="fe-toolbar"><button type="button" data-act="colors-reset">Restablecer colores</button></div></div>';
+ h+='<div class="fe-block"><label class="fe-label">Tiempos de la animación</label>'+
+  '<div class="field"><label>Duración de cada efecto (milisegundos)</label><input type="number" min="200" max="3000" step="50" data-path="duration" value="'+(Number(d.duration)||700)+'"></div>'+
+  '<div class="field"><label>Retraso entre textos (milisegundos)</label><input type="number" min="0" max="600" step="10" data-path="stagger" value="'+(Number.isFinite(Number(d.stagger))?Number(d.stagger):120)+'"></div></div>';
+ box.innerHTML=h;
+}
+
+function initFooterEditor(){
+ let box=$("#footerEditor");
+ if(!box)return;
+ const apply=el=>{
+  let path=el.dataset.path;
+  if(!path || !footerDraft)return;
+  let val=el.type==="checkbox" ? el.checked : (el.type==="number" ? Number(el.value) : el.value);
+  setByPath(footerDraft,path,val);
+ };
+ box.addEventListener("input",e=>{ if(e.target.dataset && e.target.dataset.path && e.target.tagName!=="SELECT") apply(e.target); });
+ box.addEventListener("change",e=>{
+  let el=e.target;
+  if(!el.dataset || !el.dataset.path)return;
+  apply(el);
+  if(el.classList.contains("ft-anim")) playAnimDemo(el.parentElement.querySelector(".anim-demo"),el.value);
+ });
+ box.addEventListener("click",async e=>{
+  let b=e.target.closest("button[data-act]");
+  if(!b || !footerDraft)return;
+  let act=b.dataset.act, i=Number(b.dataset.i), j=Number(b.dataset.j), d=footerDraft;
+  const swap=(arr,a,c)=>{if(c<0||c>=arr.length)return;let t=arr[a];arr[a]=arr[c];arr[c]=t;};
+  if(act==="sec-add") d.sections.push({id:createId("fs"),heading:"NUEVA SECCIÓN",headingAnim:"pan-left",items:[]});
+  else if(act==="sec-up") swap(d.sections,i,i-1);
+  else if(act==="sec-down") swap(d.sections,i,i+1);
+  else if(act==="sec-del"){ if(!(await customConfirm("¿Eliminar esta sección y todos sus elementos?")))return; d.sections.splice(i,1); }
+  else if(act==="item-add"){ let ks=d.sections[i].items.map(x=>x.kind); d.sections[i].items.push({id:createId("fi"),kind:(ks.length && ks.every(x=>x==="link"))?"link":"text",text:"",url:"",anim:"pan-left"}); }
+  else if(act==="item-up") swap(d.sections[i].items,j,j-1);
+  else if(act==="item-down") swap(d.sections[i].items,j,j+1);
+  else if(act==="item-del") d.sections[i].items.splice(j,1);
+  else if(act==="colors-reset") d.colors=Object.assign({},FOOTER_DEFAULT_COLORS);
+  renderFooterEditor();
+ });
+}
+
+function loadFooterAdmin(){
+ if(!config.footer || typeof config.footer!=="object") config.footer=buildDefaultFooter();
+ footerDraft=JSON.parse(JSON.stringify(config.footer));
+ if(!Array.isArray(footerDraft.sections)) footerDraft.sections=[];
+ renderFooterEditor();
+}
+
+function saveFooter(){
+ if(!footerDraft)return;
+ let d=JSON.parse(JSON.stringify(footerDraft));
+ d.title=(d.title||"").trim();
+ d.copyright=(d.copyright||"").trim();
+ d.sections=(d.sections||[]).map(sec=>({
+  ...sec,
+  heading:(sec.heading||"").trim(),
+  items:(sec.items||[]).filter(it=>(it.text||"").trim()).map(it=>({...it,text:it.text.trim(),url:(it.url||"").trim()}))
+ })).filter(sec=>sec.heading || sec.items.length);
+ d.duration=Math.min(3000,Math.max(200,Number(d.duration)||700));
+ d.stagger=Number.isFinite(Number(d.stagger))?Math.min(600,Math.max(0,Number(d.stagger))):120;
+ config.footer=d;
+ save();
+ footerDraft=JSON.parse(JSON.stringify(d));
+ renderFooter();
+ renderFooterEditor();
+ toast("Pie de página guardado");
+}
+
+async function resetFooter(){
+ if(!(await customConfirm("¿Restablecer el pie de página al diseño original? Se perderán tus cambios en esta sección.")))return;
+ config.footer=buildDefaultFooter();
+ save();
+ footerDraft=JSON.parse(JSON.stringify(config.footer));
+ renderFooter();
+ renderFooterEditor();
+ toast("Pie de página restablecido");
 }
 
 /* =========================================================
@@ -3045,7 +3353,7 @@ async function enterAdmin(){
 
 function openAdminPanel(){
  $("#admin").classList.add("open");
- loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();renderSocialAdmin();loadCartColorAdmin();loadFontsAdmin();renderStorageUsage();
+ loadAdminFields();renderAdminList();renderBannerAdmin();renderLogoAdmin();renderCategoryAdmin();renderNewsAdmin();renderDeliveryZonesAdmin();renderSocialAdmin();loadCartColorAdmin();loadFontsAdmin();renderStorageUsage();loadFooterAdmin();
  maybeMigrateToCloud();
 }
 
@@ -3053,14 +3361,9 @@ function loadAdminFields(){
  $("#cfgName").value=config.name || "MERCADO";
  $("#cfgHeroTitle").value=config.heroTitle || "";
  $("#cfgHeroText").value=config.heroText || "";
- $("#cfgLocation").value=config.location || "";
  $("#cfgDeliveryEnabled").checked = config.deliveryBadgeEnabled!==false;
  $("#cfgDeliveryText").value=config.deliveryBadgeText || "";
  $("#cfgSearchPlaceholder").value=config.searchPlaceholder || "Buscar productos...";
- $("#cfgPhone").value=config.contactPhone || "";
- $("#cfgEmail").value=config.contactEmail || "";
- $("#cfgAddress").value=config.contactAddress || "";
- $("#cfgHours").value=config.contactHours || "";
  $("#cfgFxProxy").value=config.fxProxy || "";
 
  $("#cfgWhatsapp").value=config.whatsappNumber || "";
@@ -4394,14 +4697,9 @@ function bind(){
    config.name=$("#cfgName").value.trim() || "MERCADO";
    config.heroTitle=$("#cfgHeroTitle").value.trim() || "Compra directo y fácil";
    config.heroText=$("#cfgHeroText").value.trim();
-   config.location=$("#cfgLocation").value.trim() || "Calle. Cualquiera #489 / la ruta y más";
    config.deliveryBadgeEnabled=$("#cfgDeliveryEnabled").checked;
    config.deliveryBadgeText=$("#cfgDeliveryText").value.trim() || "Entregas a Domicilio";
    config.searchPlaceholder=$("#cfgSearchPlaceholder").value.trim().slice(0,60) || "Buscar productos...";
-   config.contactPhone=$("#cfgPhone").value.trim();
-   config.contactEmail=$("#cfgEmail").value.trim();
-   config.contactAddress=$("#cfgAddress").value.trim();
-   config.contactHours=$("#cfgHours").value.trim();
    config.fxProxy=$("#cfgFxProxy").value.trim();
 
    config.base=$("#cfgBase").value;
@@ -4485,6 +4783,9 @@ function bind(){
  $("#resetFonts").onclick=resetFonts;
  $("#refreshUsage").onclick=()=>{renderStorageUsage();toast("Medición actualizada");};
  $("#savePlanGB").onclick=savePlanGB;
+ $("#saveFooter").onclick=saveFooter;
+ $("#resetFooter").onclick=resetFooter;
+ initFooterEditor();
  $("#fontCategory").onchange=renderFontZones;
  $("#fontSearch").oninput=()=>{clearTimeout(fontFilterTimer);fontFilterTimer=setTimeout(renderFontZones,250);};
 
